@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,10 +33,10 @@ public class DriveSubsystem extends SubsystemBase {
         private final SparkMaxPIDController m_leftPIDController = m_frontLeft.getPIDController();
         private final SparkMaxPIDController m_rightPIDController = m_frontRight.getPIDController();
 
-        private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
+        //private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
         //private final PIDController m_turnController = new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnP);
 
-        private final DifferentialDriveOdometry m_odometry;
+        //private final DifferentialDriveOdometry m_odometry;
 
         public DriveSubsystem() {
 
@@ -106,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
 
                 //m_turnController.setTolerance(DriveConstants.kTurnTolerance);
 
-                m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),0,0);
+                //m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),0,0,new Pose2d());
                 // this is what they did in 2020 with the navX:
                 // Rotation2d.fromDegrees(getHeading()));
                 resetEncoders();
@@ -170,7 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
          * @return Pose of the robot
          */
         public Pose2d getPose() {
-                return m_odometry.getPoseMeters();
+                return new Pose2d();//m_odometry.getPoseMeters();
         }
 
         /**
@@ -192,14 +193,20 @@ public class DriveSubsystem extends SubsystemBase {
          * @return The heading of the gyro (degrees)
          */
         public double getHeading() {
-                return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+                return 0;//m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
+<<<<<<< Updated upstream
 
+=======
+        public double getPitch() {
+                return 0;//m_gyro.getPitch() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        }
+>>>>>>> Stashed changes
         /**
          * @return The rate of the gyro turn (deg/s)
          */
         public double getTurnRate() {
-                return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+                return 0;//m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
 
         // public void setTurnAngle(double angle) {
@@ -210,7 +217,7 @@ public class DriveSubsystem extends SubsystemBase {
          * Resets gyro position to 0
          */
         public void zeroHeading() {
-                m_gyro.zeroYaw();
+                //m_gyro.zeroYaw();
         }
 
         /**
@@ -226,7 +233,7 @@ public class DriveSubsystem extends SubsystemBase {
          */
         public void resetOdometry(Pose2d pose) {
                 resetEncoders();
-                m_odometry.resetPosition(m_gyro.getRotation2d(),0,0,pose);
+                //m_odometry.resetPosition(new Rotation2d(getHeading()), 0,0,pose);
         }
 
 
