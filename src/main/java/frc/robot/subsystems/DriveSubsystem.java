@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+//TODO REVIEW FOR CHANGES THIS YEAR
 public class DriveSubsystem extends SubsystemBase {	
   
         private static DriveSubsystem s_subsystem;
@@ -194,7 +195,9 @@ public class DriveSubsystem extends SubsystemBase {
         public double getHeading() {
                 return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
-
+        public double getPitch() {
+                return m_gyro.getPitch() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        }
         /**
          * @return The rate of the gyro turn (deg/s)
          */
@@ -233,6 +236,10 @@ public class DriveSubsystem extends SubsystemBase {
         public void arcadeDrive(double straight, double left, double right) {
                 tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),
                                 DriveConstants.kSpeedLimitFactor * (straight + left - right));
+        }
+        public void arcadeDrive(double straight, double turn) {
+                tankDrive(DriveConstants.kSpeedLimitFactor * (straight - turn),
+                                DriveConstants.kSpeedLimitFactor * (straight + turn));
         }
 
         /**

@@ -7,42 +7,38 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TurnCommand extends CommandBase {
-  /** Creates a new TurnCommand. */
-  private double m_targetAngle;
-
-
-  public TurnCommand(double targetAngle) {
+public class BalanceNoPIDCommand extends CommandBase {
+  /** Creates a new BalanceNoPIDCommand. */
+  public BalanceNoPIDCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_targetAngle = targetAngle;
     addRequirements(DriveSubsystem.get());
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currAngle = DriveSubsystem.get().getHeading();
-
-    if(currAngle < m_targetAngle){
-      DriveSubsystem.get().tankDrive(0.1, -0.1);
-    }else if(currAngle < m_targetAngle){
-      DriveSubsystem.get().tankDrive(-0.1, 0.1);
+    if(DriveSubsystem.get().getPitch() > 2){
+      DriveSubsystem.get().tankDrive(-0.1, -0.1);
+    }else if(DriveSubsystem.get().getPitch() < -2){
+      DriveSubsystem.get().tankDrive(0.1, 0.1);
+    }else{
+      DriveSubsystem.get().tankDrive(0, 0);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    DriveSubsystem.get().tankDrive(0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false;//DriveSubsystem.get().getPitch() < 2 && DriveSubsystem.get().getPitch() > -2;
   }
 }

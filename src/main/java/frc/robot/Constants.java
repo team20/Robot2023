@@ -123,7 +123,7 @@ public final class Constants {
 		public static final boolean kGyroReversed = true;
 
         //TODO CHANGE ALL OF THESE
-		public static final double kTurnP = 0.0125; //was 0.005
+		public static final double kTurnP = 0.002; //was 0.005
 		public static final double kTurnI = 0; //was 0.003
 		public static final double kTurnD = 0; //0.0
 		public static final double kTurnTolerance = 0.5;
@@ -157,10 +157,13 @@ public final class Constants {
 				* DriveConstants.kWheelDiameterMeters;
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters * 60;
+        public static final double kBalanceP = 0.005;
+        public static final double kBalanceI = 0.0001;
+        public static final double kBalanceD = 0.0001;
+
+	
 
 	}
-
-
 	public static final class LimelightConstants { // TODO: tune PID loop
 		public static final double kDisP = 0.02;
 		public static final double kDisI = 0;
