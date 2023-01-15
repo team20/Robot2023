@@ -195,13 +195,10 @@ public class DriveSubsystem extends SubsystemBase {
         public double getHeading() {
                 return 0;//m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
-<<<<<<< Updated upstream
 
-=======
         public double getPitch() {
                 return 0;//m_gyro.getPitch() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
->>>>>>> Stashed changes
         /**
          * @return The rate of the gyro turn (deg/s)
          */

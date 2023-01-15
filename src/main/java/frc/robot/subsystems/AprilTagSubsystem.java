@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,9 +25,10 @@ public class AprilTagSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     double[] defaultValue = {-1,-1,-1};
-    for(int i = 0; i<8; ++i){
+    for(int i = 7; i<8; ++i){
       //if(){
-        poses[i] = m_aprilTagTable.getEntry("apriltag" + (i+1)).getDoubleArray(defaultValue);
+        poses[i] = m_aprilTagTable.getEntry("tagid" + (i+1)).getDoubleArray(defaultValue);
+        System.out.println(Arrays.toString(poses[i]));
       //}
     }
     // This method will be called once per scheduler run
