@@ -115,6 +115,9 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         public void periodic() {
+
+                if (true) { return; }
+
                 //SmartDashboard.putNumber("the angle", getHeading());
                 // System.out.println("the angle is: " + getHeading());
                 //SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());

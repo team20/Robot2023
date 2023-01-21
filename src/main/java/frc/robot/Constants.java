@@ -6,6 +6,41 @@ import edu.wpi.first.wpilibj.SPI;
 
 
 public final class Constants {
+	
+	public static final class ArmConstants {
+		public static final int kCountsPerRevolution = 42;
+		public static final double kAllowedError = 2;
+		public static final double kMinEncoderValue = 0.0;
+		public static final double kMaxEncoderValue = 42.0;
+		// public static final double kMinAngle = 24.36;
+		// public static final double kMaxAngle = 77.64;
+		public static final int kMotorPort1 = 4;
+		public static final int kMotorPort2 = 15;
+		//---to-do-------CHANGE PORT OF ABOVE-^^^--(kMotorPort2)!!!
+		public static final boolean kInvert = true;
+		public static final int kSmartCurrentLimit = 20;
+		public static final int kPeakCurrentLimit = 30;
+		public static final int kPeakCurrentDurationMillis = 100;
+		public static final double kP = .00001; // TODO: tune PID was 0.02
+		public static final double kI = 0; //0 
+		public static final double kD = 0;// 0.000_03; //was 0
+		public static final double kIz = 0.0;
+		public static final double kFF = .0;// 0.000_193;
+		public static final double kMinOutput = -1;
+		public static final double kMaxOutput = 1;
+		public static final int kSlotID = 0;
+		public static final double kMaxAcel = 0;
+		public static final double kMaxVelocity = 0;
+		public static final double kMinVelocity = 0;
+		public static final double kMinPosition = 0;
+		public static final double kInPosition = 0;
+		public static final double kOutPosition = 0;
+		public static final int kBumpSwitchPort = 0;
+		public static final double kBounceDownPosition = 0;
+		public static final double kBounceUpPosition = 0;
+		public static final double kBounceTime = 0;
+	}
+
 
 	public static final class ArduinoConstants {
 		public static final int kAddress = 2;
@@ -94,12 +129,12 @@ public final class Constants {
 	public static final class DriveConstants {
 
         //TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 3;
+		public static final int kFrontLeftPort =  6;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort=2;
+		public static final int kBackLeftPort=70;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 4;
+		public static final int kFrontRightPort = 9;
 		public static final boolean kFrontRightInvert = false;
 		public static final int kBackRightPort = 5;
 		public static final boolean kBackRightOppose = false;
