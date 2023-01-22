@@ -33,7 +33,7 @@ public class ArmCommand extends CommandBase {
   @Override
   public void initialize() {
 
-    System.out.println("scheduling arm! :)");
+    System.out.println("scheduling arm");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -79,8 +79,15 @@ public class ArmCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderoutput1 = ArmSubsystem.get().GetEncoderPosition();
-    System.out.println("encoder: " + encoderoutput1);
+    double encoderoutput1 = ArmSubsystem.get().GetEncoderPosition1();
+    double encoderoutput2 = ArmSubsystem.get().GetEncoderPosition2();
+    double encoderoutput3 = ArmSubsystem.get().GetEncoderPosition3();
+    double encoderoutput4 = ArmSubsystem.get().GetEncoderPosition4();
+
+    System.out.println("encoder1: " + encoderoutput1);
+    System.out.println("encoder2: " + encoderoutput2);
+    System.out.println("encoder3: " + encoderoutput3);
+    System.out.println("encoder4: " + encoderoutput4);
     // double elapsed = Duration.between(m_startTime, Instant.now()).toMillis();    
     /* if(m_operation == Operation.CMD_ARM_UP || m_operation == Operation.CMD_ARM_DOWN){
       return true;
@@ -91,7 +98,7 @@ public class ArmCommand extends CommandBase {
   }
   */
   // motor does more than a revolution for 42
-    if(encoderoutput1 >= 15) {
+    if(encoderoutput1 >= 15 && encoderoutput2 >= 15 && encoderoutput3 >= 15 && encoderoutput4 >= 15) {
       System.out.println("Stopped");
       return true;
 

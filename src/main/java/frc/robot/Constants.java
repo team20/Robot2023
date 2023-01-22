@@ -14,8 +14,10 @@ public final class Constants {
 		public static final double kMaxEncoderValue = 42.0;
 		// public static final double kMinAngle = 24.36;
 		// public static final double kMaxAngle = 77.64;
-		public static final int kMotorPort1 = 4;
-		public static final int kMotorPort2 = 15;
+		public static final int kMotorPort1 = 1;
+		public static final int kMotorPort2 = 2;
+		public static final int kMotorPort3 = 3;
+		public static final int kMotorPort4 = 4;
 		//---to-do-------CHANGE PORT OF ABOVE-^^^--(kMotorPort2)!!!
 		public static final boolean kInvert = true;
 		public static final int kSmartCurrentLimit = 20;
