@@ -3,5 +3,12 @@
     "types": {
       "/FMSInfo": "FMSInfo"
     }
+  },
+  "NetworkTables": {
+    "retained": {
+      "apriltag-poses": {
+        "open": true
+      }
+    }
   }
 }

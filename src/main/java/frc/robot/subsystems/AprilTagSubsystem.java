@@ -7,30 +7,38 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AprilTagSubsystem extends SubsystemBase {
-  NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("apriltag-poses");
+  NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
   private static AprilTagSubsystem s_subsystem;
-  private double[][] poses = new double[8][3];
+
   /** Creates a new ApriltagSubsystem. */
   public AprilTagSubsystem() {
     s_subsystem = this;
   }
 
-  public static AprilTagSubsystem get(){
+  public static AprilTagSubsystem get() {
     return s_subsystem;
   }
+
   @Override
   public void periodic() {
-    double[] defaultValue = {-1,-1,-1};
-    for(int i = 7; i<8; ++i){
-      //if(){
-        poses[i] = m_aprilTagTable.getEntry("tagid" + (i+1)).getDoubleArray(defaultValue);
-        System.out.println(Arrays.toString(poses[i]));
-      //}
-    }
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    // read values periodically
+    double x = tx.getDouble(-1.0);
+    double y = ty.getDouble(-1.0);
+    double area = ta.getDouble(-1.0);
+    // post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
     // This method will be called once per scheduler run
   }
 }
