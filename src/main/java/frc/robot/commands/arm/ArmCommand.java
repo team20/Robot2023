@@ -79,14 +79,14 @@ public class ArmCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderoutput1 = ArmSubsystem.get().GetEncoderPosition1();
-    double encoderoutput2 = ArmSubsystem.get().GetEncoderPosition2();
-    double encoderoutput3 = ArmSubsystem.get().GetEncoderPosition3();
+    // double encoderoutput1 = ArmSubsystem.get().GetEncoderPosition1();
+    // double encoderoutput2 = ArmSubsystem.get().GetEncoderPosition2();
+    // double encoderoutput3 = ArmSubsystem.get().GetEncoderPosition3();
     double encoderoutput4 = ArmSubsystem.get().GetEncoderPosition4();
 
-    System.out.println("encoder1: " + encoderoutput1);
-    System.out.println("encoder2: " + encoderoutput2);
-    System.out.println("encoder3: " + encoderoutput3);
+    // System.out.println("encoder1: " + encoderoutput1);
+    // System.out.println("encoder2: " + encoderoutput2);
+    // System.out.println("encoder3: " + encoderoutput3);
     System.out.println("encoder4: " + encoderoutput4);
     // double elapsed = Duration.between(m_startTime, Instant.now()).toMillis();    
     /* if(m_operation == Operation.CMD_ARM_UP || m_operation == Operation.CMD_ARM_DOWN){
@@ -97,11 +97,11 @@ public class ArmCommand extends CommandBase {
     return true;
   }
   */
-  // motor does more than a revolution for 42
-    if(encoderoutput1 >= 15 && encoderoutput2 >= 15 && encoderoutput3 >= 15 && encoderoutput4 >= 15) {
+  // motor does more than a revolution for 42 (new encoder(s) are 4096 ticks per revolution)
+    if(/*encoderoutput1 >= 4096 && encoderoutput2 >= 4096 && encoderoutput3 >= 4096 && */encoderoutput4 >= 4096) {
       System.out.println("Stopped");
       return true;
-
+      
 
     }
     else{
