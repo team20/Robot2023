@@ -8,11 +8,13 @@ import java.util.Arrays;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AprilTagSubsystem extends SubsystemBase {
+  private double m_x, m_y, m_z;
+
   NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
   private static AprilTagSubsystem s_subsystem;
 
@@ -28,17 +30,20 @@ public class AprilTagSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry camtran = table.getEntry("campose");
     // read values periodically
-    double x = tx.getDouble(-1.0);
-    double y = ty.getDouble(-1.0);
-    double area = ta.getDouble(-1.0);
+    double[] translation = camtran.getDoubleArray(new double[6]);
+    m_x = translation[0];
+    m_y = translation[1];
+    m_z = translation[2];
+
     // post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("LimelightX", m_x);
+    SmartDashboard.putNumber("LimelightY", m_y);
+    SmartDashboard.putNumber("LimelightZ", m_z);
     // This method will be called once per scheduler run
+  }
+  public double getDistance(){
+    return m_z;
   }
 }
