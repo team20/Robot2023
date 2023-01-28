@@ -6,17 +6,24 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -35,7 +42,8 @@ public class ArmSubsystem extends SubsystemBase {
 	private final RelativeEncoder m_encoder1 = m_motor1.getEncoder();
 	private final RelativeEncoder m_encoder2 = m_motor2.getEncoder();
 	private final RelativeEncoder m_encoder3 = m_motor3.getEncoder();
-	private final RelativeEncoder m_encoder4 = m_motor4.getEncoder();
+	private final RelativeEncoder m_encoder4 = m_motor4.getAlternateEncoder(8192);
+
 
 	private final SparkMaxPIDController m_pidController1 = m_motor1.getPIDController();
 	private final SparkMaxPIDController m_pidController2 = m_motor2.getPIDController();
@@ -134,7 +142,7 @@ public class ArmSubsystem extends SubsystemBase {
 		m_encoder1.setPosition(0);
 		m_encoder2.setPosition(0);
 		m_encoder3.setPosition(0);
-		m_encoder4.setPosition(0);
+		// m_encoder4.setPosition(0);
 	}
 
 	public void setSpeed(double speed) {
@@ -158,11 +166,17 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public double GetEncoderPosition4() {
-		return m_encoder4.getPosition();
+		
+		double positionoutput = (Math.abs(m_encoder4.getPosition()*180) % 360);
+		return positionoutput;
+
 	}
 
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
+		SmartDashboard.putNumber("Encoder 4 position", ArmSubsystem.get().GetEncoderPosition4());
+		// encodervalue*180 -> absolute value -> modulus (360?) 
+
 	}
 }

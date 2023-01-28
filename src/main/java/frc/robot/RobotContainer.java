@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.arm.ArmCommand;
 import frc.robot.commands.arm.MoveArmCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,7 +25,7 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		m_armSubsystem.setDefaultCommand(new MoveArmCommand(-15, 15));
+		m_armSubsystem.setDefaultCommand(new ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
 		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle)).onTrue();
 		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX)).onTrue();
 	}
