@@ -11,70 +11,70 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ArmCommand extends CommandBase {
-  /** Creates a new ArmCommand. */
-  public enum Operation{
-    CMD_ARM_UP,
-    CMD_ARM_DOWN,
-    CMD_ARM_SETTLE,
-    CMD_RESET_ENCODER,
-    CMD_ARM_MANUAL,
-    CMD_ARM_STOP,
-    CMD_ARM_MANUAL_DOWN
-  }
+	/** Creates a new ArmCommand. */
+	public enum Operation {
+		CMD_ARM_UP,
+		CMD_ARM_DOWN,
+		CMD_ARM_SETTLE,
+		CMD_RESET_ENCODER,
+		CMD_ARM_MANUAL,
+		CMD_ARM_STOP,
+		CMD_ARM_MANUAL_DOWN
+	}
 
-  private Operation m_operation;
-  public ArmCommand(Operation operation) {
-    m_operation = operation;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(ArmSubsystem.get());
-  }
+	private Operation m_operation;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
+	public ArmCommand(Operation operation) {
+		m_operation = operation;
+		// Use addRequirements() here to declare subsystem dependencies.
+		addRequirements(ArmSubsystem.get());
+	}
 
-    System.out.println("scheduling arm");
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    /* 
-    if(m_operation == Operation.CMD_ARM_UP){
-      ArmSubsystem.get().setPosition(ArmSubsystem.Position.UP_POSITION);
-      ArmSubsystem.get().setBrakeMode();
-      //System.out.println("setting to up");
-      // ArmSubsystem.get().setPercentOutput(0);//TODO find speed
-    } else if(m_operation == Operation.CMD_ARM_DOWN){
-      //System.out.println("setting to down");
-      ArmSubsystem.get().setPosition(ArmSubsystem.Position.DOWN_POSITION);
-      ArmSubsystem.get().setCoastMode();
-      // ArmSubsystem.get().setPercentOutput(0);//TODO find speed
-    } 
-    else if (m_operation==Operation.CMD_ARM_MANUAL_DOWN) {
-      ArmSubsystem.get().setPercentOutput(.5);
-    }
-    else if(m_operation==Operation.CMD_RESET_ENCODER){
-      ArmSubsystem.get().resetEncoder();
-    }
-    else if(m_operation==Operation.CMD_ARM_MANUAL){
-      ArmSubsystem.get().setPercentOutput(-.6);
-    }
-    else if(m_operation==Operation.CMD_ARM_STOP){
-      ArmSubsystem.get().setPercentOutput(0);
-    }
-*/
+		System.out.println("scheduling arm");
+	}
 
-    ArmSubsystem.get().setSpeed(.2);
-    
-  }
-  
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		/*
+		 * if(m_operation == Operation.CMD_ARM_UP){
+		 * ArmSubsystem.get().setPosition(ArmSubsystem.Position.UP_POSITION);
+		 * ArmSubsystem.get().setBrakeMode();
+		 * //System.out.println("setting to up");
+		 * // ArmSubsystem.get().setPercentOutput(0);//TODO find speed
+		 * } else if(m_operation == Operation.CMD_ARM_DOWN){
+		 * //System.out.println("setting to down");
+		 * ArmSubsystem.get().setPosition(ArmSubsystem.Position.DOWN_POSITION);
+		 * ArmSubsystem.get().setCoastMode();
+		 * // ArmSubsystem.get().setPercentOutput(0);//TODO find speed
+		 * }
+		 * else if (m_operation==Operation.CMD_ARM_MANUAL_DOWN) {
+		 * ArmSubsystem.get().setPercentOutput(.5);
+		 * }
+		 * else if(m_operation==Operation.CMD_RESET_ENCODER){
+		 * ArmSubsystem.get().resetEncoder();
+		 * }
+		 * else if(m_operation==Operation.CMD_ARM_MANUAL){
+		 * ArmSubsystem.get().setPercentOutput(-.6);
+		 * }
+		 * else if(m_operation==Operation.CMD_ARM_STOP){
+		 * ArmSubsystem.get().setPercentOutput(0);
+		 * }
+		 */
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {   
-    ArmSubsystem.get().setSpeed(0);
-  }
+		ArmSubsystem.get().setSpeed(.2);
+
+	}
+
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		ArmSubsystem.get().setSpeed(0);
+	}
 
   // Returns true when the command should end.
   @Override
