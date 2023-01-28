@@ -4,43 +4,43 @@
 
 package frc.robot.commands.util;
 
-
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DeferredCommand extends CommandBase {
-  private final Supplier<Command> m_commandSupplier;
-  private Command m_command;
-  /** Creates a new ScheduleCommand. */
-  public DeferredCommand(Supplier<Command> commandSupplier) {
-    m_commandSupplier = commandSupplier;
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+	private final Supplier<Command> m_commandSupplier;
+	private Command m_command;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_command = m_commandSupplier.get();
-    m_command.initialize();
-  }
+	/** Creates a new ScheduleCommand. */
+	public DeferredCommand(Supplier<Command> commandSupplier) {
+		m_commandSupplier = commandSupplier;
+		// Use addRequirements() here to declare subsystem dependencies.
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    m_command.execute();
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		m_command = m_commandSupplier.get();
+		m_command.initialize();
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_command.end(interrupted);
-  }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		m_command.execute();
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return m_command.isFinished();
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		m_command.end(interrupted);
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return m_command.isFinished();
+	}
 }

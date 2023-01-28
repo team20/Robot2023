@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.drive;
+package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DefaultDriveCommand extends CommandBase {
-	/** Creates a new DefaultDriveCommand. */
-	public DefaultDriveCommand() {
+public class ChangeOffsetCommand extends CommandBase {
+	/** Creates a new ChangeOffsetCommand. */
+	public ChangeOffsetCommand() {
 		// Use addRequirements() here to declare subsystem dependencies.
 	}
 
