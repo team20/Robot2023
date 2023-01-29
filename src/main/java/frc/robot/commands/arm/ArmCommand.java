@@ -5,10 +5,6 @@
 // 
 package frc.robot.commands.arm;
 
-import java.time.Duration;
-import java.time.Instant;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -68,10 +64,7 @@ public class ArmCommand extends CommandBase {
 		 * }
 		 */
 
-		ArmSubsystem.get().setSpeed(.2);
-		
+		ArmSubsystem.get().setSpeedLower(.2);
 
 	}
-
-  
 }

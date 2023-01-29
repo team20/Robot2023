@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.InverseKinematicsTool;
+
 public class MoveArmCommand extends CommandBase {
 	private double m_x;
 	private double m_y;
@@ -27,11 +28,13 @@ public class MoveArmCommand extends CommandBase {
 	@Override
 	public void execute() {
 		Double[] e = InverseKinematicsTool.getArmAngles(m_x, m_y);
-		
+
 		double targetLowerArmAngle = (double) e[0];
 		double targetUpperArmAngle = (double) e[1];
 		SmartDashboard.putNumber("Target Lower Arm Angle", Math.toDegrees(targetLowerArmAngle));
 		SmartDashboard.putNumber("Target Upper Arm Angle", Math.toDegrees(targetUpperArmAngle));
+		ArmSubsystem.get().setLowerArmPosition(Math.toDegrees(targetLowerArmAngle));
+		// ArmSubsystem.get().setUpperArmPosition(targetUpperArmAngle);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -44,12 +47,11 @@ public class MoveArmCommand extends CommandBase {
 	public boolean isFinished() {
 		// double lowerArmPosition = ArmSubsystem.get().getLowerArmPosition();
 		// if(lowerArmPosition >=90){
-		// 	return true;
+		// return true;
 		// } else{
-		// 	return false;
+		// return false;
 		// }
 		// }
 		return false;
 	}
 }
-

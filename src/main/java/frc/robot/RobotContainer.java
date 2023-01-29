@@ -25,12 +25,15 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// m_armSubsystem.setDefaultCommand(new ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
-		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle)).onTrue();
-		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX)).onTrue();
+		// m_armSubsystem.setDefaultCommand(new
+		// ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
+		// new Trigger(() ->
+		// m_controller.getRawButton(ControllerConstants.Button.kTriangle)).onTrue();
+		// new Trigger(() ->
+		// m_controller.getRawButton(ControllerConstants.Button.kX)).onTrue();
 	}
 
 	public Command getAutonomousCommand() {
-		return new MoveArmCommand(10, 15);
+		return new MoveArmCommand(5, -1);
 	}
 }

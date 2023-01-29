@@ -27,14 +27,14 @@ public final class Constants {
 		public static final int kMotorPort3 = 3;
 		public static final int kMotorPort4 = 4;
 		// ---to-do-------CHANGE PORT OF ABOVE-^^^--(kMotorPort2)!!!
-		public static final boolean kInvert = true;
+		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = .00001; // TODO: tune PID was 0.02
+		public static final double kP = 0.0008; // TODO: tune PID was 0.02
 		public static final double kI = 0; // 0
 		public static final double kD = 0;// 0.000_03; //was 0
-		public static final double kIz = 0.0;
+		public static final double kIz = 5;
 		public static final double kFF = .0;// 0.000_193;
 		public static final double kMinOutput = -1;
 		public static final double kMaxOutput = 1;
@@ -138,14 +138,14 @@ public final class Constants {
 	public static final class DriveConstants {
 
 		// TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 69;
+		public static final int kFrontLeftPort = 13;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort = 70;
+		public static final int kBackLeftPort = 12;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 71;
+		public static final int kFrontRightPort = 11;
 		public static final boolean kFrontRightInvert = false;
-		public static final int kBackRightPort = 420;
+		public static final int kBackRightPort = 10;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
