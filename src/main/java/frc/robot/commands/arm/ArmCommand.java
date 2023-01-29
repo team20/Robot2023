@@ -69,6 +69,7 @@ public class ArmCommand extends CommandBase {
 		 */
 
 		ArmSubsystem.get().setSpeed(.2);
+		
 
 	}
 

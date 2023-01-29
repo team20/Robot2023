@@ -25,12 +25,12 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		m_armSubsystem.setDefaultCommand(new ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
+		// m_armSubsystem.setDefaultCommand(new ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
 		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle)).onTrue();
 		// new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX)).onTrue();
 	}
 
 	public Command getAutonomousCommand() {
-		return Commands.print("No autonomous command configured");
+		return new MoveArmCommand(10, 15);
 	}
 }

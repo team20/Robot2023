@@ -34,31 +34,18 @@ public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem s_subsystem;
 
 	// -------------------adjust encoders/pidcontrollers for 1 and 2 (& possibly 3)
-	private final CANSparkMax m_motor1 = new CANSparkMax(ArmConstants.kMotorPort1, MotorType.kBrushless);
-	private final CANSparkMax m_motor2 = new CANSparkMax(ArmConstants.kMotorPort2, MotorType.kBrushless);
-	private final CANSparkMax m_motor3 = new CANSparkMax(ArmConstants.kMotorPort3, MotorType.kBrushless);
-	private final CANSparkMax m_motor4 = new CANSparkMax(ArmConstants.kMotorPort4, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kMotorPort3, MotorType.kBrushless);
+	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kMotorPort4, MotorType.kBrushless);
 
-	private final RelativeEncoder m_encoder1 = m_motor1.getEncoder();
-	private final RelativeEncoder m_encoder2 = m_motor2.getEncoder();
-	private final RelativeEncoder m_encoder3 = m_motor3.getEncoder();
-	private final RelativeEncoder m_encoder4 = m_motor4.getAlternateEncoder(8192);
+	private final RelativeEncoder m_lowerArmEncoder = m_lowerArmMotor.getEncoder();
+	private final RelativeEncoder m_upperArmEncoder = m_upperArmMotor.getAlternateEncoder(8192);
 
 
-	private final SparkMaxPIDController m_pidController1 = m_motor1.getPIDController();
-	private final SparkMaxPIDController m_pidController2 = m_motor2.getPIDController();
-	private final SparkMaxPIDController m_pidController3 = m_motor3.getPIDController();
-	private final SparkMaxPIDController m_pidController4 = m_motor4.getPIDController();
+	private final SparkMaxPIDController m_lowerArmController = m_lowerArmMotor.getPIDController();
+	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
 
-	private double m_setPosition = 0;
-
-	public enum Position {
-		DOWN_POSITION,
-		UP_POSITION
-	}
-
-	private final double downPositionEncoderPosition = 36.75; // TODO find encoder position
-	private final double upPositionEncoderPosition = 0; // TODO find encoder position
+	private double m_setPositionLowerArm = 0;
+	private double m_setPositionUpperArm = 0;
 
 	public static ArmSubsystem get() {
 		return s_subsystem;
@@ -67,116 +54,77 @@ public class ArmSubsystem extends SubsystemBase {
 	 * Initializes a new instance of the {@link ArmSubsystem} class.
 	 */
 
-	// so i'm assuming there needs to be twice of what's below: for both m_motor1
+	// so i'm assuming there needs to be twice of what's below: for both m_lowerArmMotor
 	// and m_motor2 (joints... 1&2)
 	public ArmSubsystem() {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Gripper subsystem already initalized!");
+				throw new Exception("Arm subsystem already initalized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		s_subsystem = this;
-		m_motor1.restoreFactoryDefaults();
-		m_motor1.setInverted(ArmConstants.kInvert);
-		m_motor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_motor1.enableVoltageCompensation(12);
-		m_motor1.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		m_motor2.restoreFactoryDefaults();
-		m_motor2.setInverted(ArmConstants.kInvert);
-		m_motor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_motor2.enableVoltageCompensation(12);
-		m_motor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		m_lowerArmMotor.restoreFactoryDefaults();
+		m_lowerArmMotor.setInverted(ArmConstants.kInvert);
+		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_lowerArmMotor.enableVoltageCompensation(12);
+		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		m_motor3.restoreFactoryDefaults();
-		m_motor3.setInverted(ArmConstants.kInvert);
-		m_motor3.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_motor3.enableVoltageCompensation(12);
-		m_motor3.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
-
-		m_motor4.restoreFactoryDefaults();
-		m_motor4.setInverted(ArmConstants.kInvert);
-		m_motor4.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_motor4.enableVoltageCompensation(12);
-		m_motor4.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		m_upperArmMotor.restoreFactoryDefaults();
+		m_upperArmMotor.setInverted(ArmConstants.kInvert);
+		m_upperArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_upperArmMotor.enableVoltageCompensation(12);
+		m_upperArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		// now for second motor?:
 
 		// m_motor.setSecondaryCurrentLimit(ArmConstants.kPeakCurrentLimit,
 		// ArmConstants.kPeakCurrentDurationMillis);
 
-		// pidController 1:
-		m_pidController1.setP(ArmConstants.kP);
-		m_pidController1.setI(ArmConstants.kI);
-		m_pidController1.setIZone(ArmConstants.kIz);
-		m_pidController1.setD(ArmConstants.kD);
-		m_pidController1.setFF(ArmConstants.kFF);
-		m_pidController1.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+		// pidController 3:
+		m_upperArmController.setP(ArmConstants.kP);
+		m_upperArmController.setI(ArmConstants.kI);
+		m_upperArmController.setIZone(ArmConstants.kIz);
+		m_upperArmController.setD(ArmConstants.kD);
+		m_upperArmController.setFF(ArmConstants.kFF);
+		m_upperArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 		// ---------------------
-		m_pidController1.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMaxAccel(ArmConstants.kMaxAcel, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionAllowedClosedLoopError(ArmConstants.kAllowedError, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMinOutputVelocity(ArmConstants.kMinVelocity, ArmConstants.kSlotID);
-		// pidController 2:
-		m_pidController2.setP(ArmConstants.kP);
-		m_pidController2.setI(ArmConstants.kI);
-		m_pidController2.setIZone(ArmConstants.kIz);
-		m_pidController2.setD(ArmConstants.kD);
-		m_pidController2.setFF(ArmConstants.kFF);
-		m_pidController2.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
-		// ---------------------
-		m_pidController1.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMaxAccel(ArmConstants.kMaxAcel, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionAllowedClosedLoopError(ArmConstants.kAllowedError, ArmConstants.kSlotID);
-		m_pidController1.setSmartMotionMinOutputVelocity(ArmConstants.kMinVelocity, ArmConstants.kSlotID);
+		m_lowerArmController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, ArmConstants.kSlotID);
+		m_lowerArmController.setSmartMotionMaxAccel(ArmConstants.kMaxAcel, ArmConstants.kSlotID);
+		m_lowerArmController.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity, ArmConstants.kSlotID);
+		m_lowerArmController.setSmartMotionAllowedClosedLoopError(ArmConstants.kAllowedError, ArmConstants.kSlotID);
+		m_lowerArmController.setSmartMotionMinOutputVelocity(ArmConstants.kMinVelocity, ArmConstants.kSlotID);
 
-		resetm_encoder1();
+		resetEncoders();
 
 	}
 
-	private void resetm_encoder1() {
-		m_encoder1.setPosition(0);
-		m_encoder2.setPosition(0);
-		m_encoder3.setPosition(0);
-		// m_encoder4.setPosition(0);
+	private void resetEncoders() {
+		m_lowerArmEncoder.setPosition(0);
+		m_upperArmEncoder.setPosition(0);
 	}
 
 	public void setSpeed(double speed) {
 
-		m_motor1.set(speed);
-		m_motor2.set(speed);
-		m_motor3.set(speed);
-		m_motor4.set(speed);
+		m_lowerArmMotor.set(speed);
+		m_upperArmMotor.set(speed);
 	}
 
-	public double GetEncoderPosition1() {
-		return m_encoder1.getPosition();
+	public double getLowerArmPosition() {		
+		return (Math.abs(m_lowerArmEncoder.getPosition()*180) % 360);
 	}
 
-	public double GetEncoderPosition2() {
-		return m_encoder2.getPosition();
-	}
-
-	public double GetEncoderPosition3() {
-		return m_encoder3.getPosition();
-	}
-
-	public double GetEncoderPosition4() {
-		
-		double positionoutput = (Math.abs(m_encoder4.getPosition()*180) % 360);
-		return positionoutput;
-
+	public double getUpperArmPosition() {		
+		return (Math.abs(m_upperArmEncoder.getPosition()*180) % 360);
 	}
 
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
-		SmartDashboard.putNumber("Encoder 4 position", ArmSubsystem.get().GetEncoderPosition4());
-		// encodervalue*180 -> absolute value -> modulus (360?) 
+		SmartDashboard.putNumber("Lower Arm position", ArmSubsystem.get().getLowerArmPosition());
+		SmartDashboard.putNumber("Upper Arm position", ArmSubsystem.get().getUpperArmPosition());
 
 	}
 }
