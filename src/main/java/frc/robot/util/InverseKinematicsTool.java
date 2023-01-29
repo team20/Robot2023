@@ -9,27 +9,43 @@ import frc.robot.Constants.ArmConstants;
 /** Add your docs here. */
 public class InverseKinematicsTool {
 	public static Double[] getArmAngles(double x, double y) {
-		// cos(lowerArmVectorX) = angle of the lower joint/the length of the lower arm
-		// All in radians
+		// IMPORTANT NOTE: "HYPOTENUSE" refers to the line segment formed between arm
+		// base, and the point we want to go to. To avoid repeating that, HYPOTENUSE
+		// will be used to refer to that line segment
+		// All calculations are in radians
+		// A reference position must be known to calculate the X and Y vectors for the
+		// entire arm, which is why reference positions are need
 		double referenceLowerArmVectorX = ArmConstants.kLowerArmLength * Math.cos(Math.toRadians(90));
 		double referenceLowerArmVectorY = ArmConstants.kLowerArmLength * Math.sin(Math.toRadians(90));
 		double referenceUpperArmVectorX = ArmConstants.kUpperArmLength * Math.cos(Math.toRadians(0));
 		double referenceUpperArmVectorY = ArmConstants.kUpperArmLength * Math.sin(Math.toRadians(0));
-
+		// If you had coordinates where (0, 0) was the base of the arm, you could use
+		// those numbers as the target vector values. (14, 15) would mean
+		// targetCombinedArmVectorX would be 14, and targetCombinedArmVectorY would be
+		// 15
 		double targetCombinedArmVectorX = referenceLowerArmVectorX + referenceUpperArmVectorX + x;
 		double targetCombinedArmVectorY = referenceLowerArmVectorY + referenceUpperArmVectorY + y;
+		// This finds the angle between the arm base(a horizontal line,) and the
+		// HYPOTENUSE
 		double targetCombinedArmAngle = Math.atan2(targetCombinedArmVectorY, targetCombinedArmVectorX);
+		// These next three variables are part of the cosine rule
 		double hypotenuseSquared = Math.pow(targetCombinedArmVectorX, 2) + Math.pow(targetCombinedArmVectorY, 2);
 		double lowerArmLengthSquared = Math.pow(ArmConstants.kLowerArmLength, 2);
 		double upperArmLengthSquared = Math.pow(ArmConstants.kUpperArmLength, 2);
-		double cosAlpha = (lowerArmLengthSquared + upperArmLengthSquared - hypotenuseSquared)
-				/ (2 * ArmConstants.kLowerArmLength * ArmConstants.kUpperArmLength);
+		// This uses the cosine rule to get the angle between the two arms
+		double targetAngleBetweenLowerAndUpperArm = Math
+				.acos((lowerArmLengthSquared + upperArmLengthSquared - hypotenuseSquared)
+						/ (2 * ArmConstants.kLowerArmLength * ArmConstants.kUpperArmLength));
 		// This is the angle formed if you extended the lower arm, and you form an angle
 		// on the extended side with the upper arm
-		double targetAngleFormedByArms = Math.abs(-(Math.PI - Math.acos(cosAlpha)));
+		double targetAngleFormedByArms = Math.abs(-(Math.PI - targetAngleBetweenLowerAndUpperArm));
+		// This finds the angle between the lower arm and the HYPOTENUSE
 		double targetAngleFormedByLowerArmAndHypotenuse = Math.atan2(
 				ArmConstants.kUpperArmLength * Math.sin(targetAngleFormedByArms),
 				ArmConstants.kLowerArmLength + ArmConstants.kUpperArmLength * Math.cos(targetAngleFormedByArms));
+		// This takes the angle between the arm base and the HYPOTENUSE, and adds the
+		// angle between the HYPOTENUSE and the lower arm, giving us the angle between
+		// the lower arm and the arm base
 		double targetLowerArmAngle = targetCombinedArmAngle + targetAngleFormedByLowerArmAndHypotenuse;
 		/*
 		 * This works because the lower arm acts as a transversal between two parallel
@@ -43,12 +59,11 @@ public class InverseKinematicsTool {
 		 * to make it work with 0-360 mode
 		 */
 		double targetUpperArmAngle = targetLowerArmAngle - targetAngleFormedByArms;
-		Double[] returnValue = {targetLowerArmAngle, targetUpperArmAngle};
-		if(Double.isNaN(targetLowerArmAngle) || Double.isNaN(targetUpperArmAngle)){
-			try{
+		Double[] returnValue = { targetLowerArmAngle, targetUpperArmAngle };
+		if (Double.isNaN(targetLowerArmAngle) || Double.isNaN(targetUpperArmAngle)) {
+			try {
 				throw new Exception("Target position unreachable");
-			}catch(Exception e){
-
+			} catch (Exception e) {
 			}
 			returnValue[0] = null;
 			returnValue[1] = null;
