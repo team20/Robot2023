@@ -99,7 +99,7 @@ public final class Constants {
 		public static final int kBackLeftPort=2;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 4;
+		public static final int kFrontRightPort = 14; //4
 		public static final boolean kFrontRightInvert = false;
 		public static final int kBackRightPort = 5;
 		public static final boolean kBackRightOppose = false;

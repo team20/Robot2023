@@ -14,7 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AprilTagSubsystem extends SubsystemBase {
-  private double m_x, m_y, m_z, m_pitch, m_yaw, m_roll;
+  public double m_x, m_y, m_z, m_pitch, m_yaw, m_roll;
 
   NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
   private static AprilTagSubsystem s_subsystem;
@@ -38,7 +38,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     m_y = translation[1];
     m_z = translation[2];
     m_pitch = translation[3];
-    m_yaw = translation[4];
+    m_yaw = translation[4]; // [-71, 66]
     m_roll = translation[5];
 
     // post to smart dashboard periodically
