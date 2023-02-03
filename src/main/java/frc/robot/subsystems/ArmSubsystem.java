@@ -8,7 +8,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.MathUtil;
@@ -26,10 +26,16 @@ public class ArmSubsystem extends SubsystemBase {
 	// -------------------adjust encoders/pidcontrollers for 1 and 2 (& possibly 3)
 	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kMotorPort3, MotorType.kBrushless);
 	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kMotorPort4, MotorType.kBrushless);
+	private final CANSparkMax m_motor1 = new CANSparkMax(ArmConstants.kMotorPort1, MotorType.kBrushless);
+	private final CANSparkMax m_motor2 = new CANSparkMax(ArmConstants.kMotorPort2, MotorType.kBrushless);
 
 	private final CANCoder m_lowerArmEncoder = new CANCoder(6);
-	private final RelativeEncoder m_upperArmEncoder = m_upperArmMotor.getEncoder();
-
+	private final SparkMaxAbsoluteEncoder m_upperArmEncoder = m_upperArmMotor
+			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+	private final SparkMaxAbsoluteEncoder m_encoder1 = m_motor1
+			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+	private final SparkMaxAbsoluteEncoder m_encoder2 = m_motor2
+			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 	private final PIDController m_lowerArmController = new PIDController(ArmConstants.kP, ArmConstants.kI,
 			ArmConstants.kD, 0.02);
 	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
@@ -40,7 +46,7 @@ public class ArmSubsystem extends SubsystemBase {
 	public static ArmSubsystem get() {
 		return s_subsystem;
 	}
-	/*
+	/**
 	 * Initializes a new instance of the {@link ArmSubsystem} class.
 	 */
 
@@ -70,7 +76,8 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmMotor.enableVoltageCompensation(12);
 		m_upperArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		// now for second motor?:
-
+		m_motor1.restoreFactoryDefaults();
+		m_motor2.restoreFactoryDefaults();
 		// m_motor.setSecondaryCurrentLimit(ArmConstants.kPeakCurrentLimit,
 		// ArmConstants.kPeakCurrentDurationMillis);
 
@@ -101,14 +108,7 @@ public class ArmSubsystem extends SubsystemBase {
 		// m_lowerArmController.setPositionPIDWrappingEnabled(true);
 		// m_lowerArmController.setPositionPIDWrappingMaxInput(360);
 		// m_lowerArmController.setPositionPIDWrappingMinInput(0);
-		// //resetEncoders();
 		m_lowerArmController.enableContinuousInput(0, 360);
-
-	}
-
-	private void resetEncoders() {
-		// m_lowerArmEncoder.setPosition(0);
-		// m_upperArmEncoder.setPosition(0);
 	}
 
 	public void setSpeedUpper(double speed) {
@@ -121,11 +121,10 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public double getLowerArmPosition() {
 		return m_lowerArmEncoder.getAbsolutePosition();
-		// (Math.abs(m_lowerArmEncoder.getPosition()*180) % 360);
 	}
 
 	public double getUpperArmPosition() {
-		return m_upperArmEncoder.getPosition();// (Math.abs(m_upperArmEncoder.getPosition()*180) % 360);
+		return m_upperArmEncoder.getPosition();
 	}
 
 	public void setLowerArmPosition(double angle) {
@@ -139,9 +138,13 @@ public class ArmSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
-		SmartDashboard.putNumber("Lower Arm position", ArmSubsystem.get().getLowerArmPosition());
-		SmartDashboard.putNumber("Upper Arm position", ArmSubsystem.get().getUpperArmPosition());
-		setSpeedLower(MathUtil.clamp(m_lowerArmController.calculate(getLowerArmPosition()), -1, 1));
+		SmartDashboard.putNumber("Lower Arm position", getLowerArmPosition());
+		SmartDashboard.putNumber("Upper Arm position", getUpperArmPosition());
+		SmartDashboard.putNumber("Motor 1 Position", m_encoder1.getPosition());
+		SmartDashboard.putNumber("Motor 2 Position", m_encoder2.getPosition());
+		double PIDoutput = m_lowerArmController.calculate(getLowerArmPosition());
+		SmartDashboard.putNumber("PID Output", PIDoutput);
+		setSpeedLower(MathUtil.clamp(PIDoutput, -1, 1));
 		// SmartDashboard.putNumber("Raw Upper Arm position", )
 		// System.out.println(m_upperArmController.getP());
 	}

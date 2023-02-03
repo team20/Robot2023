@@ -11,6 +11,7 @@ import frc.robot.util.InverseKinematicsTool;
 public class MoveArmCommand extends CommandBase {
 	private double m_x;
 	private double m_y;
+	private Double[] m_armAngles;
 
 	/** Creates a new MoveArmCommand. */
 	public MoveArmCommand(double x, double y) {
@@ -22,15 +23,14 @@ public class MoveArmCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		m_armAngles = InverseKinematicsTool.getArmAngles(m_x, m_y);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Double[] e = InverseKinematicsTool.getArmAngles(m_x, m_y);
-
-		double targetLowerArmAngle = (double) e[0];
-		double targetUpperArmAngle = (double) e[1];
+		double targetLowerArmAngle = (double) m_armAngles[0];
+		double targetUpperArmAngle = (double) m_armAngles[1];
 		SmartDashboard.putNumber("Target Lower Arm Angle", Math.toDegrees(targetLowerArmAngle));
 		SmartDashboard.putNumber("Target Upper Arm Angle", Math.toDegrees(targetUpperArmAngle));
 		ArmSubsystem.get().setLowerArmPosition(Math.toDegrees(targetLowerArmAngle));
