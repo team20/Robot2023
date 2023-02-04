@@ -238,6 +238,10 @@ public class DriveSubsystem extends SubsystemBase {
                 tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),
                                 DriveConstants.kSpeedLimitFactor * (straight + left - right));
         }
+        public void arcadeDrive(double straight, double turn) {
+                tankDrive(DriveConstants.kSpeedLimitFactor * (straight - turn),
+                                DriveConstants.kSpeedLimitFactor * (straight + turn));
+        }
 
         /**
          * @param leftSpeed  Left motors percent output
