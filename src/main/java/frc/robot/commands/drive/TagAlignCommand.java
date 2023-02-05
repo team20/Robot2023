@@ -151,7 +151,7 @@ public class TagAlignCommand extends CommandBase {
     if(x>0){
       m_driveSpeed = m_speed;
       SmartDashboard.putNumber("Turn Amount", m_speed*Math.sin(vectorAngleAdjusted));
-      return Math.sin(vectorAngleAdjusted);
+      return Math.sin(vectorAngleAdjusted)*2;
     }else{
       m_driveSpeed = 0;
       return Math.signum(Math.sin(vectorAngleAdjusted));
