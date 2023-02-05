@@ -29,11 +29,6 @@ public class ArmScoreCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		// ArmSubsystem.get().changeYOffset(4);
-		// angles = InverseKinematicsTool.getArmAngles(ArmSubsystem.get().getXOffset(),
-		// ArmSubsystem.get().getYOffset());
-		// ArmSubsystem.get().setLowerArmPosition(angles[0]);
-		// ArmSubsystem.get().setUpperArmPosition(angles[1]);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -41,21 +36,24 @@ public class ArmScoreCommand extends CommandBase {
 	public void execute() {
 		switch (m_armPosition) {
 			case HIGH:
-				ArmSubsystem.get().setXOffset(ArmConstants.kHighOffsets[0]);
-				ArmSubsystem.get().setYOffset(ArmConstants.kHighOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kHighOffsets[0], ArmConstants.kHighOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kHighOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kHighOffsets[1]);
 				break;
 			case MEDIUM:
-				ArmSubsystem.get().setXOffset(ArmConstants.kMediumOffsets[0]);
-				ArmSubsystem.get().setYOffset(ArmConstants.kMediumOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kMediumOffsets[0],
+						ArmConstants.kMediumOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kMediumOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kMediumOffsets[1]);
 				break;
 			case LOW:
-				ArmSubsystem.get().setXOffset(ArmConstants.kLowOffsets[0]);
-				ArmSubsystem.get().setYOffset(ArmConstants.kLowOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kLowOffsets[0], ArmConstants.kLowOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kLowOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kLowOffsets[1]);
 				break;
 			default:
 				break;
 		}
-		angles = InverseKinematicsTool.getArmAngles(ArmSubsystem.get().getXOffset(), ArmSubsystem.get().getYOffset());
 		ArmSubsystem.get().setLowerArmPosition(angles[0]);
 		ArmSubsystem.get().setUpperArmPosition(angles[1]);
 	}

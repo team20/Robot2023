@@ -38,25 +38,33 @@ public class InverseKinematicsTool {
 		// reference position
 		SmartDashboard.putNumber("x", x);
 		SmartDashboard.putNumber("y", y);
-		double referenceLowerArmVectorX = ArmConstants.kLowerArmLength * Math.cos(Math.toRadians(90));
-		double referenceLowerArmVectorY = ArmConstants.kLowerArmLength * Math.sin(Math.toRadians(90));
-		double referenceUpperArmVectorX = ArmConstants.kUpperArmLength * Math.cos(Math.toRadians(-90));
-		double referenceUpperArmVectorY = ArmConstants.kUpperArmLength * Math.sin(Math.toRadians(-90));
-		// Modification notes: If you had coordinates where (0, 0) was the base of the
-		// arm, you could use those numbers as the target vector values. (14, 15) would
-		// mean targetCombinedArmectorX would be 14, and targetCombinedArmVectorY would
-		// be 15
+		// double referenceLowerArmVectorX = ArmConstants.kLowerArmLength *
+		// Math.cos(Math.toRadians(90));
+		// double referenceLowerArmVectorY = ArmConstants.kLowerArmLength *
+		// Math.sin(Math.toRadians(90));
+		// double referenceUpperArmVectorX = ArmConstants.kUpperArmLength *
+		// Math.cos(Math.toRadians(-90));
+		// double referenceUpperArmVectorY = ArmConstants.kUpperArmLength *
+		// Math.sin(Math.toRadians(-90));
+		// Modification notes: If you had arm coordinates where (0, 0) was the base of
+		// the arm, you could use those numbers as the target vector values. (14, 15)
+		// would mean targetCombinedArmectorX would be 14, and targetCombinedArmVectorY
+		// would be 15. a.k.a, you could use foward kinematics to calculate arm
+		// position, meaning (0, 0) is your arm position, and your starting offsets
+		// where your arm is
 		// x is the number of units to move horizontally from the reference position.
 		// -1 would mean move the arm back 1 unit
-		double targetCombinedArmVectorX = referenceLowerArmVectorX + referenceUpperArmVectorX + x;
+		// double targetCombinedArmVectorX = referenceLowerArmVectorX +
+		// referenceUpperArmVectorX + x;
 		// y is the number of units to move vertically from the reference position.
 		// -1 would mean move the arm down 1 unit
-		double targetCombinedArmVectorY = referenceLowerArmVectorY + referenceUpperArmVectorY + y;
+		// double targetCombinedArmVectorY = referenceLowerArmVectorY +
+		// referenceUpperArmVectorY + y;
 		// This finds the angle between the arm base(a horizontal line,) and the
 		// HYPOTENUSE
-		double targetCombinedArmAngle = Math.atan2(targetCombinedArmVectorY, targetCombinedArmVectorX);
+		double targetCombinedArmAngle = Math.atan2(y, x);
 		// These next three variables are part of the cosine rule
-		double hypotenuseSquared = Math.pow(targetCombinedArmVectorX, 2) + Math.pow(targetCombinedArmVectorY, 2);
+		double hypotenuseSquared = Math.pow(x, 2) + Math.pow(y, 2);
 		double lowerArmLengthSquared = Math.pow(ArmConstants.kLowerArmLength, 2);
 		double upperArmLengthSquared = Math.pow(ArmConstants.kUpperArmLength, 2);
 		// This uses the cosine rule to get the angle between the two arms

@@ -30,12 +30,13 @@ public class RobotContainer {
 		// ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX))
-				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
+				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
-				.onTrue(new UpCommand());
+				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
+		// new Trigger(() ->
+		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
+		// .onTrue(new UpCommand());
 	}
 
 	public Command getAutonomousCommand() {

@@ -15,9 +15,9 @@ public final class Constants {
 
 	public static final class ArmConstants {
 		// Preset offsets for arm
-		public static final double[] kHighOffsets = { 12, 3.5 };
-		public static final double[] kMediumOffsets = { 10, 1.5 };
-		public static final double[] kLowOffsets = { 9, 0 };
+		public static final double[] kHighOffsets = { 12, 3 };
+		public static final double[] kMediumOffsets = { 12, -1.75 };
+		public static final double[] kLowOffsets = { 8.75, -3.25 };
 		// Change to actual length of arm
 		public static final double kLowerArmLength = 6.2;
 		// Change to actual length of arm
@@ -36,7 +36,7 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = 0.01; // 0.005 will not smash encoders
+		public static final double kP = 0.003; // 0.001 will not smash encoders
 		public static final double kI = 0;
 		public static final double kD = 0;
 		public static final double kIz = 5;
