@@ -13,6 +13,8 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.util.ForwardKinematicsTool;
+import frc.robot.util.InverseKinematicsTool;
 
 // import shuffleboard logging later //;
 
@@ -163,8 +165,16 @@ public class ArmSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
-		SmartDashboard.putNumber("Lower Arm position", getLowerArmPosition());
-		SmartDashboard.putNumber("Upper Arm position", getUpperArmPosition());
+		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmPosition());
+		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmPosition());
+
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmPosition(), getLowerArmPosition());
+		SmartDashboard.putNumber("Forward X", coordinates[0]);
+		SmartDashboard.putNumber("Forward Y", coordinates[1]);
+
+		Double[] armPosition = InverseKinematicsTool.getArmAngles(coordinates[0], coordinates[1]);
+		SmartDashboard.putNumber("inverse angle lower", armPosition[0]);
+		SmartDashboard.putNumber("inverse angle upper", armPosition[1]);
 		// SmartDashboard.putNumber("Raw Upper Arm position", )
 		// System.out.println(m_upperArmController.getP());
 	}

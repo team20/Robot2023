@@ -36,8 +36,6 @@ public class InverseKinematicsTool {
 		// The current reference position is the lower arm at 90 degrees(straight up),
 		// and the upper arm at 0 degrees(straight out.) (0, 0) is the tip of this
 		// reference position
-		SmartDashboard.putNumber("x", x);
-		SmartDashboard.putNumber("y", y);
 		// double referenceLowerArmVectorX = ArmConstants.kLowerArmLength *
 		// Math.cos(Math.toRadians(90));
 		// double referenceLowerArmVectorY = ArmConstants.kLowerArmLength *
@@ -103,8 +101,7 @@ public class InverseKinematicsTool {
 				throw new Exception("Target position unreachable");
 			} catch (Exception e) {
 			}
-			returnValue[0] = null;
-			returnValue[1] = null;
+			returnValue = null;
 		}
 		return returnValue;
 	}

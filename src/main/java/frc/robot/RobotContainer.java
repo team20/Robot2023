@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
-import frc.robot.commands.arm.UpCommand;
+import frc.robot.commands.arm.ChangeOffsetCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,8 +26,8 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// m_armSubsystem.setDefaultCommand(new
-		// ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
+		// m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(0
+		// m_controller.getRawAxis(0), m_controller.getRawAxis(1)));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
@@ -37,9 +37,12 @@ public class RobotContainer {
 		// new Trigger(() ->
 		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 		// .onTrue(new UpCommand());
+		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
+				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftY),
+				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftY)));
 	}
 
 	public Command getAutonomousCommand() {
-		return new ArmScoreCommand(ArmPosition.LOW);
+		return null;
 	}
 }

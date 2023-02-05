@@ -4,47 +4,54 @@
 
 package frc.robot.commands.arm;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.util.InverseKinematicsTool;
 
 public class ChangeOffsetCommand extends CommandBase {
+	// Saved value for how much to move
+	double m_xOffset;
+	double m_yOffset;
+	private Supplier<Double> m_joystickY;
+	private Supplier<Double> m_joystickX;
+
 	/** Creates a new ChangeOffsetCommand. */
-	double[] coordinates = ForwardKinematicsTool.getArmPosition();
-	double xOffset = coordinates[0];
-	double yOffset = coordinates[1];
-
-	public ChangeOffsetCommand() {
-		final GenericHID m_controller = new GenericHID(frc.robot.Constants.ControllerConstants.kDriverControllerPort);
+	public ChangeOffsetCommand(Supplier<Double> joystickY, Supplier<Double> joystickX) {
+		m_joystickY = joystickY;
+		m_joystickX = joystickX;
 		addRequirements(ArmSubsystem.get());
-
-		xOffset += m_controller.getRawAxis(0);
-		yOffset += m_controller.getRawAxis(1);
-		// Use addRequirements() here to declare subsystem dependencies.
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		InverseKinematicsTool.getArmAngles(xOffset, yOffset);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		m_yOffset = m_joystickY.get();
+		m_xOffset = m_joystickX.get();
+		// Get current position from angles
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmPosition(),
+				ArmSubsystem.get().getLowerArmPosition());
+		// Add xOffset and yOffset to that position
+		double newX = coordinates[0] + m_xOffset;
+		double newY = coordinates[1] + m_yOffset;
+		// Logging
+		SmartDashboard.putNumber("newX", newX);
+		SmartDashboard.putNumber("newY", newY);
+		// Calculate angles for new position
+		Double[] armPosition = InverseKinematicsTool.getArmAngles(newX, newY);
+		// set angles
+		if (armPosition != null) {
+			ArmSubsystem.get().setLowerArmPosition(armPosition[0]);
+			ArmSubsystem.get().setUpperArmPosition(armPosition[1]);
+		}
 	}
 
-	// Called once the command ends or is interrupted.
-	@Override
-	public void end(boolean interrupted) {
-	}
-
-	// Returns true when the command should end.
-	@Override
-	public boolean isFinished() {
-		return false;
-	}
 }
