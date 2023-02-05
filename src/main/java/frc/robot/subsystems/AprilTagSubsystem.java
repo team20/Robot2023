@@ -39,14 +39,13 @@ public class AprilTagSubsystem extends SubsystemBase {
     // read values periodically
     double[] translation = camtran.getDoubleArray(new double[6]);
 
-    if(!translation.equals(new double[6])){
-      m_x = translation[0];
+      m_x = translation[0] - .155;
       m_y = translation[1];
       m_z = translation[2];
       m_pitch = translation[3];
       m_yaw = translation[4]; // [-71, 66]
       m_roll = translation[5];
-    }
+    
     //m_yaw = tx.getDouble(0);
     rollingAverageYaw.add(m_yaw);
     if(rollingAverageYaw.size() > 10){

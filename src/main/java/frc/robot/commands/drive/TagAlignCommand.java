@@ -5,6 +5,10 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -17,9 +21,12 @@ public class TagAlignCommand extends CommandBase {
   /** Creates a new DefaultDriveCommand. */
   //PIDController m_controller = new PIDController(0.14, 0.005, 0.000); 
   //i: 0.005 before d: 0.000 before
-  private double m_speed = 0.25;
+  private double m_driveSpeed = 0.15;
+  private double m_speed = 0.15;
   private double m_xOffset, m_zOffset;
 
+  private Pose2d m_goalPose = new Pose2d();
+  private double m_vectorDistance;
   public enum TagNumber{
     TagId1(1,-1,0),
     TagId2(1,-1,0),
@@ -80,16 +87,30 @@ public class TagAlignCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  //DriveSubsystem.get().tankDrive(-0.25, -0.25);
+  double z = -AprilTagSubsystem.get().getDistance();
+  double x = AprilTagSubsystem.get().getX();
+
+  Pose2d currPose = DriveSubsystem.get().getPose();
+  m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
 
   }
     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //DriveSubsystem.get().tankDrive(-0.25, -0.25);
-    
+    Pose2d currPose = DriveSubsystem.get().getPose();
 
-    DriveSubsystem.get().arcadeDrive(-m_speed, getTurn());
+    double z = -AprilTagSubsystem.get().getDistance();
+    double x = AprilTagSubsystem.get().getX();
+
+    if(z != 0){
+      //m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
+    }
+
+    DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose()));
+    
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -101,24 +122,40 @@ public class TagAlignCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return AprilTagSubsystem.get().getDistance() > -0.6;
+    if(Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.1) {
+      return true;
+    }
+    return false;
   }
 
-  private double getTurn() {
+  private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
 
-    //z is out of the apriltag(will always return a negative value)
-    //x is left right on the apriltag
-    double z = -AprilTagSubsystem.get().getDistance() + m_zOffset;
-    double x = AprilTagSubsystem.get().getX() + m_xOffset;
-    double angle = Math.atan(x/z);
-    
-    if(AprilTagSubsystem.get().getDistance()<0){
-      m_speed = 0.25;
-      System.out.println( Math.toDegrees(angle) + " "  + Math.cos(angle)*m_speed);
-      return Math.cos(angle)*m_speed;
+    SmartDashboard.putNumber("Goal X", goalPoint.getX());
+    SmartDashboard.putNumber("Goal Y", goalPoint.getY());
+    SmartDashboard.putNumber("Curr X", currPoint.getX());
+    SmartDashboard.putNumber("Curr Y", currPoint.getY());
+    // just the distance formula
+    double xDifference = goalPoint.getX() - currPoint.getX();
+    double yDifference = goalPoint.getY() - currPoint.getY();
+    m_vectorDistance = Math.sqrt(xDifference*xDifference + yDifference*yDifference);
+    double vectorAngle = Math.atan2(yDifference,xDifference);
+    double robotAngle = DriveSubsystem.get().getHeading();
+    robotAngle = robotAngle < 0 ? robotAngle +360 : robotAngle;
+    double angleChangeRadians = Math.toRadians(robotAngle);
+    double vectorAngleAdjusted = vectorAngle - angleChangeRadians;
+    double x = m_vectorDistance * Math.cos(vectorAngleAdjusted);
+    SmartDashboard.putNumber("Vector Angle Adjusted", Math.toDegrees(vectorAngleAdjusted));
+    SmartDashboard.putNumber("Vector Angle", Math.toDegrees(vectorAngle));
+    SmartDashboard.putNumber("Robot Angle", Math.toDegrees(angleChangeRadians));
+
+    if(x>0){
+      m_driveSpeed = m_speed;
+      SmartDashboard.putNumber("Turn Amount", m_speed*Math.sin(vectorAngleAdjusted));
+      return Math.sin(vectorAngleAdjusted);
     }else{
-      m_speed = 0;
-      return 0.1*Math.signum(Math.sin(angle));
+      m_driveSpeed = 0;
+      return Math.signum(Math.sin(vectorAngleAdjusted));
     }
+
   }
 }
