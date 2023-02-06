@@ -10,7 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.InverseKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
-	Double[] angles = { 90.0, 0.0 };
+	Double[] angles;
 
 	public enum ArmPosition {
 		HIGH,
@@ -37,19 +37,13 @@ public class ArmScoreCommand extends CommandBase {
 		switch (m_armPosition) {
 			case HIGH:
 				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kHighOffsets[0], ArmConstants.kHighOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kHighOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kHighOffsets[1]);
 				break;
 			case MEDIUM:
 				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kMediumOffsets[0],
 						ArmConstants.kMediumOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kMediumOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kMediumOffsets[1]);
 				break;
 			case LOW:
 				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kLowOffsets[0], ArmConstants.kLowOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kLowOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kLowOffsets[1]);
 				break;
 			default:
 				break;
