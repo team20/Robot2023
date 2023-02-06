@@ -36,14 +36,16 @@ public class ArmScoreCommand extends CommandBase {
 	public void execute() {
 		switch (m_armPosition) {
 			case HIGH:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kHighOffsets[0], ArmConstants.kHighOffsets[1]);
+				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kHighOffsets[0],
+						ArmConstants.kHighOffsets[1]);
 				break;
 			case MEDIUM:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kMediumOffsets[0],
+				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kMediumOffsets[0],
 						ArmConstants.kMediumOffsets[1]);
 				break;
 			case LOW:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kLowOffsets[0], ArmConstants.kLowOffsets[1]);
+				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kLowOffsets[0],
+						ArmConstants.kLowOffsets[1]);
 				break;
 			default:
 				break;

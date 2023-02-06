@@ -45,7 +45,7 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newX", newX);
 		SmartDashboard.putNumber("newY", newY);
 		// Calculate angles for new position
-		Double[] armPosition = InverseKinematicsTool.getArmAngles(newX, newY);
+		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(newX, newY);
 		// Set angles, if they are invalid, do nothing
 		if (armPosition != null) {
 			ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
