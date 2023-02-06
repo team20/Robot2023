@@ -111,7 +111,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return
 	 *         The angle of the lower arm in degrees
 	 */
-	public double getLowerArmPosition() {
+	public double getLowerArmAngle() {
 		return m_lowerArmEncoder.getPosition();
 	}
 
@@ -119,7 +119,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return
 	 *         The angle of the upper arm in degrees
 	 */
-	public double getUpperArmPosition() {
+	public double getUpperArmAngle() {
 		return m_upperArmEncoder.getPosition();
 	}
 
@@ -129,7 +129,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param angle
 	 *              The target angle of the lower arm in degrees
 	 */
-	public void setLowerArmPosition(double angle) {
+	public void setLowerArmAngle(double angle) {
 		m_lowerArmController.setReference(angle, ControlType.kPosition);
 		SmartDashboard.putNumber("Target Lower Arm Angle", angle);
 	}
@@ -140,7 +140,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param angle
 	 *              The target angle of the upper arm in degrees
 	 */
-	public void setUpperArmPosition(double angle) {
+	public void setUpperArmAngle(double angle) {
 		m_upperArmController.setReference(angle, ControlType.kPosition);
 		SmartDashboard.putNumber("Target Upper Arm Angle", angle);
 	}
@@ -149,10 +149,10 @@ public class ArmSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// Log the lower and upper arm angle as measured by the encoders
-		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmPosition());
-		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmPosition());
+		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
+		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
 		// Calculate the arm position using the encoder angles
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmPosition(), getLowerArmPosition());
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmAngle(), getLowerArmAngle());
 		SmartDashboard.putNumber("Forward X", coordinates[0]);
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
 		// Take the calculated arm position from the forward kinematics code, and

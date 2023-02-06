@@ -48,8 +48,8 @@ public class ArmScoreCommand extends CommandBase {
 			default:
 				break;
 		}
-		ArmSubsystem.get().setLowerArmPosition(angles[0]);
-		ArmSubsystem.get().setUpperArmPosition(angles[1]);
+		ArmSubsystem.get().setLowerArmAngle(angles[0]);
+		ArmSubsystem.get().setUpperArmAngle(angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.

@@ -5,7 +5,6 @@
 package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -14,8 +13,8 @@ import frc.robot.util.InverseKinematicsTool;
 
 public class ChangeOffsetCommand extends CommandBase {
 	// Saved value for how much to move
-	double m_xOffset;
-	double m_yOffset;
+	private double m_xOffset;
+	private double m_yOffset;
 	private Supplier<Double> m_joystickY;
 	private Supplier<Double> m_joystickX;
 
@@ -37,8 +36,8 @@ public class ChangeOffsetCommand extends CommandBase {
 		m_yOffset = m_joystickY.get();
 		m_xOffset = m_joystickX.get();
 		// Get current position from angles
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmPosition(),
-				ArmSubsystem.get().getLowerArmPosition());
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
+				ArmSubsystem.get().getLowerArmAngle());
 		// Add xOffset and yOffset to that position
 		double newX = coordinates[0] + m_xOffset;
 		double newY = coordinates[1] + m_yOffset;
@@ -47,11 +46,10 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newY", newY);
 		// Calculate angles for new position
 		Double[] armPosition = InverseKinematicsTool.getArmAngles(newX, newY);
-		// set angles
+		// Set angles, if they are invalid, do nothing
 		if (armPosition != null) {
-			ArmSubsystem.get().setLowerArmPosition(armPosition[0]);
-			ArmSubsystem.get().setUpperArmPosition(armPosition[1]);
+			ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
+			ArmSubsystem.get().setUpperArmAngle(armPosition[1]);
 		}
 	}
-
 }
