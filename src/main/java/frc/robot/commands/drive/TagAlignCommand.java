@@ -4,14 +4,10 @@
 
 package frc.robot.commands.drive;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -26,9 +22,9 @@ public class TagAlignCommand extends CommandBase {
   private double m_xOffset, m_zOffset;
 
   private Pose2d m_goalPose = new Pose2d();
-  private double m_vectorDistance;
   public enum TagNumber{
-    TagId1(1,-1,0),
+    TagGeneral(0.5, -0.5, 0),
+    TagId1(0.5,-0.5,0),
     TagId2(1,-1,0),
     TagId3(1,-1,0),
     TagId4(1,-1,0),
@@ -88,24 +84,37 @@ public class TagAlignCommand extends CommandBase {
   @Override
   public void initialize() {
   //DriveSubsystem.get().tankDrive(-0.25, -0.25);
-  double z = -AprilTagSubsystem.get().getDistance();
-  double x = AprilTagSubsystem.get().getX();
+  double z = -AprilTagSubsystem.get().getDistance() +m_zOffset;
 
+  double x = AprilTagSubsystem.get().getX() + m_xOffset;
+
+  double aprilTagYaw = AprilTagSubsystem.get().getYaw();
   Pose2d currPose = DriveSubsystem.get().getPose();
-  m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
+  double currHeading = DriveSubsystem.get().getHeading();
+  currHeading = currHeading < 0 ? currHeading +360 : currHeading;
+
+  double rotationToField = Math.toRadians(currHeading+aprilTagYaw);
+  Translation2d goalTranslation = (new Translation2d(z,x)).rotateBy(new Rotation2d(rotationToField));
+  m_goalPose = currPose.transformBy(new Transform2d(goalTranslation, new Rotation2d()));
 
   }
     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Pose2d currPose = DriveSubsystem.get().getPose();
+    if(AprilTagSubsystem.get().tagInView()){
+      // double z = -AprilTagSubsystem.get().getDistance() +m_zOffset;
 
-    double z = -AprilTagSubsystem.get().getDistance();
-    double x = AprilTagSubsystem.get().getX();
+      // double x = AprilTagSubsystem.get().getX() + m_xOffset;
 
-    if(z != 0){
-      //m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
+      // double aprilTagYaw = AprilTagSubsystem.get().getYaw();
+      // Pose2d currPose = DriveSubsystem.get().getPose();
+      // double currHeading = DriveSubsystem.get().getHeading();
+      // currHeading = currHeading < 0 ? currHeading +360 : currHeading;
+
+      // double rotationToField = Math.toRadians(aprilTagYaw + currHeading);
+      // Translation2d goalTranslation = (new Translation2d(z,x)).rotateBy(new Rotation2d(rotationToField));
+      // m_goalPose = currPose.transformBy(new Transform2d(goalTranslation, new Rotation2d()));
     }
 
     DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose()));
@@ -137,13 +146,12 @@ public class TagAlignCommand extends CommandBase {
     // just the distance formula
     double xDifference = goalPoint.getX() - currPoint.getX();
     double yDifference = goalPoint.getY() - currPoint.getY();
-    m_vectorDistance = Math.sqrt(xDifference*xDifference + yDifference*yDifference);
     double vectorAngle = Math.atan2(yDifference,xDifference);
     double robotAngle = DriveSubsystem.get().getHeading();
     robotAngle = robotAngle < 0 ? robotAngle +360 : robotAngle;
     double angleChangeRadians = Math.toRadians(robotAngle);
     double vectorAngleAdjusted = vectorAngle - angleChangeRadians;
-    double x = m_vectorDistance * Math.cos(vectorAngleAdjusted);
+    double x = Math.cos(vectorAngleAdjusted);
     SmartDashboard.putNumber("Vector Angle Adjusted", Math.toDegrees(vectorAngleAdjusted));
     SmartDashboard.putNumber("Vector Angle", Math.toDegrees(vectorAngle));
     SmartDashboard.putNumber("Robot Angle", Math.toDegrees(angleChangeRadians));

@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
-
+import frc.robot.commands.drive.TagAlignCommand.Position;
+import frc.robot.commands.drive.TagAlignCommand.TagNumber;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,6 +30,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(new TagAlignCommand(0.5,-0.75),new TurnCommand(10));
+    return new SequentialCommandGroup(new TagAlignCommand(-0.75, 0));
   }
 }

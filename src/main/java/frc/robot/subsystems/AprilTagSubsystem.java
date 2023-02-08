@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import edu.wpi.first.math.filter.MedianFilter;
 //test commit
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -19,8 +17,15 @@ public class AprilTagSubsystem extends SubsystemBase {
 
   NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
   private static AprilTagSubsystem s_subsystem;
-  private ArrayList<Double> rollingAverageYaw = new ArrayList<Double>();
-  private double rollingAverageValue = 0;
+
+  private MedianFilter m_filterX = new MedianFilter(10);
+  private MedianFilter m_filterY = new MedianFilter(10);
+  private MedianFilter m_filterZ = new MedianFilter(10);
+  private MedianFilter m_filterPitch = new MedianFilter(10);
+  private MedianFilter m_filterRoll = new MedianFilter(10);
+  private MedianFilter m_filterYaw = new MedianFilter(10);
+
+private boolean m_tagInView;
   /** Creates a new ApriltagSubsystem. */
   public AprilTagSubsystem() {
     s_subsystem = this;
@@ -35,34 +40,30 @@ public class AprilTagSubsystem extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry camtran = table.getEntry("campose");
     NetworkTableEntry tx = table.getEntry("tx");
-
     // read values periodically
     double[] translation = camtran.getDoubleArray(new double[6]);
 
-      m_x = translation[0] - .155;
-      m_y = translation[1];
-      m_z = translation[2];
-      m_pitch = translation[3];
-      m_yaw = translation[4]; // [-71, 66]
-      m_roll = translation[5];
-    
-    //m_yaw = tx.getDouble(0);
-    rollingAverageYaw.add(m_yaw);
-    if(rollingAverageYaw.size() > 10){
-      double removeValue = rollingAverageYaw.remove(0);
-      rollingAverageValue -= removeValue/rollingAverageYaw.size();
+    if(!translation.equals(new double[6])){
+      m_x = m_filterX.calculate(translation[0] - .155);
+      m_y = m_filterY.calculate(translation[1]);
+      m_z = m_filterZ.calculate(translation[2]);
+      m_pitch = m_filterPitch.calculate(translation[3]);
+      m_yaw = m_filterYaw.calculate(translation[4]); // [-71, 66]
+      m_roll = m_filterRoll.calculate(translation[5]);
+      m_tagInView = true;
+    }else{
+      m_tagInView = false;
     }
-    rollingAverageValue += m_yaw/rollingAverageYaw.size();
-    m_yaw = tx.getDouble(0);
-    double angle = Math.toDegrees(Math.atan(m_x/m_z));
+    
+
     // post to smart dashboard periodically
-    SmartDashboard.putNumber("Angle",angle);
     SmartDashboard.putNumber("LimelightX", m_x);
     SmartDashboard.putNumber("LimelightY", m_y);
     SmartDashboard.putNumber("LimelightZ", m_z);
     SmartDashboard.putNumber("LimelightPitch", m_pitch);
     SmartDashboard.putNumber("LimelightYaw", m_yaw);
     SmartDashboard.putNumber("LimelightRoll", m_roll);
+    SmartDashboard.putBoolean("Tag in View", m_tagInView);
     // This method will be called once per scheduler run
 
   }
@@ -74,5 +75,8 @@ public class AprilTagSubsystem extends SubsystemBase {
   }
   public double getX(){
     return m_x;
+  }
+  public boolean tagInView(){
+    return m_tagInView;
   }
 }
