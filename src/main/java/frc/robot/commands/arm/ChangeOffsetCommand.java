@@ -46,7 +46,7 @@ public class ChangeOffsetCommand extends CommandBase {
 		// m_yOffset = m_joystickY.get();
 		// Get current position from angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
-				ArmSubsystem.get().getLowerArmAngle());
+				ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle() < 180);
 		// Add xOffset and yOffset to that position
 		double newX = coordinates[0] + m_xOffset;
 		double newY = coordinates[1] + m_yOffset;
@@ -54,7 +54,8 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newX", newX);
 		SmartDashboard.putNumber("newY", newY);
 		// Calculate angles for new position
-		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(newX, newY);
+		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(newX, newY,
+				ArmSubsystem.get().getUpperArmAngle() < 180);
 		// Set angles, if they are invalid, do nothing
 		if (armPosition != null) {
 			SmartDashboard.putNumber("Target Lower Arm Angle", armPosition[0]);
