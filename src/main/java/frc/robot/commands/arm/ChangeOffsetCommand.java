@@ -15,13 +15,13 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Saved value for how much to move
 	private double m_xOffset;
 	private double m_yOffset;
-	private Supplier<Double> m_joystickY;
 	private Supplier<Double> m_joystickX;
+	private Supplier<Double> m_joystickY;
 
 	/** Creates a new ChangeOffsetCommand. */
-	public ChangeOffsetCommand(Supplier<Double> joystickY, Supplier<Double> joystickX) {
-		m_joystickY = joystickY;
+	public ChangeOffsetCommand(Supplier<Double> joystickX, Supplier<Double> joystickY) {
 		m_joystickX = joystickX;
+		m_joystickY = joystickY;
 		addRequirements(ArmSubsystem.get());
 	}
 
