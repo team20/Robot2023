@@ -54,7 +54,13 @@ public class InverseKinematicsTool {
 				/ (2 * ArmConstants.kLowerArmLength * ArmConstants.kUpperArmLength));
 		// This is the angle formed if you extended the lower arm, and you form an angle
 		// on the extended side of the lower arm with the upper arm
-		double angleFormedByArms = Math.abs(-(Math.PI - upperArmAngle));
+		double angleFormedByArms;
+		// If some random condition, elbow up, else, elbow down
+		if (true) {
+			angleFormedByArms = Math.abs(-(Math.PI - upperArmAngle));
+		} else {
+			angleFormedByArms = Math.PI - upperArmAngle;
+		}
 		// This finds the angle between the lower arm and the HYPOTENUSE
 		double angleFormedByLowerArmAndHypotenuse = Math.atan2(
 				ArmConstants.kUpperArmLength * Math.sin(angleFormedByArms),
@@ -62,7 +68,12 @@ public class InverseKinematicsTool {
 		// This takes the angle between the arm base and the HYPOTENUSE, and adds the
 		// angle between the HYPOTENUSE and the lower arm, giving us the angle between
 		// the lower arm and the arm base
-		double lowerArmAngle = combinedArmAngle + angleFormedByLowerArmAndHypotenuse;
+		double lowerArmAngle;
+		if (true) {
+			lowerArmAngle = combinedArmAngle + angleFormedByLowerArmAndHypotenuse;
+		} else {
+			lowerArmAngle = combinedArmAngle - angleFormedByLowerArmAndHypotenuse;
+		}
 		// Convert to degrees and a Double for NaN checks
 		Double[] returnValue = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
@@ -72,6 +83,7 @@ public class InverseKinematicsTool {
 			try {
 				throw new Exception("Target position unreachable");
 			} catch (Exception e) {
+				System.out.println("Target position unreachable");
 			}
 			returnValue = null;
 		}
