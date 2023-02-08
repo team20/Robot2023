@@ -20,6 +20,8 @@ public final class Constants {
 		public static final double[] kLowOffsets = { 8.75, -2.5 };
 		// Change to actual length of arm
 		public static final double kLowerArmLength = 6.2;
+		// For joystick speed
+		public static final double kSpeedMultiplier = 1.5;
 		// Change to actual length of arm
 		public static final double kUpperArmLength = 7;
 		public static final int kCountsPerRevolution = 42;
@@ -36,8 +38,8 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = 0.005; // 0.005 will not smash encoders
-		public static final double kI = 0;
+		public static final double kP = 0.0035; // 0.005 will not smash encoders
+		public static final double kI = 0.00007;
 		public static final double kD = 0;
 		public static final double kIz = 5;
 		public static final double kFF = .0;

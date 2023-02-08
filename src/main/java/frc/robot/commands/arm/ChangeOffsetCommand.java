@@ -5,8 +5,12 @@
 package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.util.InverseKinematicsTool;
@@ -33,8 +37,13 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		m_yOffset = m_joystickY.get();
-		m_xOffset = m_joystickX.get();
+		m_xOffset = MathUtil.applyDeadband(m_joystickX.get(), ControllerConstants.kDeadzone)
+				* ArmConstants.kSpeedMultiplier;
+		// The -1 is because the Yaxis values are inverted
+		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
+				* ArmConstants.kSpeedMultiplier * -1;
+		// m_xOffset = m_joystickX.get();
+		// m_yOffset = m_joystickY.get();
 		// Get current position from angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
 				ArmSubsystem.get().getLowerArmAngle());
@@ -48,6 +57,8 @@ public class ChangeOffsetCommand extends CommandBase {
 		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(newX, newY);
 		// Set angles, if they are invalid, do nothing
 		if (armPosition != null) {
+			SmartDashboard.putNumber("Target Lower Arm Angle", armPosition[0]);
+			SmartDashboard.putNumber("Target Upper Arm Angle", armPosition[1]);
 			ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
 			ArmSubsystem.get().setUpperArmAngle(armPosition[1]);
 		}
