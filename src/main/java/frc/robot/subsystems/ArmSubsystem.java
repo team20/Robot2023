@@ -152,14 +152,12 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
 		// Calculate the arm position using the encoder angles
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmAngle(), getLowerArmAngle(),
-				ArmSubsystem.get().getUpperArmAngle() < 180);
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmAngle(), getLowerArmAngle());
 		SmartDashboard.putNumber("Forward X", coordinates[0]);
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
 		// Take the calculated arm position from the forward kinematics code, and
 		// calculate the lower and upper arm angles to make sure everything works
-		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1],
-				getUpperArmAngle() < 180);
+		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1]);
 		SmartDashboard.putNumber("IK Lower Arm Angle", armPosition[0]);
 		SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
 	}

@@ -34,11 +34,13 @@ public class InverseKinematicsTool {
 	 * @return
 	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
-	public static Double[] calculateArmAngles(double x, double y, boolean isElbowUp) {
+	public static Double[] calculateArmAngles(double x, double y) {
 		// All calculations are in radians
 		// This finds the angle between the arm base(a horizontal line,) and the
 		// HYPOTENUSE
 		double combinedArmAngle = Math.atan2(y, x);
+		// Do elbow up when x > 0, elbow down when x < 0
+		boolean isElbowUp = x > 0;
 		// These next three variables are part of the cosine rule
 		double hypotenuseSquared = Math.pow(x, 2) + Math.pow(y, 2);
 		double lowerArmLengthSquared = Math.pow(ArmConstants.kLowerArmLength, 2);
