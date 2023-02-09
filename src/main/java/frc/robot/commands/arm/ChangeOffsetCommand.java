@@ -19,6 +19,8 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Saved value for how much to move
 	private double m_xOffset;
 	private double m_yOffset;
+	private double m_newX;
+	private double m_newY;
 	private Supplier<Double> m_joystickX;
 	private Supplier<Double> m_joystickY;
 
@@ -32,6 +34,10 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
+				ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle() < 180);
+		m_newX = coordinates[0];
+		m_newY = coordinates[1];
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -42,19 +48,21 @@ public class ChangeOffsetCommand extends CommandBase {
 		// The -1 is because the Yaxis values are inverted
 		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kSpeedMultiplier * -1;
-		// m_xOffset = m_joystickX.get();
-		// m_yOffset = m_joystickY.get();
-		// Get current position from angles
+		// Get current (X, Y) position from current actual angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
 				ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle() < 180);
 		// Add xOffset and yOffset to that position
-		double newX = coordinates[0] + m_xOffset;
-		double newY = coordinates[1] + m_yOffset;
+		if (m_xOffset != 0) {
+			m_newX = coordinates[0] + m_xOffset;
+		}
+		if (m_yOffset != 0) {
+			m_newY = coordinates[1] + m_yOffset;
+		}
 		// Logging
-		SmartDashboard.putNumber("newX", newX);
-		SmartDashboard.putNumber("newY", newY);
+		SmartDashboard.putNumber("newX", m_newX);
+		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
-		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(newX, newY,
+		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY,
 				ArmSubsystem.get().getUpperArmAngle() < 180);
 		// Set angles, if they are invalid, do nothing
 		if (armPosition != null) {
