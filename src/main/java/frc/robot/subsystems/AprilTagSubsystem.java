@@ -38,7 +38,7 @@ private boolean m_tagInView;
   @Override
   public void periodic() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry camtran = table.getEntry("campose");
+    NetworkTableEntry camtran = table.getEntry("camerapose_targetspace");
     NetworkTableEntry tx = table.getEntry("tx");
     // read values periodically
     double[] translation = camtran.getDoubleArray(new double[6]);

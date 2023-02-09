@@ -30,6 +30,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(new TagAlignCommand(-0.75, 0));
+    return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
   }
 }
