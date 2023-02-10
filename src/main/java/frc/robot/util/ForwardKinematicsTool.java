@@ -8,7 +8,7 @@ public class ForwardKinematicsTool {
 		double upperArmAngle = Math.toRadians(upperArmAngleDeg);
 		double lowerArmAngle = Math.toRadians(lowerArmAngleDeg);
 		// Do elbow up when x < 180 degrees, elbow down when x > 180 degrees
-		boolean isElbowUp = upperArmAngle < 180;
+		boolean isElbowUp = upperArmAngleDeg < 180;
 		// Find hypotenuse using law of cosines
 		double hypotenuse = Math
 				.sqrt(Math.pow(ArmConstants.kLowerArmLength, 2) + Math.pow(ArmConstants.kUpperArmLength, 2)
