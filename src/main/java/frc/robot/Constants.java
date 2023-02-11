@@ -129,18 +129,16 @@ public final class Constants {
 		public static final double ksVolts = 0.196;
 		public static final double kvVoltSecondsPerMeter = 2.15;
 		public static final double kaVoltSecondsSquaredPerMeter = .53;
-		// TODO change the trackwidth to match our robot - trackwidth = horizontal
-		// distance between the wheels
-		public static final double kTrackwidthMeters = 0.7815245428457417;
+		// Horizontal distance between the wheels
+		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
 				kTrackwidthMeters);
-
 		// TODO change
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = 4;
-		public static final double kGearRatio = 7;
+		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
+		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
@@ -152,7 +150,10 @@ public final class Constants {
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
-		public static final double kEncoderCounts = 4096;
+		public static final double kEncoderCounts = 42;
+		// Native units are in revolutions, 1 / gearRatio gives us how many revolutions
+		// the wheel has turned, and multiplying that by the wheel circumference(pi
+		// times the wheel diameter) gives the distance the robot has moved
 		public static final double kEncoderPositionConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters;
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
