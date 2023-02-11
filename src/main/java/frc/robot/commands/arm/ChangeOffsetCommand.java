@@ -5,7 +5,6 @@
 package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -43,15 +42,23 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		// Amount to move on the x-axis
 		m_xOffset = MathUtil.applyDeadband(m_joystickX.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kSpeedMultiplier;
-		// The -1 is because the Yaxis values are inverted
+		// The -1 is because the y-axis values are inverted
+		// Amount to move on the y-axis
 		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kSpeedMultiplier * -1;
 		// Get current (X, Y) position from current actual angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
 				ArmSubsystem.get().getLowerArmAngle());
-		// Add xOffset and yOffset to that position
+		// If moving on the x-axis, add m_xOffset to the current x-coordinate,
+		// otherwise, do nothing
+		// If moving on the y-axis, add m_yOffset to the current y-coordinate,
+		// otherwise, do nothing
+		// The reason for the if statements is to prevent movement on another axis when
+		// only one axis is being moved. Otherwise, the arm will naturally move due to
+		// gravity, causing both axes to change when we want only one to be changed
 		if (m_xOffset != 0) {
 			m_newX = coordinates[0] + m_xOffset;
 		}
