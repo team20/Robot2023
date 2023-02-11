@@ -34,8 +34,8 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
-				ArmSubsystem.get().getLowerArmAngle());
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
 		m_newX = coordinates[0];
 		m_newY = coordinates[1];
 	}
@@ -51,8 +51,8 @@ public class ChangeOffsetCommand extends CommandBase {
 		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kSpeedMultiplier * -1;
 		// Get current (X, Y) position from current actual angles
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
-				ArmSubsystem.get().getLowerArmAngle());
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
 		// If moving on the x-axis, add m_xOffset to the current x-coordinate,
 		// otherwise, do nothing
 		// If moving on the y-axis, add m_yOffset to the current y-coordinate,

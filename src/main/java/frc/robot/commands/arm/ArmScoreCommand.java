@@ -34,8 +34,8 @@ public class ArmScoreCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		double[] currentArmPosition = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
-				ArmSubsystem.get().getLowerArmAngle());
+		double[] currentArmPosition = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
 		// Only move the arm to these preset positions if the x value is positive
 		// If the x value is negative, moving to these positions will cause the robot to
 		// exceed the height limit

@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ArmConstants;
 
 public class ForwardKinematicsTool {
-	public static double[] getArmPosition(double upperArmAngleDeg, double lowerArmAngleDeg) {
-		double upperArmAngle = Math.toRadians(upperArmAngleDeg);
+	public static double[] getArmPosition(double lowerArmAngleDeg, double upperArmAngleDeg) {
 		double lowerArmAngle = Math.toRadians(lowerArmAngleDeg);
+		double upperArmAngle = Math.toRadians(upperArmAngleDeg);
 		// Do elbow up when x < 180 degrees, elbow down when x > 180 degrees
 		boolean isElbowUp = upperArmAngleDeg < 180;
 		// Find hypotenuse using law of cosines

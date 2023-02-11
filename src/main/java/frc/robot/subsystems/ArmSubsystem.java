@@ -132,7 +132,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the lower arm in degrees
 	 */
 	public void setLowerArmAngle(double angle) {
-		setAngles(m_targetUpperAngle, angle);
+		setAngles(angle, m_targetUpperAngle);
 	}
 
 	/**
@@ -142,17 +142,17 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the upper arm in degrees
 	 */
 	public void setUpperArmAngle(double angle) {
-		setAngles(angle, m_targetLowerAngle);
+		setAngles(m_targetLowerAngle, angle);
 	}
 
-	public void setAngles(double upper, double lower) {
-		m_targetUpperAngle = upper;
-		m_upperArmController.setReference(upper, ControlType.kPosition);
-		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
-
+	public void setAngles(double lower, double upper) {
 		m_targetLowerAngle = lower;
 		m_lowerArmController.setReference(lower, ControlType.kPosition);
 		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
+
+		m_targetUpperAngle = upper;
+		m_upperArmController.setReference(upper, ControlType.kPosition);
+		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 	}
 
 	public boolean isNearTargetAngle() {
@@ -205,7 +205,7 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
 		// Calculate the arm position using the encoder angles
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(getUpperArmAngle(), getLowerArmAngle());
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(getLowerArmAngle(), getUpperArmAngle());
 		SmartDashboard.putNumber("Forward X", coordinates[0]);
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
 		// Take the calculated arm position from the forward kinematics code, and
