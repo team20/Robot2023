@@ -70,23 +70,23 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newX", m_newX);
 		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
-		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
-		if (armPosition != null && armPosition[0] > 100) {
+		Double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
+		if (armAngles != null && armAngles[0] > 100) {
 			// Prevent going more than 10 degrees past vertical
-			armPosition = null;
+			armAngles = null;
 		}
 		if (m_newY > 12) {
 			// Height limit!
-			armPosition = null;
+			armAngles = null;
 		}
 		// Set angles, if they are invalid, do nothing
-		if (armPosition != null) {
+		if (armAngles != null) {
 			// If the sign of the current arm position is different than the sign of the
 			// target arm position (positive/negative X transition), move the upper arm
 			// first, then the lower arm to reduce sudden snapping
 			if (false && Math.signum(coordinates[0]) != Math.signum(m_newX)) {
 				// Get the number of degrees the lower arm will travel
-				double lowerArmAngleDiff = 180 - armPosition[0] * 2;
+				double lowerArmAngleDiff = 180 - armAngles[0] * 2;
 				// If we are going negative, we need to add the degrees the lower arm will
 				// travel to current upper arm angle
 				if (m_newX == -1) {
@@ -99,14 +99,14 @@ public class ChangeOffsetCommand extends CommandBase {
 				}
 
 				// Move the lower arm into position
-				ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
+				ArmSubsystem.get().setLowerArmAngle(armAngles[0]);
 			}
 			// When we are done getting the upper arm into the intermediate position, set it
 			// to the calculated angle
-			SmartDashboard.putNumber("Target Lower Arm Angle", armPosition[0]);
-			SmartDashboard.putNumber("Target Upper Arm Angle", armPosition[1]);
-			ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
-			ArmSubsystem.get().setUpperArmAngle(armPosition[1]);
+			SmartDashboard.putNumber("Target Lower Arm Angle", armAngles[0]);
+			SmartDashboard.putNumber("Target Upper Arm Angle", armAngles[1]);
+			ArmSubsystem.get().setLowerArmAngle(armAngles[0]);
+			ArmSubsystem.get().setUpperArmAngle(armAngles[1]);
 		}
 	}
 }
