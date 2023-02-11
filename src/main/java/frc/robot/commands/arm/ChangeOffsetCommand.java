@@ -59,29 +59,32 @@ public class ChangeOffsetCommand extends CommandBase {
 		// The reason for the if statements is to prevent movement on another axis when
 		// only one axis is being moved. Otherwise, the arm will naturally move due to
 		// gravity, causing both axes to change when we want only one to be changed
-		if (m_xOffset != 0) {
+		if ((m_xOffset != 0) || !ArmSubsystem.get().isNearTargetAngle()) {
 			m_newX = coordinates[0] + m_xOffset;
 		}
-		if (m_yOffset != 0) {
+		if ((m_yOffset != 0) || !ArmSubsystem.get().isNearTargetAngle()) {
 			m_newY = coordinates[1] + m_yOffset;
 		}
-		if (ArmSubsystem.get().getArmPositionChanged()) {
-			m_newX = coordinates[0];
-			m_newY = coordinates[1];
-			ArmSubsystem.get().setArmPositionChanged(false);
-		}
+
 		// Logging
 		SmartDashboard.putNumber("newX", m_newX);
 		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
 		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
+		if (armPosition != null && armPosition[0] > 100) {
+			// Prevent going more than 10 degrees past vertical
+			armPosition = null;
+		}
+		if (m_newY > 12) {
+			// Height limit!
+			armPosition = null;
+		}
 		// Set angles, if they are invalid, do nothing
-		if (armPosition[0] > 100) {
-		} else if (armPosition != null) {
+		if (armPosition != null) {
 			// If the sign of the current arm position is different than the sign of the
 			// target arm position (positive/negative X transition), move the upper arm
 			// first, then the lower arm to reduce sudden snapping
-			if (Math.signum(coordinates[0]) != Math.signum(m_newX)) {
+			if (false && Math.signum(coordinates[0]) != Math.signum(m_newX)) {
 				// Get the number of degrees the lower arm will travel
 				double lowerArmAngleDiff = 180 - armPosition[0] * 2;
 				// If we are going negative, we need to add the degrees the lower arm will
@@ -94,11 +97,9 @@ public class ChangeOffsetCommand extends CommandBase {
 				} else if (m_newX == 1) {
 					ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle() - lowerArmAngleDiff);
 				}
+
 				// Move the lower arm into position
 				ArmSubsystem.get().setLowerArmAngle(armPosition[0]);
-				while (ArmSubsystem.get().isNearTargetAngle(armPosition[1],
-						ArmSubsystem.get().getUpperArmAngle())) {// noop, wait until upper arm angle is mostly right
-				}
 			}
 			// When we are done getting the upper arm into the intermediate position, set it
 			// to the calculated angle

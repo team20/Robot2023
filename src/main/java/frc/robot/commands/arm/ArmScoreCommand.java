@@ -50,7 +50,6 @@ public class ArmScoreCommand extends CommandBase {
 		}
 		ArmSubsystem.get().setLowerArmAngle(angles[0]);
 		ArmSubsystem.get().setUpperArmAngle(angles[1]);
-		ArmSubsystem.get().setArmPositionChanged(true);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -61,7 +60,6 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return ArmSubsystem.get().isNearTargetAngle(angles[0], ArmSubsystem.get().getLowerArmAngle())
-				&& ArmSubsystem.get().isNearTargetAngle(angles[1], ArmSubsystem.get().getUpperArmAngle());
+		return ArmSubsystem.get().isNearTargetAngle();
 	}
 }

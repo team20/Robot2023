@@ -34,6 +34,8 @@ public class ArmSubsystem extends SubsystemBase {
 	 * Tracks if the arm was moved in code by anything other than joysticks
 	 */
 	private boolean m_armPositionChanged = false;
+	private double m_targetLowerAngle = 0;
+	private double m_targetUpperAngle = 0;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -106,14 +108,6 @@ public class ArmSubsystem extends SubsystemBase {
 		return s_subsystem;
 	}
 
-	public void setSpeedUpper(double speed) {
-		m_upperArmMotor.set(speed);
-	}
-
-	public void setSpeedLower(double speed) {
-		m_lowerArmMotor.set(speed);
-	}
-
 	/**
 	 * @return
 	 *         The angle of the lower arm in degrees
@@ -137,8 +131,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the lower arm in degrees
 	 */
 	public void setLowerArmAngle(double angle) {
-		m_lowerArmController.setReference(angle, ControlType.kPosition);
-		SmartDashboard.putNumber("Target Lower Arm Angle", angle);
+		setAngles(m_targetUpperAngle, angle);
 	}
 
 	/**
@@ -148,16 +141,22 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the upper arm in degrees
 	 */
 	public void setUpperArmAngle(double angle) {
-		m_upperArmController.setReference(angle, ControlType.kPosition);
-		SmartDashboard.putNumber("Target Upper Arm Angle", angle);
+		setAngles(angle, m_targetLowerAngle);
 	}
 
-	public boolean getArmPositionChanged() {
-		return m_armPositionChanged;
+	public void setAngles(double upper, double lower) {
+		m_targetUpperAngle = upper;
+		m_upperArmController.setReference(upper, ControlType.kPosition);
+		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
+
+		m_targetLowerAngle = lower;
+		m_lowerArmController.setReference(lower, ControlType.kPosition);
+		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 	}
 
-	public void setArmPositionChanged(boolean armPositionChanged) {
-		m_armPositionChanged = armPositionChanged;
+	public boolean isNearTargetAngle() {
+		return checkAngle(m_targetLowerAngle, getLowerArmAngle()) &&
+				checkAngle(m_targetUpperAngle, getUpperArmAngle());
 	}
 
 	/**
@@ -173,7 +172,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return
 	 *         Whether or not the current angle is close enough to the target angle
 	 */
-	public boolean isNearTargetAngle(double targetAngle, double currentAngle) {
+	private boolean checkAngle(double targetAngle, double currentAngle) {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
 		/* Simple bounds checking without accounting for wraparound */
@@ -201,7 +200,6 @@ public class ArmSubsystem extends SubsystemBase {
 	public void periodic() {
 		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
-		SmartDashboard.putBoolean("Within Bounds?", isNearTargetAngle(0, 9));
 		// Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
