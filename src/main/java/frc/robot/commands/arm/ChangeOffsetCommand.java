@@ -5,6 +5,7 @@
 package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -70,7 +71,7 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newX", m_newX);
 		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
-		Double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
+		double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
 		if (armAngles != null && armAngles[0] > 100) {
 			// Prevent going more than 10 degrees past vertical
 			armAngles = null;

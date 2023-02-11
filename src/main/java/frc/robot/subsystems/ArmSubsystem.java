@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -209,7 +210,7 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
 		// Take the calculated arm position from the forward kinematics code, and
 		// calculate the lower and upper arm angles to make sure everything works
-		Double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1]);
+		double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1]);
 		SmartDashboard.putNumber("IK Lower Arm Angle", armPosition[0]);
 		SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
 	}

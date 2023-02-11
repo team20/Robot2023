@@ -34,7 +34,7 @@ public class InverseKinematicsTool {
 	 * @return
 	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
-	public static Double[] calculateArmAngles(double x, double y) {
+	public static double[] calculateArmAngles(double x, double y) {
 		// All calculations are in radians
 		// This finds the angle between the arm base(a horizontal line,) and the
 		// HYPOTENUSE
@@ -90,7 +90,7 @@ public class InverseKinematicsTool {
 			upperArmAngle = Math.PI + angleFormedByArms;
 		}
 		// Convert to degrees and a Double for NaN checks
-		Double[] returnValue = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
+		double[] returnValue = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
 		// angles. If that's the case, log an error, and set the returned angle array to
 		// null
