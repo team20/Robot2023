@@ -87,13 +87,12 @@ public class TagAlignCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  //DriveSubsystem.get().tankDrive(-0.25, -0.25);
-  double z = -AprilTagSubsystem.get().getDistance();
-  double x = AprilTagSubsystem.get().getX();
+    //DriveSubsystem.get().tankDrive(-0.25, -0.25);
+    double z = -AprilTagSubsystem.get().getDistance();
+    double x = AprilTagSubsystem.get().getX();
 
-  Pose2d currPose = DriveSubsystem.get().getPose(); //current pose based on navx data
-  m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
-
+    Pose2d currPose = DriveSubsystem.get().getPose(); //current pose based on navx data
+    m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
   }
     
   // Called every time the scheduler runs while the command is scheduled.
