@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+//TODO REVIEW FOR CHANGES THIS YEAR
 public class DriveSubsystem extends SubsystemBase {	
   
         private static DriveSubsystem s_subsystem;
@@ -107,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
 
                 //m_turnController.setTolerance(DriveConstants.kTurnTolerance);
 
-                m_odometry = new DifferentialDriveOdometry(new Rotation2d(),0,0,new Pose2d());
+                m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),0,0);
                 // this is what they did in 2020 with the navX:
                 // Rotation2d.fromDegrees(getHeading()));
                 resetEncoders();
@@ -116,13 +116,11 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         public void periodic() {
-                SmartDashboard.putNumber("Curr X", getPose().getX());
-                SmartDashboard.putNumber("Curr Y", getPose().getY());
-                SmartDashboard.putNumber("the angle", getHeading() < 0 ? getHeading() + 360 : getHeading());
+                //SmartDashboard.putNumber("the angle", getHeading());
                 // System.out.println("the angle is: " + getHeading());
                 //SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
-                 m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-                                 getRightEncoderPosition());
+                // m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
+                //                 getRightEncoderPosition());
                  if(DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake && !DriverStation.isAutonomous()){
                          m_frontLeft.setIdleMode(IdleMode.kCoast);
                          m_frontRight.setIdleMode(IdleMode.kCoast);
@@ -197,7 +195,6 @@ public class DriveSubsystem extends SubsystemBase {
         public double getHeading() {
                 return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
-
         public double getPitch() {
                 return m_gyro.getPitch() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
         }
@@ -231,7 +228,8 @@ public class DriveSubsystem extends SubsystemBase {
          * @param pose Pose to set the robot to
          */
         public void resetOdometry(Pose2d pose) {
-                m_odometry.resetPosition(new Rotation2d(getHeading()), 0,0,pose);
+                resetEncoders();
+                m_odometry.resetPosition(m_gyro.getRotation2d(),0,0,pose);
         }
 
 
