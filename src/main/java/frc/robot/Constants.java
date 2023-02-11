@@ -4,7 +4,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
-
 public final class Constants {
 
 	public static final class ArduinoConstants {
@@ -93,10 +92,10 @@ public final class Constants {
 
 	public static final class DriveConstants {
 
-        //TODO CHANGE ALL OF THESE
+		// TODO CHANGE ALL OF THESE
 		public static final int kFrontLeftPort = 3;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort=2;
+		public static final int kBackLeftPort = 2;
 		public static final boolean kBackLeftOppose = false;
 
 		public static final int kFrontRightPort = 4;
@@ -122,10 +121,10 @@ public final class Constants {
 		public static final SPI.Port kGyroPort = SPI.Port.kMXP;
 		public static final boolean kGyroReversed = true;
 
-        //TODO CHANGE ALL OF THESE
-		public static final double kTurnP = 0.002; //was 0.005
-		public static final double kTurnI = 0; //was 0.003
-		public static final double kTurnD = 0; //0.0
+		// TODO CHANGE ALL OF THESE
+		public static final double kTurnP = 0.002; // was 0.005
+		public static final double kTurnI = 0; // was 0.003
+		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
 		public static final double ksVolts = 0.196;
 		public static final double kvVoltSecondsPerMeter = 2.15;
@@ -146,9 +145,10 @@ public final class Constants {
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
 		public static final double kBackupDistance = Units.feetToMeters(2);
-		public static final double kRampRate = .1;//1?
+		public static final double kRampRate = .1;// 1?
 		public static final double kSpeedLimitFactor = .5;
-		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to														// be checked
+		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
+																// // be checked
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
@@ -157,13 +157,12 @@ public final class Constants {
 				* DriveConstants.kWheelDiameterMeters;
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters * 60;
-        public static final double kBalanceP = 0.005;
-        public static final double kBalanceI = 0.0001;
-        public static final double kBalanceD = 0.0001;
-
-	
+		public static final double kBalanceP = 0.005;
+		public static final double kBalanceI = 0.0001;
+		public static final double kBalanceD = 0.0001;
 
 	}
+
 	public static final class LimelightConstants { // TODO: tune PID loop
 		public static final double kDisP = 0.02;
 		public static final double kDisI = 0;
