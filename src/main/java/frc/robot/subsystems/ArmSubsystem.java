@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -28,6 +29,11 @@ public class ArmSubsystem extends SubsystemBase {
 
 	private final SparkMaxPIDController m_lowerArmController = m_lowerArmMotor.getPIDController();
 	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
+
+	/**
+	 * Tracks if the arm was moved in code by anything other than joysticks
+	 */
+	private boolean m_armPositionChanged = false;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -93,6 +99,7 @@ public class ArmSubsystem extends SubsystemBase {
 		// ArmConstants.kSlotID);
 		// m_lowerArmController.setSmartMotionMinOutputVelocity(ArmConstants.kMinVelocity,
 		// ArmConstants.kSlotID);
+
 	}
 
 	public static ArmSubsystem get() {
@@ -145,9 +152,56 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Target Upper Arm Angle", angle);
 	}
 
+	public boolean getArmPositionChanged() {
+		return m_armPositionChanged;
+	}
+
+	public void setArmPositionChanged(boolean armPositionChanged) {
+		m_armPositionChanged = armPositionChanged;
+	}
+
+	/**
+	 * Takes a target angle and current angle, and checks if the current angle is
+	 * close enough to the target angle. The number of degrees the current angle can
+	 * be different from the target angle is defined
+	 * by {@link ArmConstants.kAllowedDegreesError}
+	 * 
+	 * @param targetAngle
+	 *                     The target angle
+	 * @param currentAngle
+	 *                     The current angle
+	 * @return
+	 *         Whether or not the current angle is close enough to the target angle
+	 */
+	public boolean isNearTargetAngle(double targetAngle, double currentAngle) {
+		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
+		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
+		/* Simple bounds checking without accounting for wraparound */
+		if (currentAngle < upperAngleBound && currentAngle > lowerAngleBound) {
+			return true;
+			/*
+			 * If there's wraparound, there's two parts of the accepted range: The part that
+			 * hasn't wrapped around, and the part that has. e.g., targetAngle = 1,
+			 * currentAngle = 358:
+			 * The wrapped range is 357-5 degrees. wrappedLowerAngleBound covers 357-360,
+			 * wrappedUpperAngleBound covers 0-5, so all angles are covered.
+			 */
+		} else if (lowerAngleBound < 0 || upperAngleBound > 360) {
+			double wrappedLowerAngleBound = MathUtil.inputModulus(lowerAngleBound, 0, 360);
+			double wrappedUpperAngleBound = MathUtil.inputModulus(upperAngleBound, 0, 360);
+			if (currentAngle > wrappedLowerAngleBound || currentAngle < wrappedUpperAngleBound) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
+		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getAppliedOutput());
+		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
+		SmartDashboard.putBoolean("Within Bounds?", isNearTargetAngle(0, 9));
 		// Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());

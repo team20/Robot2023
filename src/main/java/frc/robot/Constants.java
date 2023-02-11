@@ -25,7 +25,9 @@ public final class Constants {
 		// Change to actual length of arm
 		public static final double kUpperArmLength = 7;
 		public static final int kCountsPerRevolution = 42;
-		public static final double kAllowedError = 2;
+		// Allowable difference in degrees between the target arm angle
+		// and the current arm angle
+		public static final double kAllowedDegreesError = 4;
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
 		public static final double kMinAngle = 45;

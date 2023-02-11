@@ -26,26 +26,15 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(0
-		// m_controller.getRawAxis(0), m_controller.getRawAxis(1)));
-
-		// new Trigger(() ->
-		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-		// .onTrue(new ArmScoreCommand(ArmPosition.HIGH));
-		// new Trigger(() ->
-		// m_controller.getRawButton(ControllerConstants.Button.kSquare))
-		// .onTrue(new ArmScoreCommand(ArmPosition.LOW));
-		// new Trigger(() ->
-		// m_controller.getRawButton(ControllerConstants.Button.kCircle))
-		// .onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
-
-		// new Trigger(() ->
-		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-		// .onTrue(new UpCommand());
-
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
 				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftX),
-				() -> m_controller.getRawAxis(ControllerConstants.Axis.kRightY)));
+				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftY)));
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
+				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
+				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
+				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
 	}
 
 	public Command getAutonomousCommand() {
