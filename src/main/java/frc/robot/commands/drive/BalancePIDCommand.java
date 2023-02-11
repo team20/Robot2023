@@ -10,36 +10,38 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BalancePIDCommand extends CommandBase {
-  
-  PIDController m_controller = new PIDController(DriveConstants.kBalanceP, DriveConstants.kBalanceI, DriveConstants.kBalanceD);
-  /** Creates a new BalancePIDCommand. */
-  public BalancePIDCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(DriveSubsystem.get());
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_controller.setSetpoint(0);
-  }
+	PIDController m_controller = new PIDController(DriveConstants.kBalanceP, DriveConstants.kBalanceI,
+			DriveConstants.kBalanceD);
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double setpoint = m_controller.calculate(DriveSubsystem.get().getPitch());
-    DriveSubsystem.get().tankDrive(setpoint, setpoint);
-  }
+	/** Creates a new BalancePIDCommand. */
+	public BalancePIDCommand() {
+		// Use addRequirements() here to declare subsystem dependencies.
+		addRequirements(DriveSubsystem.get());
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		m_controller.setSetpoint(0);
+	}
 
-  }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		double setpoint = m_controller.calculate(DriveSubsystem.get().getPitch());
+		DriveSubsystem.get().tankDrive(setpoint, setpoint);
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

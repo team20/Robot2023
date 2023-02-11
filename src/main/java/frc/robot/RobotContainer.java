@@ -13,24 +13,26 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.Constants.ControllerConstants.Axis;
+
 public class RobotContainer {
-  private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
+	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
+	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 
-  private Joystick m_driverController = new Joystick(0);
-  public RobotContainer() {
-    configureButtonBindings();
-  }
+	private Joystick m_driverController = new Joystick(0);
 
-  private void configureButtonBindings() {
-    DriveSubsystem.get().setDefaultCommand(new DefaultDriveCommand(
-    () -> -m_driverController.getRawAxis(Axis.kLeftY),
-    () -> m_driverController.getRawAxis(Axis.kLeftTrigger),
-    () -> m_driverController.getRawAxis(Axis.kRightTrigger)));
-  }
+	public RobotContainer() {
+		configureButtonBindings();
+	}
 
-  public Command getAutonomousCommand() {
-    return new BalanceNoPIDCommand();
-  }
+	private void configureButtonBindings() {
+		DriveSubsystem.get().setDefaultCommand(new DefaultDriveCommand(
+				() -> -m_driverController.getRawAxis(Axis.kLeftY),
+				() -> m_driverController.getRawAxis(Axis.kLeftTrigger),
+				() -> m_driverController.getRawAxis(Axis.kRightTrigger)));
+	}
+
+	public Command getAutonomousCommand() {
+		return new BalanceNoPIDCommand();
+	}
 }
