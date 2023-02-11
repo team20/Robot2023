@@ -16,7 +16,8 @@ public class CloseGripperCommand extends CommandBase {
 
     @Override
     public void execute() {
-        AbsoluteGripperSubsystem.get().setGripperMotor(0.2); // change speed as neccessary 
+        AbsoluteGripperSubsystem.get().setGripperMotor(0.1); // change speed as neccessary 
+
     }
     
     @Override
@@ -25,10 +26,12 @@ public class CloseGripperCommand extends CommandBase {
     }
 
     @Override
-    public boolean isFinished() {
-        if 
-        
-        return false;
+    public boolean isFinished() {  
+        if(AbsoluteGripperSubsystem.get().getGripperEncoderPosition() >= 90){
+            return true;
+        } else {
+            return false;
+        }   
     }
     
 }

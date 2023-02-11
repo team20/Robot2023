@@ -9,6 +9,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
 import frc.robot.Constants.GripperConstants;
@@ -23,6 +26,7 @@ public class AbsoluteGripperSubsystem extends SubsystemBase {
 
 	/** Creates a new GripperSubsystem. */
 	public AbsoluteGripperSubsystem() {
+		final GenericHID m_controller = new GenericHID(frc.robot.Constants.ControllerConstants.kDriverControllerPort);
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -60,7 +64,9 @@ public class AbsoluteGripperSubsystem extends SubsystemBase {
 		m_gripperWinch.set(speed);
 	}
 
-    public double get
+	public double getGripperEncoderPosition(){
+		return m_gripperWinchEncoder.getPosition();
+	}
 
 	public static AbsoluteGripperSubsystem get() {
 		return s_subsystem;

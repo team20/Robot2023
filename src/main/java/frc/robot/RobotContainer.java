@@ -13,12 +13,12 @@ import frc.robot.commands.arm.UpCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.AbsoluteGripperSubsystem;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
-	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
+	private AbsoluteGripperSubsystem m_gripperSubsystem = new AbsoluteGripperSubsystem();
 	private final GenericHID m_controller = new GenericHID(ControllerConstants.kDriverControllerPort);
 
 	public RobotContainer() {
