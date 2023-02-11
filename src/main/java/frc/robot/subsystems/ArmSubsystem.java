@@ -35,8 +35,11 @@ public class ArmSubsystem extends SubsystemBase {
 	 * Tracks if the arm was moved in code by anything other than joysticks
 	 */
 	private boolean m_armPositionChanged = false;
-	private double m_targetLowerAngle = 0;
-	private double m_targetUpperAngle = 0;
+
+	/** Stores the angle we want the lower arm to be at */
+	private double m_targetLowerArmAngle = 0;
+	/** Stores the angle we want the upper arm to be at */
+	private double m_targetUpperArmAngle = 0;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -132,7 +135,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the lower arm in degrees
 	 */
 	public void setLowerArmAngle(double angle) {
-		setAngles(angle, m_targetUpperAngle);
+		setAngles(angle, m_targetUpperArmAngle);
 	}
 
 	/**
@@ -142,22 +145,26 @@ public class ArmSubsystem extends SubsystemBase {
 	 *              The target angle of the upper arm in degrees
 	 */
 	public void setUpperArmAngle(double angle) {
-		setAngles(m_targetLowerAngle, angle);
+		setAngles(m_targetLowerArmAngle, angle);
 	}
 
 	public void setAngles(double lower, double upper) {
-		m_targetLowerAngle = lower;
+		m_targetLowerArmAngle = lower;
 		m_lowerArmController.setReference(lower, ControlType.kPosition);
 		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 
-		m_targetUpperAngle = upper;
+		m_targetUpperArmAngle = upper;
 		m_upperArmController.setReference(upper, ControlType.kPosition);
 		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 	}
 
+	/**
+	 * @return
+	 *         Whether or not the arm is at the angles we want it to be at
+	 */
 	public boolean isNearTargetAngle() {
-		return checkAngle(m_targetLowerAngle, getLowerArmAngle()) &&
-				checkAngle(m_targetUpperAngle, getUpperArmAngle());
+		return checkAngle(m_targetLowerArmAngle, getLowerArmAngle()) &&
+				checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
 	}
 
 	/**

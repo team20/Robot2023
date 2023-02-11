@@ -57,6 +57,9 @@ public class ChangeOffsetCommand extends CommandBase {
 		// otherwise, do nothing
 		// If moving on the y-axis, add m_yOffset to the current y-coordinate,
 		// otherwise, do nothing
+		// If the current angles are nowhere near the target angles, update the target
+		// coordinates. This is to account for the ArmScoreCommand also changing the arm
+		// position
 		// The reason for the if statements is to prevent movement on another axis when
 		// only one axis is being moved. Otherwise, the arm will naturally move due to
 		// gravity, causing both axes to change when we want only one to be changed
@@ -72,8 +75,8 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
 		double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
+		// Prevent the lower arm from going more than 10 degrees behind vertical
 		if (armAngles != null && armAngles[0] > 100) {
-			// Prevent going more than 10 degrees past vertical
 			armAngles = null;
 		}
 		if (m_newY > 12) {
