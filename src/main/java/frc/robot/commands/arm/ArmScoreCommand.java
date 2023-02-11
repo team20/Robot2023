@@ -7,6 +7,7 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.util.InverseKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
@@ -34,19 +35,41 @@ public class ArmScoreCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		switch (m_armPosition) {
-			case HIGH:
-				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kHighOffsets[0],
-						ArmConstants.kHighOffsets[1]);
-				break;
-			case MEDIUM:
-				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kMediumOffsets[0],
-						ArmConstants.kMediumOffsets[1]);
-				break;
-			case LOW:
-				angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kLowOffsets[0],
-						ArmConstants.kLowOffsets[1]);
-				break;
+		double[] currentArmPosition = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getUpperArmAngle(),
+				ArmSubsystem.get().getLowerArmAngle());
+		// Only move the arm to these preset positions if the x value is positive
+		// If the x value is negative, moving to these positions will cause the robot to
+		// exceed the height limit
+		if (Math.signum(currentArmPosition[0]) == 1) {
+			switch (m_armPosition) {
+				case HIGH:
+					angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kHighOffsets[0],
+							ArmConstants.kHighOffsets[1]);
+					break;
+				case MEDIUM:
+					angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kMediumOffsets[0],
+							ArmConstants.kMediumOffsets[1]);
+					break;
+				case LOW:
+					angles = InverseKinematicsTool.calculateArmAngles(ArmConstants.kLowOffsets[0],
+							ArmConstants.kLowOffsets[1]);
+					break;
+			}
+		} else {
+			switch (m_armPosition) {
+				case HIGH:
+					angles = InverseKinematicsTool.calculateArmAngles(-ArmConstants.kHighOffsets[0],
+							ArmConstants.kHighOffsets[1]);
+					break;
+				case MEDIUM:
+					angles = InverseKinematicsTool.calculateArmAngles(-ArmConstants.kMediumOffsets[0],
+							ArmConstants.kMediumOffsets[1]);
+					break;
+				case LOW:
+					angles = InverseKinematicsTool.calculateArmAngles(-ArmConstants.kLowOffsets[0],
+							ArmConstants.kLowOffsets[1]);
+					break;
+			}
 		}
 		ArmSubsystem.get().setLowerArmAngle(angles[0]);
 		ArmSubsystem.get().setUpperArmAngle(angles[1]);
