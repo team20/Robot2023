@@ -19,12 +19,19 @@ public class ChangeOffsetCommand extends CommandBase {
 	// Saved value for how much to move
 	private double m_xOffset;
 	private double m_yOffset;
+	/** The x-coordinate to move to */
 	private double m_newX;
+	/** The y-coordinate to move to */
 	private double m_newY;
 	private Supplier<Double> m_joystickX;
 	private Supplier<Double> m_joystickY;
 
-	/** Creates a new ChangeOffsetCommand. */
+	/**
+	 * Creates a new ChangeOffsetCommand.
+	 * 
+	 * @param joystickX Joystick input for moving the arm horizontally
+	 * @param joystickY Joystick input for moving the arm vertically
+	 */
 	public ChangeOffsetCommand(Supplier<Double> joystickX, Supplier<Double> joystickY) {
 		m_joystickX = joystickX;
 		m_joystickY = joystickY;
@@ -53,16 +60,18 @@ public class ChangeOffsetCommand extends CommandBase {
 		// Get current (X, Y) position from current actual angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
-		// If moving on the x-axis, add m_xOffset to the current x-coordinate,
-		// otherwise, do nothing
-		// If moving on the y-axis, add m_yOffset to the current y-coordinate,
-		// otherwise, do nothing
-		// If the current angles are nowhere near the target angles, update the target
-		// coordinates. This is to account for the ArmScoreCommand also changing the arm
-		// position
-		// The reason for the if statements is to prevent movement on another axis when
-		// only one axis is being moved. Otherwise, the arm will naturally move due to
-		// gravity, causing both axes to change when we want only one to be changed
+		/*
+		 * If moving on the x-axis, add m_xOffset to the current x-coordinate,
+		 * otherwise, do nothing
+		 * If moving on the y-axis, add m_yOffset to the current y-coordinate,
+		 * otherwise, do nothing
+		 * The reason for the if statements is to prevent movement on another axis when
+		 * only one axis is being moved. Otherwise, the arm will naturally move due to
+		 * gravity, causing both axes to change when we want only one to be changed
+		 * If the current angles are nowhere near the target angles, update the target
+		 * coordinates. This is to account for the ArmScoreCommand also changing the arm
+		 * position
+		 */
 		if ((m_xOffset != 0) || !ArmSubsystem.get().isNearTargetAngle()) {
 			m_newX = coordinates[0] + m_xOffset;
 		}

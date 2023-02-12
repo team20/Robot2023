@@ -113,16 +113,14 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * @return
-	 *         The angle of the lower arm in degrees
+	 * @return The angle of the lower arm in degrees
 	 */
 	public double getLowerArmAngle() {
 		return m_lowerArmEncoder.getPosition();
 	}
 
 	/**
-	 * @return
-	 *         The angle of the upper arm in degrees
+	 * @return The angle of the upper arm in degrees
 	 */
 	public double getUpperArmAngle() {
 		return m_upperArmEncoder.getPosition();
@@ -131,8 +129,7 @@ public class ArmSubsystem extends SubsystemBase {
 	/**
 	 * Sets the angle for the lower arm, and logs the angle
 	 * 
-	 * @param angle
-	 *              The target angle of the lower arm in degrees
+	 * @param angle The target angle of the lower arm in degrees
 	 */
 	public void setLowerArmAngle(double angle) {
 		setAngles(angle, m_targetUpperArmAngle);
@@ -141,8 +138,7 @@ public class ArmSubsystem extends SubsystemBase {
 	/**
 	 * Sets the angle for the upper arm, and logs the angle
 	 * 
-	 * @param angle
-	 *              The target angle of the upper arm in degrees
+	 * @param angle The target angle of the upper arm in degrees
 	 */
 	public void setUpperArmAngle(double angle) {
 		setAngles(m_targetLowerArmAngle, angle);
@@ -159,8 +155,7 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * @return
-	 *         Whether or not the arm is at the angles we want it to be at
+	 * @return Whether or not the arm is at the angles we want it to be at
 	 */
 	public boolean isNearTargetAngle() {
 		return checkAngle(m_targetLowerArmAngle, getLowerArmAngle()) &&
@@ -173,17 +168,14 @@ public class ArmSubsystem extends SubsystemBase {
 	 * be different from the target angle is defined
 	 * by {@link ArmConstants.kAllowedDegreesError}
 	 * 
-	 * @param targetAngle
-	 *                     The target angle
-	 * @param currentAngle
-	 *                     The current angle
-	 * @return
-	 *         Whether or not the current angle is close enough to the target angle
+	 * @param targetAngle  The target angle
+	 * @param currentAngle The current angle
+	 * @return Whether or not the current angle is close enough to the target angle
 	 */
 	private boolean checkAngle(double targetAngle, double currentAngle) {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
-		/* Simple bounds checking without accounting for wraparound */
+		// Simple bounds checking without accounting for wraparound
 		if (currentAngle < upperAngleBound && currentAngle > lowerAngleBound) {
 			return true;
 			/*
