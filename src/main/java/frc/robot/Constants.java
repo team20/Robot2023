@@ -9,15 +9,17 @@ public final class Constants {
 		// public static final int kGripperPort = 4;
 		public static final boolean kFrontLeftInvert = false;
 		public static final int kWinchPort = 5;
-		public static final double kP = 0.003; // have to figure out constants later
+		public static final double kP = 0.0003; // have to figure out constants later
 		public static final double kI = 0;
 		public static final double kD = 0;
 		public static final double kIz = 5;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kWinchEncoderZeroOffset = 110.2;
-		public static final double kMinOutput = -1;
-		public static final double kMaxOutput = 1;
+		public static final double kMinOutput = -0.5;
+		public static final double kMaxOutput = 0.5;
+		public static final int kOpenLimitSwitchPort = 0; // change port
+		public static final int kCloseLimitSwitchPort = 0; // change port
 	}
 
 	public static final class ArmConstants {

@@ -5,28 +5,32 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
-import frc.robot.Constants.GripperConstants;
 
-public class AbsoluteGripperSubsystem extends SubsystemBase {
-	private static AbsoluteGripperSubsystem s_subsystem;
+public class GripperSubsystem extends SubsystemBase {
+	private static GripperSubsystem s_subsystem;
 
 	private CANSparkMax m_gripperWinch = new CANSparkMax(GripperConstants.kWinchPort, MotorType.kBrushless);
-    private final SparkMaxAbsoluteEncoder m_gripperWinchEncoder = m_gripperWinch
-			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+    private final RelativeEncoder m_gripperWinchEncoder = m_gripperWinch.getEncoder();
+	private SparkMaxLimitSwitch m_openlimitSwitch;
+	private SparkMaxLimitSwitch m_closelimitSwitch;
     private final SparkMaxPIDController m_gripperWinchController = m_gripperWinch.getPIDController();
 
 	/** Creates a new GripperSubsystem. */
-	public AbsoluteGripperSubsystem() {
+	public GripperSubsystem() {
 		final GenericHID m_controller = new GenericHID(frc.robot.Constants.ControllerConstants.kDriverControllerPort);
+		m_openlimitSwitch = m_gripperWinch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_closelimitSwitch = m_gripperWinch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+
+
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -43,7 +47,7 @@ public class AbsoluteGripperSubsystem extends SubsystemBase {
 		m_gripperWinch.enableVoltageCompensation(12);
 		m_gripperWinch.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
 		m_gripperWinchEncoder.setPositionConversionFactor(360);
-		m_gripperWinchEncoder.setZeroOffset(GripperConstants.kWinchEncoderZeroOffset);
+		// m_gripperWinchEncoder.setZeroOffset(GripperConstants.kWinchEncoderZeroOffset);
 
         m_gripperWinchController.setP(GripperConstants.kP);
 		m_gripperWinchController.setI(GripperConstants.kI);
@@ -68,7 +72,19 @@ public class AbsoluteGripperSubsystem extends SubsystemBase {
 		return m_gripperWinchEncoder.getPosition();
 	}
 
-	public static AbsoluteGripperSubsystem get() {
+	public void setGripperEncoderPosition(double position){
+		m_gripperWinchController.setReference(position, ControlType.kPosition);
+	}
+
+	public static GripperSubsystem get() {
 		return s_subsystem;
+	}
+
+	public boolean getOpenLimitSwitch(){
+		return m_openlimitSwitch.isPressed();
+	}
+
+	public boolean getCloseLimitSwitch(){
+		return m_closelimitSwitch.isPressed();
 	}
 }
