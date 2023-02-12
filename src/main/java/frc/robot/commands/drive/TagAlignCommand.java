@@ -87,7 +87,7 @@ public class TagAlignCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //DriveSubsystem.get().tankDrive(-0.25, -0.25);
+  //DriveSubsystem.get().tankDrive(-0.25, -0.25);
     double z = -AprilTagSubsystem.get().getDistance();
     double x = AprilTagSubsystem.get().getX();
 
@@ -107,14 +107,14 @@ public class TagAlignCommand extends CommandBase {
       //m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
     }
 
-    DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose())); //call arcade drive with goalpose and turn 
+    DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose()));
     
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) { 
+  public void end(boolean interrupted) {
     DriveSubsystem.get().tankDrive(0, 0); //stop robot
   }
 
@@ -152,7 +152,7 @@ public class TagAlignCommand extends CommandBase {
       m_driveSpeed = m_speed;
       SmartDashboard.putNumber("Turn Amount", m_speed*Math.sin(vectorAngleAdjusted));
       return Math.sin(vectorAngleAdjusted)*2;
-    }else{
+    }else{ 
       m_driveSpeed = 0; //stops the bot
       return Math.signum(Math.sin(vectorAngleAdjusted)); //returns -1.0
     }
