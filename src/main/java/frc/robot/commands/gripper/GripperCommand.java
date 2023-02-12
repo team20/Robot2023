@@ -1,4 +1,4 @@
-package frc.robot.commands.gripperAbsolute;
+package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSubsystem;
@@ -26,18 +26,18 @@ public class GripperCommand extends CommandBase {
         switch (m_gripperWinchPosition) {
             case OPEN:
                 while (GripperSubsystem.get().getOpenLimitSwitch() == false) {
-                    // If limit switch is not pressed, motor will run
+                    // while limit switch is not pressed, motor will run
                     GripperSubsystem.get().setGripperMotor(0.1);
                 }
-                // If it is pressed, stop
+                // When it is pressed, stop
                 GripperSubsystem.get().setGripperMotor(0);
                 break;
             case CLOSE:
                 while (GripperSubsystem.get().getCloseLimitSwitch() == false) {
-                    // If limit switch is not pressed, motor will run
+                    // While limit switch is not pressed, motor will run
                     GripperSubsystem.get().setGripperMotor(-0.1);
                 }
-                // If it is pressed, stop
+                // When it is pressed, stop
                 GripperSubsystem.get().setGripperMotor(0);
                 break;
             default:
