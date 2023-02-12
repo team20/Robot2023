@@ -10,6 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * A {@code DriveDistanceCommand2} can move the robot by a certain distance.
+ * @author Jeong Hyon Hwang
  */
 public class DriveDistanceCommand2 extends CommandBase {
   double m_distance;
