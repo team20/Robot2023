@@ -30,11 +30,11 @@ public class RobotContainer {
 				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftX),
 				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftY)));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
+				.onTrue(new ArmScoreCommand(ArmPosition.HIGH_A));
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX))
+				.onTrue(new ArmScoreCommand(ArmPosition.LOW_A));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
-				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
+				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_A));
 	}
 
 	public Command getAutonomousCommand() {

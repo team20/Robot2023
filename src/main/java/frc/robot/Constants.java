@@ -14,10 +14,19 @@ public final class Constants {
 	}
 
 	public static final class ArmConstants {
-		// Preset offsets for arm
-		public static final double[] kHighOffsets = { 12, 3 };
-		public static final double[] kMediumOffsets = { 11, 1 };
-		public static final double[] kLowOffsets = { 8, -1 };
+		// Preset angles for arm
+		// Arm is foward
+		public static final double[] kHighAnglesA = { 50, 160 };
+		// Arm is foward
+		public static final double[] kHighAnglesB = { 45, 167 };
+		// Arm is backward
+		public static final double[] kMediumAnglesA = { 95, 267 };
+		// Arm is backward
+		public static final double[] kMediumAnglesB = { 90, 270 };
+		// Arm is foward
+		public static final double[] kLowAnglesA = { 80, 40 };
+		// Arm is foward
+		public static final double[] kLowAnglesB = { 90, 40 };
 		// Change to actual length of arm
 		public static final double kLowerArmLength = 6.2;
 		// For joystick speed
@@ -25,13 +34,18 @@ public final class Constants {
 		// Change to actual length of arm
 		public static final double kUpperArmLength = 7;
 		public static final int kCountsPerRevolution = 42;
-		// Allowable difference in degrees between the target arm angle
-		// and the current arm angle
+		/**
+		 * Allowable difference in degrees between the target arm angle and the current
+		 * arm angle
+		 */
 		public static final double kAllowedDegreesError = 4;
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
 		public static final double kMinAngle = 45;
-		public static final double kMaxAngle = 135;
+		/** Maximum angle the lower arm can go */
+		public static final double kMaxAngle = 100;
+		/** Maximum height the arm can go to */
+		public static final double kMaxHeight = 12;
 		public static final double kLowerEncoderZeroOffset = 110.2;
 		public static final double kUpperEncoderZeroOffset = 248.9;
 		public static final int kLowerMotor = 2;
