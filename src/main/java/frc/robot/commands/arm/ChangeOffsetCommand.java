@@ -84,11 +84,7 @@ public class ChangeOffsetCommand extends CommandBase {
 		SmartDashboard.putNumber("newY", m_newY);
 		// Calculate angles for new position
 		double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
-		// Prevent the lower arm from going more than 10 degrees behind vertical
-		if (armAngles != null && armAngles[0] > 100) {
-			armAngles = null;
-		}
-		if (m_newY > 12) {
+		if (m_newY > ArmConstants.kMaxHeight) {
 			// Height limit!
 			armAngles = null;
 		}

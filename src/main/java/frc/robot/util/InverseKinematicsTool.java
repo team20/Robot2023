@@ -90,7 +90,7 @@ public class InverseKinematicsTool {
 			upperArmAngle = Math.PI + angleFormedByArms;
 		}
 		// Convert to degrees and a Double for NaN checks
-		double[] returnValue = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
+		double[] armAngles = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
 		// angles. If that's the case, log an error, and set the returned angle array to
 		// null
@@ -100,8 +100,11 @@ public class InverseKinematicsTool {
 			} catch (Exception e) {
 				System.out.println("Target position unreachable");
 			}
-			returnValue = null;
+			armAngles = null;
+			// Prevent the lower arm from going more than 10 degrees behind vertical
+		} else if (armAngles != null && armAngles[0] > ArmConstants.kMaxAngle) {
+			armAngles = null;
 		}
-		return returnValue;
+		return armAngles;
 	}
 }
