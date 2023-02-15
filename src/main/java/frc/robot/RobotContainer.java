@@ -31,9 +31,9 @@ public class RobotContainer {
 				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftY)));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kX))
 				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
 				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
 	}
 
