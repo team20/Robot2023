@@ -5,8 +5,9 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class GripperCommand extends CommandBase {
     public enum GripperWinchPosition {
-        OPEN,
-        CLOSE
+        CLOSECUBE,
+        CLOSECONE,
+        OPEN
     }
 
     private GripperWinchPosition m_gripperWinchPosition;
@@ -32,7 +33,16 @@ public class GripperCommand extends CommandBase {
                 // When it is pressed, stop
                 GripperSubsystem.get().setGripperMotor(0);
                 break;
-            case CLOSE:
+        // To do: limit switch stuff for cube vs cone
+            case CLOSECONE:
+                while (GripperSubsystem.get().getCloseLimitSwitch() == false) {
+                    // while limit switch is not pressed, motor will run
+                    GripperSubsystem.get().setGripperMotor(0.1);
+                }
+                // When it is pressed, stop
+                GripperSubsystem.get().setGripperMotor(0);
+                break;
+            case CLOSECUBE:
                 while (GripperSubsystem.get().getCloseLimitSwitch() == false) {
                     // While limit switch is not pressed, motor will run
                     GripperSubsystem.get().setGripperMotor(-0.1);

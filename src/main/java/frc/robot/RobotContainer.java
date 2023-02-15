@@ -36,13 +36,14 @@ public class RobotContainer {
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
 				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
 
-		// Gripper (open,close) joystick triggers:
-		//Gripper opens if right joystick is pushed up
-		new Trigger(() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kRightY) > ControllerConstants.kDeadzone)
+		// Gripper buttons (close for cube, close for cone, open and drop)
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kLeftBumper))
+				.onTrue(new GripperCommand(GripperWinchPosition.CLOSECUBE));
+		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
+				.onTrue(new GripperCommand(GripperWinchPosition.CLOSECONE));
+		new Trigger(() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger) > ControllerConstants.kTriggerDeadzone)
 				.onTrue(new GripperCommand(GripperWinchPosition.OPEN));
-		//Gripper closes if right joystick is pushed down
-		new Trigger(() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kRightY) < -ControllerConstants.kDeadzone)
-				.onTrue(new GripperCommand(GripperWinchPosition.CLOSE));
+
 		// new Trigger(() ->
 		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 		// .onTrue(new UpCommand());
