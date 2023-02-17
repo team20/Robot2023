@@ -90,26 +90,6 @@ public class ChangeOffsetCommand extends CommandBase {
 		}
 		// Set angles, if they are invalid, do nothing
 		if (armAngles != null) {
-			// If the sign of the current arm position is different than the sign of the
-			// target arm position (positive/negative X transition), move the upper arm
-			// first, then the lower arm to reduce sudden snapping
-			if (false && Math.signum(coordinates[0]) != Math.signum(m_newX)) {
-				// Get the number of degrees the lower arm will travel
-				double lowerArmAngleDiff = 180 - armAngles[0] * 2;
-				// If we are going negative, we need to add the degrees the lower arm will
-				// travel to current upper arm angle
-				if (m_newX == -1) {
-					// Keep the upper arm at the same angle relative to the arm base
-					ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle() + lowerArmAngleDiff);
-					// If we are going positive, we need to subtract the degrees the lower arm will
-					// travel from the current upper arm angle
-				} else if (m_newX == 1) {
-					ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle() - lowerArmAngleDiff);
-				}
-
-				// Move the lower arm into position
-				ArmSubsystem.get().setLowerArmAngle(armAngles[0]);
-			}
 			// When we are done getting the upper arm into the intermediate position, set it
 			// to the calculated angle
 			SmartDashboard.putNumber("Target Lower Arm Angle", armAngles[0]);
