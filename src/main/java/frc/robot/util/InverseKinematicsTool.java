@@ -4,6 +4,7 @@
 package frc.robot.util;
 
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.arm.ArmScoreCommand;
 
 /**
  * Contains the inverse kinematics code to calculate the arm angles. That's
@@ -101,8 +102,13 @@ public class InverseKinematicsTool {
 				System.out.println("Target position unreachable");
 			}
 			armAngles = null;
-			// Prevent the lower arm from going more than 10 degrees behind vertical
-		} else if (armAngles != null && armAngles[0] > ArmConstants.kMaxAngle) {
+			// Prevent the lower arm from going more than 10 degrees behind vertical or
+			// below _ degreees
+		} else if (armAngles[0] > ArmConstants.kLowerArmMaxAngle || armAngles[0] < ArmConstants.kLowerArmMinAngle) {
+			armAngles = null;
+			// Prevent the upper arm from going more than 270 degrees or less than 15
+			// degrees relative to the lower arm
+		} else if (armAngles[1] > ArmConstants.kUpperArmMaxAngle || armAngles[1] < ArmConstants.kUpperArmMinAngle) {
 			armAngles = null;
 		}
 		return armAngles;

@@ -39,9 +39,14 @@ public final class Constants {
 		public static final double kAllowedDegreesError = 4;
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
-		public static final double kMinAngle = 45;
+		/** Smallest angle the lower arm can go */
+		public static final double kLowerArmMinAngle = 0;
 		/** Maximum angle the lower arm can go */
-		public static final double kMaxAngle = 100;
+		public static final double kLowerArmMaxAngle = 100;
+		/** Smallest angle the lower arm can go */
+		public static final double kUpperArmMinAngle = 15;
+		/** Maximum angle the lower arm can go */
+		public static final double kUpperArmMaxAngle = 270;
 		/** Maximum height the arm can go to */
 		public static final double kMaxHeight = 12;
 		public static final double kLowerEncoderZeroOffset = 110.2;
