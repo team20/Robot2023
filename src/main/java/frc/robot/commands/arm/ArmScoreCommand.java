@@ -5,11 +5,13 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.InverseKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
-	/** Creates a new ArmScore. */
+	Double[] angles = { 90.0, 0.0 };
+
 	public enum ArmPosition {
 		HIGH,
 		MEDIUM,
@@ -17,11 +19,8 @@ public class ArmScoreCommand extends CommandBase {
 	}
 
 	private ArmPosition m_armPosition;
-	// TODO Move these values to ArmSubsytem constructor, and calculate angles once
-	private double[] m_highOffsets = { 5, 9 };
-	private double[] m_mediumOffsets = { 5, 0 };
-	private double[] m_lowOffsets = { 0, -10 };
 
+	/** Creates a new ArmScoreCommand. */
 	public ArmScoreCommand(ArmPosition armPosition) {
 		m_armPosition = armPosition;
 		addRequirements(ArmSubsystem.get());
@@ -35,16 +34,23 @@ public class ArmScoreCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Double[] angles = { 90.0, 0.0 };
 		switch (m_armPosition) {
 			case HIGH:
-				angles = InverseKinematicsTool.getArmAngles(m_highOffsets[0], m_highOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kHighOffsets[0], ArmConstants.kHighOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kHighOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kHighOffsets[1]);
 				break;
 			case MEDIUM:
-				angles = InverseKinematicsTool.getArmAngles(m_mediumOffsets[0], m_mediumOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kMediumOffsets[0],
+						ArmConstants.kMediumOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kMediumOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kMediumOffsets[1]);
 				break;
 			case LOW:
-				angles = InverseKinematicsTool.getArmAngles(m_lowOffsets[0], m_lowOffsets[1]);
+				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kLowOffsets[0], ArmConstants.kLowOffsets[1]);
+				// ArmSubsystem.get().setXOffset(ArmConstants.kLowOffsets[0]);
+				// ArmSubsystem.get().setYOffset(ArmConstants.kLowOffsets[1]);
+				break;
 			default:
 				break;
 		}

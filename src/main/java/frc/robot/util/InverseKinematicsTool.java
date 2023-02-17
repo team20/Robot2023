@@ -4,6 +4,7 @@
 
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ArmConstants;
 
 /**
@@ -23,7 +24,7 @@ public class InverseKinematicsTool {
 	 *          The number of units to move the arm vertically from the reference
 	 *          position
 	 * @return
-	 *         The angle of the lower arm, and the angle of the upper arm
+	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
 	public static Double[] getArmAngles(double x, double y) {
 		// IMPORTANT NOTE: "HYPOTENUSE" refers to the line segment formed between the
@@ -35,25 +36,35 @@ public class InverseKinematicsTool {
 		// The current reference position is the lower arm at 90 degrees(straight up),
 		// and the upper arm at 0 degrees(straight out.) (0, 0) is the tip of this
 		// reference position
-		double referenceLowerArmVectorX = ArmConstants.kLowerArmLength * Math.cos(Math.toRadians(90));
-		double referenceLowerArmVectorY = ArmConstants.kLowerArmLength * Math.sin(Math.toRadians(90));
-		double referenceUpperArmVectorX = ArmConstants.kUpperArmLength * Math.cos(Math.toRadians(0));
-		double referenceUpperArmVectorY = ArmConstants.kUpperArmLength * Math.sin(Math.toRadians(0));
-		// Modification notes: If you had coordinates where (0, 0) was the base of the
-		// arm, you could use those numbers as the target vector values. (14, 15) would
-		// mean targetCombinedArmectorX would be 14, and targetCombinedArmVectorY would
-		// be 15
+		SmartDashboard.putNumber("x", x);
+		SmartDashboard.putNumber("y", y);
+		// double referenceLowerArmVectorX = ArmConstants.kLowerArmLength *
+		// Math.cos(Math.toRadians(90));
+		// double referenceLowerArmVectorY = ArmConstants.kLowerArmLength *
+		// Math.sin(Math.toRadians(90));
+		// double referenceUpperArmVectorX = ArmConstants.kUpperArmLength *
+		// Math.cos(Math.toRadians(-90));
+		// double referenceUpperArmVectorY = ArmConstants.kUpperArmLength *
+		// Math.sin(Math.toRadians(-90));
+		// Modification notes: If you had arm coordinates where (0, 0) was the base of
+		// the arm, you could use those numbers as the target vector values. (14, 15)
+		// would mean targetCombinedArmectorX would be 14, and targetCombinedArmVectorY
+		// would be 15. a.k.a, you could use foward kinematics to calculate arm
+		// position, meaning (0, 0) is your arm position, and your starting offsets
+		// where your arm is
 		// x is the number of units to move horizontally from the reference position.
 		// -1 would mean move the arm back 1 unit
-		double targetCombinedArmVectorX = referenceLowerArmVectorX + referenceUpperArmVectorX + x;
+		// double targetCombinedArmVectorX = referenceLowerArmVectorX +
+		// referenceUpperArmVectorX + x;
 		// y is the number of units to move vertically from the reference position.
 		// -1 would mean move the arm down 1 unit
-		double targetCombinedArmVectorY = referenceLowerArmVectorY + referenceUpperArmVectorY + y;
+		// double targetCombinedArmVectorY = referenceLowerArmVectorY +
+		// referenceUpperArmVectorY + y;
 		// This finds the angle between the arm base(a horizontal line,) and the
 		// HYPOTENUSE
-		double targetCombinedArmAngle = Math.atan2(targetCombinedArmVectorY, targetCombinedArmVectorX);
+		double targetCombinedArmAngle = Math.atan2(y, x);
 		// These next three variables are part of the cosine rule
-		double hypotenuseSquared = Math.pow(targetCombinedArmVectorX, 2) + Math.pow(targetCombinedArmVectorY, 2);
+		double hypotenuseSquared = Math.pow(x, 2) + Math.pow(y, 2);
 		double lowerArmLengthSquared = Math.pow(ArmConstants.kLowerArmLength, 2);
 		double upperArmLengthSquared = Math.pow(ArmConstants.kUpperArmLength, 2);
 		// This uses the cosine rule to get the angle between the two arms
@@ -85,8 +96,8 @@ public class InverseKinematicsTool {
 		 * below the flat line, a negative angle is produced, but 360 can be added to it
 		 * to make it work with 0-360 mode
 		 */
-		double targetUpperArmAngle = targetLowerArmAngle - targetAngleFormedByArms;
-		Double[] returnValue = { targetLowerArmAngle, targetUpperArmAngle };
+		double targetUpperArmAngle = targetAngleBetweenLowerAndUpperArm;
+		Double[] returnValue = { Math.toDegrees(targetLowerArmAngle), Math.toDegrees(targetUpperArmAngle) };
 		if (Double.isNaN(targetLowerArmAngle) || Double.isNaN(targetUpperArmAngle)) {
 			try {
 				throw new Exception("Target position unreachable");

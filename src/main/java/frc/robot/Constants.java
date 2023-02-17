@@ -14,28 +14,33 @@ public final class Constants {
 	}
 
 	public static final class ArmConstants {
-		public static final double kLowerArmLength = 10;
-		public static final double kUpperArmLength = 15;
+		// Preset offsets for arm
+		public static final double[] kHighOffsets = { 12, 3 };
+		public static final double[] kMediumOffsets = { 12, -1.75 };
+		public static final double[] kLowOffsets = { 8.75, -3.25 };
+		// Change to actual length of arm
+		public static final double kLowerArmLength = 6.2;
+		// Change to actual length of arm
+		public static final double kUpperArmLength = 7;
 		public static final int kCountsPerRevolution = 42;
 		public static final double kAllowedError = 2;
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
-		// public static final double kMinAngle = 24.36;
-		// public static final double kMaxAngle = 77.64;
-		public static final int kMotorPort1 = 1;
-		public static final int kMotorPort2 = 2;
-		public static final int kMotorPort3 = 3;
-		public static final int kMotorPort4 = 4;
-		// ---to-do-------CHANGE PORT OF ABOVE-^^^--(kMotorPort2)!!!
+		public static final double kMinAngle = 45;
+		public static final double kMaxAngle = 135;
+		public static final double kLowerEncoderZeroOffset = 110.2;
+		public static final double kUpperEncoderZeroOffset = 248.9;
+		public static final int kLowerMotor = 2;
+		public static final int kUpperMotor = 1;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = 0.0008; // TODO: tune PID was 0.02
-		public static final double kI = 0; // 0
-		public static final double kD = 0;// 0.000_03; //was 0
+		public static final double kP = 0.003; // 0.001 will not smash encoders
+		public static final double kI = 0;
+		public static final double kD = 0;
 		public static final double kIz = 5;
-		public static final double kFF = .0;// 0.000_193;
+		public static final double kFF = .0;
 		public static final double kMinOutput = -1;
 		public static final double kMaxOutput = 1;
 		public static final int kSlotID = 0;
