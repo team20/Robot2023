@@ -16,17 +16,15 @@ public final class Constants {
 	public static final class ArmConstants {
 		// Preset angles for arm
 		// Arm is foward
-		public static final double[] kHighAnglesA = { 50, 160 };
-		// Arm is foward
-		public static final double[] kHighAnglesB = { 45, 167 };
+		public static final double[] kHighAngles = { 50, 160 };
 		// Arm is backward
-		public static final double[] kMediumAnglesA = { 95, 267 };
-		// Arm is backward
-		public static final double[] kMediumAnglesB = { 90, 270 };
+		public static final double[] kMediumBackAngles = { 90, 270 };
+		// Arm is forward
+		public static final double[] kMediumForwardAngles = { 90, 90 };
 		// Arm is foward
-		public static final double[] kLowAnglesA = { 80, 40 };
-		// Arm is foward
-		public static final double[] kLowAnglesB = { 90, 40 };
+		public static final double[] kLowAngles = { 90, 40 };
+		// Transition position
+		public static final double[] kIntermediateAngles = { 50, 220 };
 		// Change to actual length of arm
 		public static final double kLowerArmLength = 6.2;
 		// For joystick speed

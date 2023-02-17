@@ -11,12 +11,11 @@ public class ArmScoreCommand extends CommandBase {
 	double[] angles;
 
 	public enum ArmPosition {
-		HIGH_A,
-		HIGH_B,
-		MEDIUM_A,
-		MEDIUM_B,
-		LOW_A,
-		LOW_B
+		HIGH,
+		MEDIUM_FORWARD,
+		MEDIUM_BACK,
+		LOW,
+		INTERMEDIATE
 	}
 
 	private ArmPosition m_armPosition;
@@ -36,22 +35,20 @@ public class ArmScoreCommand extends CommandBase {
 	@Override
 	public void execute() {
 		switch (m_armPosition) {
-			case HIGH_A:
-				angles = ArmConstants.kHighAnglesA;
+			case HIGH:
+				angles = ArmConstants.kHighAngles;
 				break;
-			case HIGH_B:
-				angles = ArmConstants.kHighAnglesB;
-			case MEDIUM_A:
-				angles = ArmConstants.kMediumAnglesA;
+			case MEDIUM_FORWARD:
+				angles = ArmConstants.kMediumForwardAngles;
 				break;
-			case MEDIUM_B:
-				angles = ArmConstants.kMediumAnglesB;
-			case LOW_A:
-				angles = ArmConstants.kLowAnglesA;
+			case MEDIUM_BACK:
+				angles = ArmConstants.kMediumBackAngles;
 				break;
-			case LOW_B:
-				angles = ArmConstants.kLowAnglesB;
+			case LOW:
+				angles = ArmConstants.kLowAngles;
 				break;
+			case INTERMEDIATE:
+				angles = ArmConstants.kIntermediateAngles;
 		}
 		ArmSubsystem.get().setLowerArmAngle(angles[0]);
 		ArmSubsystem.get().setUpperArmAngle(angles[1]);
