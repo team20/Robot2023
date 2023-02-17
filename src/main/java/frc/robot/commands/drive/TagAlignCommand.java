@@ -29,6 +29,7 @@ public class TagAlignCommand extends CommandBase {
   private Pose2d m_goalPose = new Pose2d(); //instantiates pose of where robot is
   private double m_vectorDistance; //Vector distance from robot to April tag
   public enum TagNumber{ //method of constants for april tag offsets
+    TagGeneral(0.5, -0.5,0),
     TagId1(1,-1,0),
     TagId2(1,-1,0),
     TagId3(1,-1,0),
@@ -120,13 +121,6 @@ public class TagAlignCommand extends CommandBase {
     SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());
    
     //drive based on turns computed from our current position and our goal position
-    Pose2d currPose = DriveSubsystem.get().getPose();
-
-    double z = -AprilTagSubsystem.get().getDistance(); //distance out of april tag is negative, fix that
-    double x = AprilTagSubsystem.get().getX();
-    if(z != 0){
-      //m_goalPose = currPose.transformBy(new Transform2d(new Translation2d(z+m_zOffset, x+m_xOffset), new Rotation2d()));
-    }
     DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose()));
     
     

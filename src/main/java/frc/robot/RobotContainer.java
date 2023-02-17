@@ -22,7 +22,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 
 /**
- * A {@code RobotContainer} contains robot subsystems, commands, and button bindings.
+ * A {@code RobotContainer} contains robot subsystems, commands, and button
+ * bindings.
  */
 public class RobotContainer {
   /**
@@ -48,34 +49,34 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
   }
+
   /**
    * Configures the buttons of the drive station's Playstation controllers
    */
   private void configureButtonBindings() {
 
   }
+
   /**
-   * Returns a set of commands used at the beginning 
-   * @return a set of commands used at the beginning 
+   * Returns a set of commands used at the beginning
+   * 
+   * @return a set of commands used at the beginning
    */
   public Command getAutonomousCommand() {
-    //return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
-    return new DriveDistanceCommand2(1, 0.03, 500, 0.08, 0.6, 0.1);
-<<<<<<< HEAD
+    // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
+
     return new SequentialCommandGroup(new TagAlignCommand(TagNumber.TagGeneral, Position.MiddlePosition, 0.75),
-    new TurnCommand(8.5).withTimeout(1),
-    new WaitCommand(1),
-    new DriveDistanceCommand(-2).withTimeout(2),
-    new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.75),
-    new TurnCommand(8.5).withTimeout(1),
-    new WaitCommand(1),
-    new DriveDistanceCommand(-2).withTimeout(2),
-    new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.75),
-    new TurnCommand(8.5).withTimeout(1),
-    new WaitCommand(1),
-    new DriveDistanceCommand(-2).withTimeout(2));
-=======
-    //return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
-    return new DriveDistanceCommand2(1, 0.03, 500, 0.08, 0.6, 0.1);
+        new TurnCommand(8.5).withTimeout(1),
+        new WaitCommand(1),
+        new DriveDistanceCommand(-2).withTimeout(2),
+        new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.75),
+        new TurnCommand(8.5).withTimeout(1),
+        new WaitCommand(1),
+        new DriveDistanceCommand(-2).withTimeout(2),
+        new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.75),
+        new TurnCommand(8.5).withTimeout(1),
+        new WaitCommand(1),
+        new DriveDistanceCommand(-2).withTimeout(2));
+    // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
   }
 }
