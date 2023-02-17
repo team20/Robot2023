@@ -30,12 +30,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 	private final SparkMaxPIDController m_lowerArmController = m_lowerArmMotor.getPIDController();
 	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
-
-	/**
-	 * Tracks if the arm was moved in code by anything other than joysticks
-	 */
-	private boolean m_armPositionChanged = false;
-
 	/** Stores the angle we want the lower arm to be at */
 	private double m_targetLowerArmAngle = 0;
 	/** Stores the angle we want the upper arm to be at */
@@ -93,19 +87,6 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmController.setPositionPIDWrappingEnabled(true);
 		m_upperArmController.setPositionPIDWrappingMaxInput(360);
 		m_upperArmController.setPositionPIDWrappingMinInput(0);
-
-		// ---------------------
-		// m_lowerArmController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal,
-		// ArmConstants.kSlotID);
-		// m_lowerArmController.setSmartMotionMaxAccel(ArmConstants.kMaxAcel,
-		// ArmConstants.kSlotID);
-		// m_lowerArmController.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity,
-		// ArmConstants.kSlotID);
-		// m_lowerArmController.setSmartMotionAllowedClosedLoopError(ArmConstants.kAllowedError,
-		// ArmConstants.kSlotID);
-		// m_lowerArmController.setSmartMotionMinOutputVelocity(ArmConstants.kMinVelocity,
-		// ArmConstants.kSlotID);
-
 	}
 
 	public static ArmSubsystem get() {
