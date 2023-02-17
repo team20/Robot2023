@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Jamis Orr
  */
 public class AprilTagSubsystem extends SubsystemBase {
+<<<<<<< Updated upstream
   /**
    * The x translation from the Limelight to the AprilTag.
    */
@@ -45,6 +46,9 @@ public class AprilTagSubsystem extends SubsystemBase {
    * The roll angle (angle between the z-axis) between the LimeLight and AprilTag.
    */
   protected double m_roll;
+=======
+  public double m_x, m_y, m_z, m_pitch, m_yaw, m_roll, m_xT, m_yT, m_zT, m_pitchT, m_yawT, m_rollT;
+>>>>>>> Stashed changes
 
   /**
    * Instantiates the {@code NetworkTable} in {@code AprilTagSubsystem}.
@@ -58,9 +62,19 @@ public class AprilTagSubsystem extends SubsystemBase {
   private MedianFilter m_filterPitch = new MedianFilter(10);
   private MedianFilter m_filterRoll = new MedianFilter(10);
   private MedianFilter m_filterYaw = new MedianFilter(10);
+<<<<<<< Updated upstream
 
   private boolean m_tagInView;
 
+=======
+  private MedianFilter m_filterXT = new MedianFilter(10);
+  private MedianFilter m_filterYT = new MedianFilter(10);
+  private MedianFilter m_filterZT = new MedianFilter(10);
+  private MedianFilter m_filterPitchT = new MedianFilter(10);
+  private MedianFilter m_filterRollT = new MedianFilter(10);
+  private MedianFilter m_filterYawT = new MedianFilter(10);
+private boolean m_tagInView;
+>>>>>>> Stashed changes
   /** Creates a new ApriltagSubsystem. */
   public AprilTagSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
     s_subsystem = this;
@@ -76,6 +90,7 @@ public class AprilTagSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
+<<<<<<< Updated upstream
     /**
      * Gets 3D transform of the camera given that the frame of reference is the position of the April Tag.
      */
@@ -94,6 +109,29 @@ public class AprilTagSubsystem extends SubsystemBase {
       m_pitch = m_filterPitch.calculate(translation[3]);
       m_yaw = m_filterYaw.calculate(translation[4]); // [-71, 66]
       m_roll = m_filterRoll.calculate(translation[5]);
+=======
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry robottran = table.getEntry("botpose_targetspace");
+    NetworkTableEntry targettran = table.getEntry("targetpose_robotspace");
+    NetworkTableEntry tx = table.getEntry("tx");
+    // read values periodically
+    double[] translationRobot = robottran.getDoubleArray(new double[6]);
+    double[] translationTarget = targettran.getDoubleArray(new double[6]);
+
+    if(!translationRobot.equals(new double[6])){
+      m_x = m_filterX.calculate(translationRobot[0]);
+      m_y = m_filterY.calculate(translationRobot[1]);
+      m_z = m_filterZ.calculate(translationRobot[2]);
+      m_pitch = m_filterPitch.calculate(translationRobot[3]);
+      m_yaw = m_filterYaw.calculate(translationRobot[4]); // [-71, 66]
+      m_roll = m_filterRoll.calculate(translationRobot[5]);
+      m_xT = m_filterXT.calculate(translationTarget[0]);
+      m_yT = m_filterYT.calculate(translationTarget[1]);
+      m_zT = m_filterZT.calculate(translationTarget[2]);
+      m_pitchT = m_filterPitchT.calculate(translationTarget[3]);
+      m_yawT = m_filterYawT.calculate(translationTarget[4]); // [-71, 66]
+      m_rollT = m_filterRollT.calculate(translationTarget[5]);
+>>>>>>> Stashed changes
       m_tagInView = true;
     } else {
       m_tagInView = false;
@@ -107,6 +145,17 @@ public class AprilTagSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("LimelightYaw", m_yaw);
     SmartDashboard.putNumber("LimelightRoll", m_roll);
     SmartDashboard.putBoolean("Tag in View", m_tagInView);
+<<<<<<< Updated upstream
+=======
+    SmartDashboard.putNumber("LimelightXT", m_xT);
+    SmartDashboard.putNumber("LimelightYT", m_yT);
+    SmartDashboard.putNumber("LimelightZT", m_zT);
+    SmartDashboard.putNumber("LimelightPitchT", m_pitchT);
+    SmartDashboard.putNumber("LimelightYawT", m_yawT);
+    SmartDashboard.putNumber("LimelightRollT", m_rollT);
+    // This method will be called once per scheduler run
+
+>>>>>>> Stashed changes
   }
 
   /**
