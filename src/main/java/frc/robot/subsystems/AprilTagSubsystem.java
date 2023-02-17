@@ -21,34 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Jamis Orr
  */
 public class AprilTagSubsystem extends SubsystemBase {
-<<<<<<< Updated upstream
-  /**
-   * The x translation from the Limelight to the AprilTag.
-   */
-  protected double m_x;
-  /**
-   * The y translation from the Limelight to the AprilTag.
-   */
-  protected double m_y;
-  /**
-   * The z translation from the Limelight to the AprilTag.
-   */
-  public double m_z;
-  /**
-   * The pitch angle (angle along the x-axis) between the LimeLight and AprilTag.
-   */
-  protected double m_pitch;
-  /**
-   * The yaw angle (angle along the y-axis) between the LimeLight and AprilTag.
-   */
-  protected double m_yaw;
-  /**
-   * The roll angle (angle between the z-axis) between the LimeLight and AprilTag.
-   */
-  protected double m_roll;
-=======
   public double m_x, m_y, m_z, m_pitch, m_yaw, m_roll, m_xT, m_yT, m_zT, m_pitchT, m_yawT, m_rollT;
->>>>>>> Stashed changes
 
   /**
    * Instantiates the {@code NetworkTable} in {@code AprilTagSubsystem}.
@@ -62,11 +35,6 @@ public class AprilTagSubsystem extends SubsystemBase {
   private MedianFilter m_filterPitch = new MedianFilter(10);
   private MedianFilter m_filterRoll = new MedianFilter(10);
   private MedianFilter m_filterYaw = new MedianFilter(10);
-<<<<<<< Updated upstream
-
-  private boolean m_tagInView;
-
-=======
   private MedianFilter m_filterXT = new MedianFilter(10);
   private MedianFilter m_filterYT = new MedianFilter(10);
   private MedianFilter m_filterZT = new MedianFilter(10);
@@ -74,7 +42,6 @@ public class AprilTagSubsystem extends SubsystemBase {
   private MedianFilter m_filterRollT = new MedianFilter(10);
   private MedianFilter m_filterYawT = new MedianFilter(10);
 private boolean m_tagInView;
->>>>>>> Stashed changes
   /** Creates a new ApriltagSubsystem. */
   public AprilTagSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
     s_subsystem = this;
@@ -90,26 +57,6 @@ private boolean m_tagInView;
    */
   @Override
   public void periodic() {
-<<<<<<< Updated upstream
-    /**
-     * Gets 3D transform of the camera given that the frame of reference is the position of the April Tag.
-     */
-    NetworkTableEntry camtran = m_aprilTagTable.getEntry("camerapose_targetspace"); 
-    
-    /**
-     * Gets the array of camerapose_targetspace, which includes x, y, z, pitch, yaw, and roll respectively
-     */
-    double[] translation = camtran.getDoubleArray(new double[6]); 
-
-    // median filters for all values, makes data more steady even w/ camera-misread outliers
-    if (!translation.equals(new double[6])) { 
-      m_x = m_filterX.calculate(translation[0] - .155); // subtract offset of limelight from center of camera
-      m_y = m_filterY.calculate(translation[1]);
-      m_z = m_filterZ.calculate(translation[2]);
-      m_pitch = m_filterPitch.calculate(translation[3]);
-      m_yaw = m_filterYaw.calculate(translation[4]); // [-71, 66]
-      m_roll = m_filterRoll.calculate(translation[5]);
-=======
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry robottran = table.getEntry("botpose_targetspace");
     NetworkTableEntry targettran = table.getEntry("targetpose_robotspace");
@@ -131,7 +78,6 @@ private boolean m_tagInView;
       m_pitchT = m_filterPitchT.calculate(translationTarget[3]);
       m_yawT = m_filterYawT.calculate(translationTarget[4]); // [-71, 66]
       m_rollT = m_filterRollT.calculate(translationTarget[5]);
->>>>>>> Stashed changes
       m_tagInView = true;
     } else {
       m_tagInView = false;
@@ -145,8 +91,7 @@ private boolean m_tagInView;
     SmartDashboard.putNumber("LimelightYaw", m_yaw);
     SmartDashboard.putNumber("LimelightRoll", m_roll);
     SmartDashboard.putBoolean("Tag in View", m_tagInView);
-<<<<<<< Updated upstream
-=======
+
     SmartDashboard.putNumber("LimelightXT", m_xT);
     SmartDashboard.putNumber("LimelightYT", m_yT);
     SmartDashboard.putNumber("LimelightZT", m_zT);
@@ -154,8 +99,6 @@ private boolean m_tagInView;
     SmartDashboard.putNumber("LimelightYawT", m_yawT);
     SmartDashboard.putNumber("LimelightRollT", m_rollT);
     // This method will be called once per scheduler run
-
->>>>>>> Stashed changes
   }
 
   /**
