@@ -22,16 +22,15 @@ int ledState = 0;
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_BRG + NEO_KHZ800); 
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
-// Argument 3 = Pixel type flags, add together as needed:
+// Argument 3 = Pixel type flags, add together as needed, refer to Adafruit_NeoPixel.h
+// for additional flags(in the event the LEDs don't display the color you want, you
+// probably need a different bitstream):
 //   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
-//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products) = RBG
-//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2) = BRG
+//   NEO_BRG     Pixels are wired for BRG bitstream (whatever LED Strip 2023 uses)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)  
-
-
-// setup() function -- runs once at startup --------------------------------
-
 int colorIndex = 0;  //frame variable, chnages from loop
 int pattern = -1;    //pattern led strips are on, read in from master/robot
 long startTime = -1;
@@ -80,6 +79,7 @@ uint32_t Timer(int c, int i, uint32_t color) {  //user timer proportion to light
   if (c % 2 == 0 && 2 > (i + c) % int(LED_COUNT * (1 - (millis() - startTime) / endTime)) && i * endTime > LED_COUNT * (millis() - startTime)) { return (color); }
   return (strip.Color(0, 0, 0));
 }
+// setup() function -- runs once at startup --------------------------------
 void setup() {
   Serial.println("Starting");
   // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
@@ -94,10 +94,10 @@ void setup() {
   strip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
   Wire.begin(0x18);         //begin I2C
   Serial.begin(9600);
-  Wire.onReceive(receiveEvent);  // set up data slave recieved
+  // Call receiveEvent when data comes in over I2C
+  Wire.onReceive(receiveEvent);
 }
 void loop() {
-  // Serial.println("Running");
   //  pattern=(int)((millis()-testStart)/testInc)-1;if(pattern>7){pattern=7;} // used for timed demo
   byte x = Wire.read();
   if (Serial.available()) {
@@ -170,8 +170,6 @@ void loop() {
 }
 void receiveEvent(int howMany) {
   byte x = Wire.read();
-  // Serial.println(x);
-  // Serial.print(0);
   pattern = x;
   //first code must be non-zero multiple of 10
   if (pattern == 8 && Wire.available()) {  //for code 90 reset, check if new alliance color being set
