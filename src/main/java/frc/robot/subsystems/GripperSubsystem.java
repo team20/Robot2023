@@ -66,11 +66,15 @@ public class GripperSubsystem extends SubsystemBase {
 		m_gripperScrew.set(speed);
 	}
 
+	public void resetZero(){
+		m_gripperScrewEncoder.setPosition(0);
+	}
+
 	public double getGripperEncoderPosition(){
 		return m_gripperScrewEncoder.getPosition();
 	}
 
-	public void setGripperEncoderPosition(double position){
+	public void setGripperPosition(double position) {
 		m_gripperScrewController.setReference(position, ControlType.kPosition);
 	}
 

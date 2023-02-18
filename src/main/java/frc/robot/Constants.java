@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
 	public static final class GripperConstants {
+		public static final double kGripperOpenPosition = 0;
 		public static final boolean kFrontLeftInvert = false;
 		public static final int kPort = 5;
 		public static final double kP = 0.0003; // have to figure out constants later
@@ -15,6 +16,8 @@ public final class Constants {
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kWinchEncoderZeroOffset = 110.2;
+		public static final double kCloseTime = 1; //TODO: change as needed
+		public static final double kHoldPower = .1; //TODO: change as needed
 		public static final double kMinOutput = -0.5;
 		public static final double kMaxOutput = 0.5;
 		public static final int kOpenLimitSwitchPort = 0; // change port
