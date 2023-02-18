@@ -5,25 +5,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
-	public static final class GripperConstants {
-		public static final double kGripperOpenPosition = 0.5;
-		public static final boolean kFrontLeftInvert = false;
-		public static final int kPort = 4;
-		public static final double kP = 0.0003; // have to figure out constants later
-		public static final double kI = 0;
-		public static final double kD = 0;
-		public static final double kIz = 5;
-		public static final boolean kInvert = false;
-		public static final int kSmartCurrentLimit = 20;
-		public static final double kWinchEncoderZeroOffset = 110.2;
-		public static final double kCloseTime = 1000; // TODO: change as needed
-		public static final double kHoldPower = .1; // TODO: change as needed
-		public static final double kMinOutput = -0.5;
-		public static final double kMaxOutput = 0.5;
-		public static final int kOpenLimitSwitchPort = 0; // change port
-		public static final int kCloseLimitSwitchPort = 0; // change port
-	}
-
 	public static final class ArmConstants {
 		// Preset angles for arm
 		// Arm is foward
@@ -53,14 +34,11 @@ public final class Constants {
 		 * to how much the joystick is being moved
 		 */
 		public static final double kManualArmMovementSpeedMultiplier = 0.5;
-		public static final int kCountsPerRevolution = 42;
 		/**
 		 * Allowable difference in degrees between the target arm angle and the current
 		 * arm angle
 		 */
 		public static final double kAllowedDegreesError = 4;
-		public static final double kMinEncoderValue = 0.0;
-		public static final double kMaxEncoderValue = 42.0;
 		/** Smallest angle the lower arm can go */
 		public static final double kLowerArmMinAngle = 45;
 		/** Maximum angle the lower arm can go */
@@ -81,9 +59,9 @@ public final class Constants {
 		 * 0 degrees in our zero position
 		 */
 		public static final double kUpperEncoderZeroOffset = 248.9;
-		public static final int kUpperMotor = 1;
-		public static final int kLowerMotor = 2;
-		public static final int kLowerMotor2 = 3;
+		public static final int kUpperMotorID = 1;
+		public static final int kLowerMotorID = 2;
+		public static final int kLowerMotor2ID = 3;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
@@ -104,49 +82,11 @@ public final class Constants {
 	}
 
 	public static final class ArduinoConstants {
-		public static final int kAddress = 2;
-		public static final double kDistanceP = 0;
-		public static final double kDistanceI = 0;
-		public static final double kDistanceD = 0;
-		public static final int kDistanceSetpoint = 0;
-
-		public static final double kAngleP = 0;
-		public static final double kAngleI = 0;
-		public static final double kAngleD = 0;
-		public static final int kAngleSetpoint = 0;
-
-		public static final int kReadTargetInView = 0;
-		public static final int[] kReadXValue = { 1, 2, 3 };
-		public static final int[] kReadDistance = { 4, 5, 6 };
-
-		public static final int kWriteMainLEDMode = 0;
-		public static final int kWriteMainLEDValue = 1;
-		public static final int kWriteShooterLEDMode = 2;
-		public static final int kWriteShooterLEDValue = 3;
-		public static final int kWriteClimberLEDMode = 2;
-		public static final int kWriteClimberLEDValue = 3;
-
-		public static final class LEDModes {
-			public static final byte kReset = 0;
-			public static final byte kOff = 1;
-			public static final byte kSolid = 2;
-			public static final byte kChasing = 3;
-			public static final byte kTheaterLights = 4;
-			public static final byte kRedGreenGradient = 5;
-			public static final byte kBlueGreenGradient = 6;
-			public static final byte kBackForthTimer = 7;
-		}
-
-		public static final class LEDColors {
-			public static final byte kOff = 0;
-			public static final byte kRed = 1;
-			public static final byte kOrange = 2;
-			public static final byte kYellow = 3;
-			public static final byte kGreen = 4;
-			public static final byte kBlue = 5;
-			public static final byte kPurple = 6;
-			public static final byte kWhite = 7;
-		}
+		/**
+		 * The I2C address of the Arduino as defined by the address passed into
+		 * Wire.begin() in the Arudino code
+		 */
+		public static final int kAddress = 0x18;
 	}
 
 	public static final class ControllerConstants {
@@ -255,6 +195,25 @@ public final class Constants {
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters * 60;
 
+	}
+
+	public static final class GripperConstants {
+		public static final double kGripperOpenPosition = 0.5;
+		public static final boolean kFrontLeftInvert = false;
+		public static final int kPort = 4;
+		public static final double kP = 0.0003; // have to figure out constants later
+		public static final double kI = 0;
+		public static final double kD = 0;
+		public static final double kIz = 5;
+		public static final boolean kInvert = false;
+		public static final int kSmartCurrentLimit = 20;
+		public static final double kWinchEncoderZeroOffset = 110.2;
+		public static final double kCloseTime = 1000; // TODO: change as needed
+		public static final double kHoldPower = .1; // TODO: change as needed
+		public static final double kMinOutput = -0.5;
+		public static final double kMaxOutput = 0.5;
+		public static final int kOpenLimitSwitchPort = 0; // change port
+		public static final int kCloseLimitSwitchPort = 0; // change port
 	}
 
 	public static final class LimelightConstants { // TODO: tune PID loop
