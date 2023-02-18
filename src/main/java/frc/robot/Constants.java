@@ -62,8 +62,9 @@ public final class Constants {
 		 * 0 degrees in our zero position
 		 */
 		public static final double kUpperEncoderZeroOffset = 248.9;
-		public static final int kLowerMotor = 2;
 		public static final int kUpperMotor = 1;
+		public static final int kLowerMotor = 2;
+		public static final int kLowerMotor2 = 3;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;

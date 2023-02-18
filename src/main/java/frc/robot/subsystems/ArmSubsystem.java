@@ -21,6 +21,7 @@ public class ArmSubsystem extends SubsystemBase {
 	/** Stores the instance of the ArmSubsystem */
 	private static ArmSubsystem s_subsystem;
 	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotor, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2, MotorType.kBrushless);
 	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotor, MotorType.kBrushless);
 
 	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmMotor
@@ -29,6 +30,7 @@ public class ArmSubsystem extends SubsystemBase {
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 
 	private final SparkMaxPIDController m_lowerArmController = m_lowerArmMotor.getPIDController();
+	private final SparkMaxPIDController m_lowerArmController2 = m_lowerArmMotor2.getPIDController();
 	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
 	/** Stores the angle we want the lower arm to be at */
 	private double m_targetLowerArmAngle = 0;
@@ -67,6 +69,27 @@ public class ArmSubsystem extends SubsystemBase {
 		// The lower arm doesn't need PID wrapping, it has a very specific range it
 		// moves in
 		m_lowerArmController.setPositionPIDWrappingEnabled(false);
+
+		// Initialize 2nd lower arm motor
+		m_lowerArmMotor2.restoreFactoryDefaults();
+		m_lowerArmMotor2.setInverted(ArmConstants.kInvert);
+		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_lowerArmMotor2.enableVoltageCompensation(12);
+		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		// Make the 2nd lower arm motor follow the first one
+		// They point in opposite directions, so the 2nd motor needs to be inverted
+		m_lowerArmMotor2.follow(m_lowerArmMotor, true);
+
+		m_lowerArmController2.setP(ArmConstants.kP);
+		m_lowerArmController2.setI(ArmConstants.kI);
+		m_lowerArmController2.setIZone(ArmConstants.kIz);
+		m_lowerArmController2.setD(ArmConstants.kD);
+		m_lowerArmController2.setFF(ArmConstants.kFF);
+		m_lowerArmController2.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+		m_lowerArmController2.setFeedbackDevice(m_lowerArmEncoder);
+		// The lower arm doesn't need PID wrapping, it has a very specific range it
+		// moves in
+		m_lowerArmController2.setPositionPIDWrappingEnabled(false);
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
