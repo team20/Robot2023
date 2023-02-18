@@ -50,8 +50,6 @@ public class TagAlignCommand extends CommandBase {
     }
   }
 
-
-
   public enum Position{ //variables for 2nd constructor, what the offset is
     LeftPosition,
     RightPosition,
@@ -122,8 +120,6 @@ public class TagAlignCommand extends CommandBase {
    
     //drive based on turns computed from our current position and our goal position
     DriveSubsystem.get().arcadeDrive(m_driveSpeed, getTurn(m_goalPose, DriveSubsystem.get().getPose()));
-    
-    
   }
 
   // Called once the command ends or is interrupted.

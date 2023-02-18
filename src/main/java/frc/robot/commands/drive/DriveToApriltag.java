@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
  * A {@code DriveDistanceCommand2} can move the robot by a certain distance.
  * @author Jeong Hyon Hwang
  */
-public class DriveDistanceCommand2 extends CommandBase {
+public class DriveToApriltag extends CommandBase {
   double m_distance;
   double m_distanceThreshold;
   long m_timeThreshold;
@@ -39,7 +39,7 @@ public class DriveDistanceCommand2 extends CommandBase {
    *                          move by the DriveDistanceCommand (1:
    *                          full speed)
    */
-  public DriveDistanceCommand2(double distance, double distanceThreshold, long timeThreshold, double maxStride,
+  public DriveToApriltag(double distance, double distanceThreshold, long timeThreshold, double maxStride,
       double convergenceRatio, double maxSpeed) {
     m_distance = distance;
     m_distanceThreshold = distanceThreshold;
