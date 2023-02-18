@@ -5,13 +5,11 @@
 package frc.robot.commands.drive;
 
 // import java.time.Instant;
-
 // import java.time.Duration;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveDistanceCommand extends CommandBase {
@@ -86,7 +84,6 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
-
 	}
 
 	// Returns true when the command should end.

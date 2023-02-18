@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -35,12 +36,12 @@ public class DriveSubsystem extends SubsystemBase {
 	private final SparkMaxPIDController m_leftPIDController = m_frontLeft.getPIDController();
 	private final SparkMaxPIDController m_rightPIDController = m_frontRight.getPIDController();
 
-	// private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
+	private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
 	// private final PIDController m_turnController = new
 	// PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
 	// DriveConstants.kTurnP);
 
-	// private final DifferentialDriveOdometry m_odometry;
+	private final DifferentialDriveOdometry m_odometry;
 
 	public DriveSubsystem() {
 
@@ -111,7 +112,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 		// m_turnController.setTolerance(DriveConstants.kTurnTolerance);
 
-		// m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
+		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
 		// this is what they did in 2020 with the navX:
 		// Rotation2d.fromDegrees(getHeading()));
 		resetEncoders();
@@ -123,8 +124,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// SmartDashboard.putNumber("the angle", getHeading());
 		// System.out.println("the angle is: " + getHeading());
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
-		// m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-		// getRightEncoderPosition());
+		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
+		getRightEncoderPosition());
 		if (DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake
 				&& !DriverStation.isAutonomous()) {
 			m_frontLeft.setIdleMode(IdleMode.kCoast);
@@ -175,9 +176,9 @@ public class DriveSubsystem extends SubsystemBase {
 	/**
 	 * @return Pose of the robot
 	 */
-	// public Pose2d getPose() {
-	// return m_odometry.getPoseMeters();
-	// }
+	public Pose2d getPose() {
+	return m_odometry.getPoseMeters();
+	}
 
 	/**
 	 * @return Wheel speeds of the robot
@@ -198,9 +199,9 @@ public class DriveSubsystem extends SubsystemBase {
 	/**
 	 * @return The heading of the gyro (degrees)
 	 */
-	// public double getHeading() {
-	// return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-	// }
+	public double getHeading() {
+	return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+	}
 
 	/**
 	 * @return The rate of the gyro turn (deg/s)
@@ -239,6 +240,11 @@ public class DriveSubsystem extends SubsystemBase {
 	public void arcadeDrive(double straight, double left, double right) {
 		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),
 				DriveConstants.kSpeedLimitFactor * (straight + left - right));
+	}
+
+	public void arcadeDrive(double straight, double turn) {
+		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - turn),
+				DriveConstants.kSpeedLimitFactor * (straight + turn));
 	}
 
 	/**

@@ -142,7 +142,6 @@ public final class Constants {
 
 	public static final class DriveConstants {
 
-
 		// TODO CHANGE ALL OF THESE
 		public static final int kFrontLeftPort = 13;
 		public static final boolean kFrontLeftInvert = true;
@@ -190,8 +189,8 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
-		public static final double kGearRatio = 8.18;
+		public static final double kWheelDiameterMeters = 4;
+		public static final double kGearRatio = 7;
 		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
@@ -208,8 +207,6 @@ public final class Constants {
 				* DriveConstants.kWheelDiameterMeters;
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters * 60;
-
-		public static final double kTurnPeriod = 0.02;
 
 	}
 

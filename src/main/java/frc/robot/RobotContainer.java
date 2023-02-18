@@ -6,40 +6,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.drive.DriveDistanceCommand2;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.drive.DriveDistanceCommand;
-import frc.robot.commands.drive.DriveDistanceCommand2;
-import frc.robot.commands.drive.TagAlignCommand;
-
-import frc.robot.commands.drive.TurnCommand;
-import frc.robot.commands.drive.TagAlignCommand.Position;
-import frc.robot.commands.drive.TagAlignCommand.TagNumber;
-import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.Constants.ArduinoConstants;
 import frc.robot.subsystems.ArduinoSubsystem;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
-import frc.robot.commands.arm.UpCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 
-/**
- * A {@code RobotContainer} contains robot subsystems, commands, and button
- * bindings.
- */
 public class RobotContainer {
-
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-  private AprilTagSubsystem m_apriltagSubsystem = new AprilTagSubsystem();
 	private final GenericHID m_controller = new GenericHID(ControllerConstants.kDriverControllerPort);
 
 	public RobotContainer() {
