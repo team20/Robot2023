@@ -1,21 +1,23 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.util.InverseKinematicsTool;
+import frc.robot.util.ForwardKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
-	Double[] angles = { 90.0, 0.0 };
+	double[] angles;
 
 	public enum ArmPosition {
 		HIGH,
-		MEDIUM,
-		LOW
+		MEDIUM_FORWARD,
+		MEDIUM_BACK,
+		LOW,
+		POCKET,
+		INTERMEDIATE
 	}
 
 	private ArmPosition m_armPosition;
@@ -36,26 +38,27 @@ public class ArmScoreCommand extends CommandBase {
 	public void execute() {
 		switch (m_armPosition) {
 			case HIGH:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kHighOffsets[0], ArmConstants.kHighOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kHighOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kHighOffsets[1]);
+				angles = ArmConstants.kHighAngles;
 				break;
-			case MEDIUM:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kMediumOffsets[0],
-						ArmConstants.kMediumOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kMediumOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kMediumOffsets[1]);
+			case MEDIUM_FORWARD:
+				angles = ArmConstants.kMediumForwardAngles;
+				break;
+			case MEDIUM_BACK:
+				angles = ArmConstants.kMediumBackAngles;
 				break;
 			case LOW:
-				angles = InverseKinematicsTool.getArmAngles(ArmConstants.kLowOffsets[0], ArmConstants.kLowOffsets[1]);
-				// ArmSubsystem.get().setXOffset(ArmConstants.kLowOffsets[0]);
-				// ArmSubsystem.get().setYOffset(ArmConstants.kLowOffsets[1]);
+				angles = ArmConstants.kLowAngles;
 				break;
+			case POCKET:
+				angles = ArmConstants.kPocketAngles;
+				break;
+			case INTERMEDIATE:
+				angles = ArmConstants.kIntermediateAngles;
 			default:
 				break;
 		}
-		ArmSubsystem.get().setLowerArmPosition(angles[0]);
-		ArmSubsystem.get().setUpperArmPosition(angles[1]);
+		ArmSubsystem.get().setLowerArmAngle(angles[0]);
+		ArmSubsystem.get().setUpperArmAngle(angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -66,6 +69,17 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		// Calculate the arm position
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
+		// If the y-coordinate of the upper arm is about to exceed the height, stop the
+		// motors by setting their target angles to their current angles
+		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
+			System.out.println("Height limit protection tripped!");
+			ArmSubsystem.get().setLowerArmAngle(ArmSubsystem.get().getLowerArmAngle());
+			ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle());
+			return true;
+		}
+		return ArmSubsystem.get().isNearTargetAngle();
 	}
 }
