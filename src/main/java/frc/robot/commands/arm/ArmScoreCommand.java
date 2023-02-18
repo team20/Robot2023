@@ -6,6 +6,8 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.util.ForwardKinematicsTool;
+import frc.robot.util.InverseKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
 	double[] angles;
@@ -62,6 +64,16 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
+		// Calculate the arm position
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
+		// If the y-coordinate of the upper arm is about to exceed the height, stop the
+		// motors by setting their target angles to their current angles
+		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
+			ArmSubsystem.get().setLowerArmAngle(ArmSubsystem.get().getLowerArmAngle());
+			ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle());
+			return true;
+		}
 		return ArmSubsystem.get().isNearTargetAngle();
 	}
 }
