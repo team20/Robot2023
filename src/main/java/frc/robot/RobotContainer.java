@@ -22,20 +22,12 @@ public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
-	private final Joystick m_controller = new Joystick(ControllerConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
 		configureButtonBindings();
 	}
 
 	private void configureButtonBindings() {
-		// Gripper buttons (close, open, and zero)
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kLeftBumper))
-				.onTrue(new GripperCommand(GripperPosition.CLOSE));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
-				.onTrue(new GripperCommand(GripperPosition.ZERO));
-		new Trigger(() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger) > ControllerConstants.kTriggerDeadzone)
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
 	}
 
 	public Command getAutonomousCommand() {
