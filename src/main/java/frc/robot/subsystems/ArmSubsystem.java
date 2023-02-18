@@ -64,9 +64,9 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmController.setFF(ArmConstants.kFF);
 		m_lowerArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 		m_lowerArmController.setFeedbackDevice(m_lowerArmEncoder);
-		m_lowerArmController.setPositionPIDWrappingEnabled(true);
-		m_lowerArmController.setPositionPIDWrappingMaxInput(360);
-		m_lowerArmController.setPositionPIDWrappingMinInput(0);
+		// The lower arm doesn't need PID wrapping, it has a very specific range it
+		// moves in
+		m_lowerArmController.setPositionPIDWrappingEnabled(false);
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
@@ -84,9 +84,9 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmController.setFF(ArmConstants.kFF);
 		m_upperArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 		m_upperArmController.setFeedbackDevice(m_upperArmEncoder);
-		m_upperArmController.setPositionPIDWrappingEnabled(true);
-		m_upperArmController.setPositionPIDWrappingMaxInput(360);
-		m_upperArmController.setPositionPIDWrappingMinInput(0);
+		// The upper arm can't spin clockwise without hitting the robot, so PID wrapping
+		// is disabled
+		m_upperArmController.setPositionPIDWrappingEnabled(false);
 	}
 
 	public static ArmSubsystem get() {
