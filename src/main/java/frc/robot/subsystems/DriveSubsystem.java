@@ -37,9 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private final SparkMaxPIDController m_rightPIDController = m_frontRight.getPIDController();
 
 	private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
-	// private final PIDController m_turnController = new
-	// PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
-	// DriveConstants.kTurnP);
 
 	private final DifferentialDriveOdometry m_odometry;
 
@@ -110,20 +107,11 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setOutputRange(DriveConstants.kMinOutput, DriveConstants.kMaxOutput);
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
 
-		// m_turnController.setTolerance(DriveConstants.kTurnTolerance);
-
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
-		// this is what they did in 2020 with the navX:
-		// Rotation2d.fromDegrees(getHeading()));
 		resetEncoders();
-		// from 2020: resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-
 	}
 
 	public void periodic() {
-		// SmartDashboard.putNumber("the angle", getHeading());
-		// System.out.println("the angle is: " + getHeading());
-		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 		getRightEncoderPosition());
 		if (DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake
@@ -258,7 +246,6 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backLeft.set(leftSpeed);
 		m_frontRight.set(rightSpeed);
 		m_backRight.set(rightSpeed);
-
 	}
 
 	public void tankDriveVelocity(DifferentialDriveWheelSpeeds wheelSpeeds) {
