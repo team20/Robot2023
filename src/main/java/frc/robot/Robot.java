@@ -11,125 +11,75 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
-  /**
-   * The {@code Command} used by this {@code TimedRobot}.
-   */
-  private Command m_autonomousCommand;
-  /**
-   * The {@code RobotContainer} used by this {@code TimedRobot}.
-   */
-  private RobotContainer m_robotContainer;
 
-  /**
-   * Robot-wide initialization code should go here.
-   */
-  @Override
-  public void robotInit() {
-    /**
-     * Instantiates a new {@code RobotContainer} called m_robotContainer.
-     */
-    m_robotContainer = new RobotContainer();
-    Math.random();
-  }
+	private Command m_autonomousCommand;
 
-  /**
-   * Periodic code for all robot modes should go here.
-   */
-  @Override
-  public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
-  }
+	private RobotContainer m_robotContainer;
 
-  /**
-   * Initialization code for disabled mode should go here.
-   */
-  @Override
-  public void disabledInit() {
-  }
+	@Override
+	public void robotInit() {
+		m_robotContainer = new RobotContainer();
+	}
 
-  /**
-   * Periodic code for disabled mode should go here.
-   */
-  @Override
-  public void disabledPeriodic() {
-  }
-  /**
-   * Exit code for disabled mode should go here.
-   */
-  @Override
-  public void disabledExit() {
-  }
+	@Override
+	public void robotPeriodic() {
+		CommandScheduler.getInstance().run();
+	}
 
-  /**
-   * Initialization code for autonomous mode should go here.
-   */
-  @Override
-  public void autonomousInit() {
-    // Gets the autonomous command to be run at the start of autonomous mode
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+	@Override
+	public void disabledInit() {
+	}
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
+	@Override
+	public void disabledPeriodic() {
+	}
 
-  /**
-   * Periodic code for autonomous mode should go here.
-   */
-  @Override
-  public void autonomousPeriodic() {
-  }
+	@Override
+	public void disabledExit() {
+	}
 
-  /**
-   * Exit code for autonomous mode should go here.
-   */
-  @Override
-  public void autonomousExit() {
-  }
+	@Override
+	public void autonomousInit() {
+		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-  /**
-   * Initialization code for teleop mode should go here.
-   */
-  @Override
-  public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-  }
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.schedule();
+		}
+	}
 
-  /**
-   * Periodic code for teleop mode should go here.
-   */
-  @Override
-  public void teleopPeriodic() {
-  }
+	@Override
+	public void autonomousPeriodic() {
+	}
 
-  /**
-   * Exit code for teleop mode should go here.
-   */
-  @Override
-  public void teleopExit() {
-  }
+	@Override
+	public void autonomousExit() {
+	}
 
-  /**
-   * Initialization code for test mode should go here.
-   */
-  @Override
-  public void testInit() {
-    CommandScheduler.getInstance().cancelAll();
-  }
+	@Override
+	public void teleopInit() {
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.cancel();
+		}
+	}
 
-  /**
-   * Periodic code for test mode should go here.
-   */
-  @Override
-  public void testPeriodic() {
-  }
+	@Override
+	public void teleopPeriodic() {
+	}
 
-  /**
-   * Exit code for test mode should go here.
-   */
-  @Override
-  public void testExit() {
-  }
+	@Override
+	public void teleopExit() {
+	}
+
+	@Override
+	public void testInit() {
+		CommandScheduler.getInstance().cancelAll();
+	}
+
+	@Override
+	public void testPeriodic() {
+	}
+
+	@Override
+	public void testExit() {
+	}
 }
