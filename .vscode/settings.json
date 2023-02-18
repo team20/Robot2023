@@ -25,6 +25,5 @@
       }
     },
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests",
-  "arduino.path": "C:\\Program Files\\Arduino"
+  "java.test.defaultConfig": "WPIlibUnitTests"
 }
