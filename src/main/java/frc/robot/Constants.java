@@ -40,9 +40,9 @@ public final class Constants {
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
 		/** Smallest angle the lower arm can go */
-		public static final double kLowerArmMinAngle = 0;
+		public static final double kLowerArmMinAngle = 45;
 		/** Maximum angle the lower arm can go */
-		public static final double kLowerArmMaxAngle = 100;
+		public static final double kLowerArmMaxAngle = 135;
 		/** Smallest angle the lower arm can go */
 		public static final double kUpperArmMinAngle = 15;
 		/** Maximum angle the lower arm can go */
