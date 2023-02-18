@@ -17,12 +17,13 @@ public final class Constants {
 		public static final double[] kLowAngles = { 90, 40 };
 		// Transition position
 		public static final double[] kIntermediateAngles = { 50, 220 };
-		// Change to actual length of arm
-		public static final double kLowerArmLength = 6.2;
+		/** Length of lower arm length in inches */
+		public static final double kLowerArmLength = 32.5;
 		// For joystick speed
 		public static final double kSpeedMultiplier = 1.5;
-		// Change to actual length of arm
-		public static final double kUpperArmLength = 7;
+		/** Length of upper arm length in inches */
+		// Recheck when robot is assembled
+		public static final double kUpperArmLength = 40;
 		public static final int kCountsPerRevolution = 42;
 		/**
 		 * Allowable difference in degrees between the target arm angle and the current
@@ -37,7 +38,7 @@ public final class Constants {
 		public static final double kUpperArmMinAngle = 15;
 		/** Maximum angle the lower arm can go */
 		public static final double kUpperArmMaxAngle = 270;
-		/** Maximum height the arm can go to */
+		/** Maximum height in inches the arm can go to */
 		public static final double kMaxHeight = 12;
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads

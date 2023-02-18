@@ -102,7 +102,7 @@ public class InverseKinematicsTool {
 			}
 			armAngles = null;
 			// Prevent the lower arm from going more than 10 degrees behind vertical or
-			// below _ degreees
+			// below 45 degrees
 		} else if (armAngles[0] > ArmConstants.kLowerArmMaxAngle || armAngles[0] < ArmConstants.kLowerArmMinAngle) {
 			armAngles = null;
 			// Prevent the upper arm from going more than 270 degrees or less than 15
