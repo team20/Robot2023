@@ -61,6 +61,7 @@ public final class Constants {
 		public static final double kD = 0;
 		public static final double kIz = 5;
 		public static final double kFF = 0.0;
+		// TODO CHANGE MIN AND MAX OUTPUT WHEN DONE
 		public static final double kMinOutput = -.4;
 		public static final double kMaxOutput = .4;
 		public static final int kSlotID = 0;
