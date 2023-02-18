@@ -6,9 +6,8 @@ import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
 	public static final class GripperConstants {
-		// public static final int kGripperPort = 4;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kWinchPort = 5;
+		public static final int kPort = 5;
 		public static final double kP = 0.0003; // have to figure out constants later
 		public static final double kI = 0;
 		public static final double kD = 0;
@@ -116,15 +115,6 @@ public final class Constants {
 		public static final int kOperatorControllerPort = 1;
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
-
-		public static final class LogitechAxis {
-			public static final int kLeftX = 0;
-			public static final int kLeftY = 1;
-			public static final int kLeftTrigger = 2;
-			public static final int kRightTrigger = 3;
-			public static final int kRightX = 4;
-			public static final int kRightY = 5;
-		}
 
 		public static final class PS4Axis {
 			public static final int kLeftX = 0;

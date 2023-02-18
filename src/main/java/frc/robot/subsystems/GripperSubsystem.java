@@ -18,17 +18,16 @@ import frc.robot.Constants.GripperConstants;
 public class GripperSubsystem extends SubsystemBase {
 	private static GripperSubsystem s_subsystem;
 
-	private CANSparkMax m_gripperWinch = new CANSparkMax(GripperConstants.kWinchPort, MotorType.kBrushless);
-    private final RelativeEncoder m_gripperWinchEncoder = m_gripperWinch.getEncoder();
+	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
+    private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
 	private SparkMaxLimitSwitch m_openlimitSwitch;
 	private SparkMaxLimitSwitch m_closelimitSwitch;
-    private final SparkMaxPIDController m_gripperWinchController = m_gripperWinch.getPIDController();
+    private final SparkMaxPIDController m_gripperScrewController = m_gripperScrew.getPIDController();
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
-		final GenericHID m_controller = new GenericHID(frc.robot.Constants.ControllerConstants.kDriverControllerPort);
-		m_openlimitSwitch = m_gripperWinch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_closelimitSwitch = m_gripperWinch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_closelimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
 
 
 		// Singleton
@@ -41,23 +40,22 @@ public class GripperSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 
-        m_gripperWinch.restoreFactoryDefaults();
-		m_gripperWinch.setInverted(GripperConstants.kInvert);
-		m_gripperWinch.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_gripperWinch.enableVoltageCompensation(12);
-		m_gripperWinch.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
-		m_gripperWinchEncoder.setPositionConversionFactor(360);
-		// m_gripperWinchEncoder.setZeroOffset(GripperConstants.kWinchEncoderZeroOffset);
+        m_gripperScrew.restoreFactoryDefaults();
+		m_gripperScrew.setInverted(GripperConstants.kInvert);
+		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_gripperScrew.enableVoltageCompensation(12);
+		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
+		m_gripperScrewEncoder.setPositionConversionFactor(360);
 
-        m_gripperWinchController.setP(GripperConstants.kP);
-		m_gripperWinchController.setI(GripperConstants.kI);
-		m_gripperWinchController.setIZone(GripperConstants.kIz);
-		m_gripperWinchController.setD(GripperConstants.kD);
-		m_gripperWinchController.setOutputRange(GripperConstants.kMinOutput, GripperConstants.kMaxOutput);
-		m_gripperWinchController.setFeedbackDevice(m_gripperWinchEncoder);
-		m_gripperWinchController.setPositionPIDWrappingEnabled(true);
-		m_gripperWinchController.setPositionPIDWrappingMaxInput(360);
-		m_gripperWinchController.setPositionPIDWrappingMinInput(0);
+        m_gripperScrewController.setP(GripperConstants.kP);
+		m_gripperScrewController.setI(GripperConstants.kI);
+		m_gripperScrewController.setIZone(GripperConstants.kIz);
+		m_gripperScrewController.setD(GripperConstants.kD);
+		m_gripperScrewController.setOutputRange(GripperConstants.kMinOutput, GripperConstants.kMaxOutput);
+		m_gripperScrewController.setFeedbackDevice(m_gripperScrewEncoder);
+		m_gripperScrewController.setPositionPIDWrappingEnabled(true);
+		m_gripperScrewController.setPositionPIDWrappingMaxInput(360);
+		m_gripperScrewController.setPositionPIDWrappingMinInput(0);
 	}
 
 	@Override
@@ -65,15 +63,15 @@ public class GripperSubsystem extends SubsystemBase {
 	}
 
 	public void setGripperMotor(double speed) {
-		m_gripperWinch.set(speed);
+		m_gripperScrew.set(speed);
 	}
 
 	public double getGripperEncoderPosition(){
-		return m_gripperWinchEncoder.getPosition();
+		return m_gripperScrewEncoder.getPosition();
 	}
 
 	public void setGripperEncoderPosition(double position){
-		m_gripperWinchController.setReference(position, ControlType.kPosition);
+		m_gripperScrewController.setReference(position, ControlType.kPosition);
 	}
 
 	public static GripperSubsystem get() {

@@ -4,16 +4,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class GripperCommand extends CommandBase {
-    public enum GripperWinchPosition {
+    public enum GripperPosition {
         CLOSECUBE,
         CLOSECONE,
         OPEN
     }
 
-    private GripperWinchPosition m_gripperWinchPosition;
+    private GripperPosition m_gripperPosition;
 
-    public GripperCommand(GripperWinchPosition gripperWinchPosition) {
-        m_gripperWinchPosition = gripperWinchPosition;
+    public GripperCommand(GripperPosition gripperPosition) {
+        m_gripperPosition = gripperPosition;
         addRequirements(GripperSubsystem.get());
     }
 
@@ -24,7 +24,7 @@ public class GripperCommand extends CommandBase {
 
     @Override
     public void execute() {
-        switch (m_gripperWinchPosition) {
+        switch (m_gripperPosition) {
             case OPEN:
                 while (GripperSubsystem.get().getOpenLimitSwitch() == false) {
                     // while limit switch is not pressed, motor will run
@@ -33,7 +33,7 @@ public class GripperCommand extends CommandBase {
                 // When it is pressed, stop
                 GripperSubsystem.get().setGripperMotor(0);
                 break;
-        // To do: limit switch stuff for cube vs cone
+            // To do: limit switch stuff for cube vs cone
             case CLOSECONE:
                 while (GripperSubsystem.get().getCloseLimitSwitch() == false) {
                     // while limit switch is not pressed, motor will run
@@ -57,7 +57,7 @@ public class GripperCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        GripperSubsystem.get().setGripperMotor(0);
     }
 
     @Override
