@@ -151,13 +151,27 @@ public final class Constants {
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
 		public static final double kEncoderCounts = 42;
-		// Native units are in revolutions, 1 / gearRatio gives us how many revolutions
-		// the wheel has turned, and multiplying that by the wheel circumference(pi
-		// times the wheel diameter) gives the distance the robot has moved
+		/**
+		 * Converts native encoder units(revolutions) to meters
+		 * <p>
+		 * Native units are in revolutions, 1 / gearRatio gives us how many revolutions
+		 * the wheel has turned, and multiplying that by the wheel circumference(pi
+		 * times the wheel diameter) gives the distance the robot has moved in meters
+		 */
 		public static final double kEncoderPositionConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters;
+		/**
+		 * Converts native encoder units(RPM) to meters per minute
+		 * <p>
+		 * Native units are in revolutions per minute, 1 / gearRatio gives us how many
+		 * revolutions the wheel has turned per minute, and multiplying that by the
+		 * wheel circumference(pi times the wheel diameter) gives wheel velocity in
+		 * meters per minute, and dividing that by 60 gives wheel velocity in meters per
+		 * second. It's in meters per second because that's the unit
+		 * DifferentialDriveWheelSpeeds uses
+		 */
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
-				* DriveConstants.kWheelDiameterMeters * 60;
+				* DriveConstants.kWheelDiameterMeters / 60;
 		public static final double kBalanceP = 0.005;
 		public static final double kBalanceI = 0.0001;
 		public static final double kBalanceD = 0.0001;

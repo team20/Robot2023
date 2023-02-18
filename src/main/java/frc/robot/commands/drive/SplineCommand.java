@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class SplineCommand extends CommandBase {
-	/** Creates a new PurePursuitFollowerCommand. */
 
 	private Trajectory m_splinePath;
 	private double lookahead_distance = 0.5;
@@ -19,6 +18,7 @@ public class SplineCommand extends CommandBase {
 	private Pose2d m_goalPoint;
 	private double m_driveSpeed;
 
+	/** Creates a new SplineCommand. */
 	public SplineCommand(boolean reversed, Trajectory path) {
 		m_reversed = reversed;
 		m_splinePath = path;

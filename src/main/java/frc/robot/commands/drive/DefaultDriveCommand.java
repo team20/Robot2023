@@ -21,9 +21,9 @@ public class DefaultDriveCommand extends CommandBase {
 	 * Drive using speed inputs as a percentage output of the motor
 	 * 
 	 * @param driveSubsystem The subsystem to be used
-	 * @param speedStraight  Supplier of straight speed
-	 * @param speedLeft      Supplier of left speed
-	 * @param speedRight     Supplier of right speed
+	 * @param speedStraight  Joystick input
+	 * @param speedLeft      Left Bumper input
+	 * @param speedRight     Right Bumper input
 	 */
 	public DefaultDriveCommand(Supplier<Double> speedStraight, Supplier<Double> speedLeft,
 			Supplier<Double> speedRight) {
@@ -38,16 +38,16 @@ public class DefaultDriveCommand extends CommandBase {
 	 * Update the motor outputs
 	 */
 	public void execute() {
+		// Apply deadbands to controller input so it doesn't move while the controller
+		// isn't touched
 		double speedStraight = MathUtil.applyDeadband(m_speedStraight.get(), ControllerConstants.kDeadzone);
 		double speedLeft = MathUtil.applyDeadband(m_speedLeft.get(), ControllerConstants.kTriggerDeadzone);
 		double speedRight = MathUtil.applyDeadband(m_speedRight.get(), ControllerConstants.kTriggerDeadzone);
-
+		// If we aren't driving foward, slow down our turning
 		if (speedStraight != 0) {
 			speedLeft *= DriveConstants.kTurningMultiplier;
 			speedRight *= DriveConstants.kTurningMultiplier;
 		}
-
 		DriveSubsystem.get().arcadeDrive(speedStraight, speedLeft, speedRight);
-
 	}
 }

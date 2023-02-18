@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnCommand extends CommandBase {
-	/** Creates a new TurnCommand. */
 	private double m_targetAngle;
 
+	/** Creates a new TurnCommand. */
 	public TurnCommand(double targetAngle) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		m_targetAngle = targetAngle;
 		addRequirements(DriveSubsystem.get());
 	}
@@ -20,12 +19,12 @@ public class TurnCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		// Get the robot's current angle
 		double currAngle = DriveSubsystem.get().getHeading();
 
 		if (currAngle < m_targetAngle) {

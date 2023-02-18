@@ -16,7 +16,6 @@ public class BalancePIDCommand extends CommandBase {
 
 	/** Creates a new BalancePIDCommand. */
 	public BalancePIDCommand() {
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 

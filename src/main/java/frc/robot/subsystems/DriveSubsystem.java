@@ -83,15 +83,11 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backRight.setOpenLoopRampRate(DriveConstants.kRampRate);
 		m_backRight.follow(m_frontRight, DriveConstants.kBackRightOppose);
 
-		m_leftEncoder.setPositionConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters);
-		m_leftEncoder.setVelocityConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters / 60.0);
+		m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
+		m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
-		m_rightEncoder.setPositionConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters);
-		m_rightEncoder.setVelocityConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters / 60.0);
+		m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
+		m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
 		// m_backRight.setControlFramePeriodMs(10);
 

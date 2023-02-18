@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveDistanceCommand extends CommandBase {
+	/**
+	 * Distance to move
+	 */
 	private double m_distance;
 	private double m_startDistanceLeft;
 	private double m_startDistanceRight;
@@ -23,18 +26,26 @@ public class DriveDistanceCommand extends CommandBase {
 
 	private ProfiledPIDController m_controller;
 
-	/** Creates a new DriveDistanceCommand. */
+	/**
+	 * Creates a new DriveDistanceCommand.
+	 * 
+	 * @param distance The distance to drive in meters
+	 */
 	public DriveDistanceCommand(double distance) {
 		m_distance = distance;
 		// m_speed = 0.4;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
+	/**
+	 * Creates a new DriveDistanceCommand.
+	 * 
+	 * @param distance The distance to drive in meters
+	 * @param speed    The speed to drive at
+	 */
 	public DriveDistanceCommand(double distance, double speed) {
 		m_distance = distance;
 		// m_speed = speed;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -55,8 +66,7 @@ public class DriveDistanceCommand extends CommandBase {
 		double kI = 0.000;
 		double kD = 0.00;
 
-		m_controller = new ProfiledPIDController(
-				kP, kI, kD,
+		m_controller = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(125, 150)); // was 196 35
 		// m_startDistanceLeft = DriveSubsystem.get().getLeftEncoderPosition();
 		// m_startDistanceRight= DriveSubsystem.get().getRightEncoderPosition();
@@ -86,7 +96,6 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
-
 	}
 
 	// Returns true when the command should end.
@@ -106,6 +115,8 @@ public class DriveDistanceCommand extends CommandBase {
 		// Math.abs(m_distance)
 		// && Math.abs(currDistanceRight - m_startDistanceRight) > Math.abs(m_distance);
 		// return m_controller.atGoal();
+		// If the distance measured by the encoders is more than the target distance,
+		// stop the command
 		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance()) > Math.abs(m_distance);
 	}
 }

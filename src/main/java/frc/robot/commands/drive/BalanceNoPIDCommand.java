@@ -10,7 +10,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class BalanceNoPIDCommand extends CommandBase {
 	/** Creates a new BalanceNoPIDCommand. */
 	public BalanceNoPIDCommand() {
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
