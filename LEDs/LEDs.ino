@@ -1,37 +1,33 @@
-// To upload to Arduino you must select your board (Arduino Nano) 
-// this is for robot 2023 and you also need a MINI-B USB Cable to plug into
-// the arduino, then into your computer (pick the port)
-// then find the arrow button at the top near where you choose your port and click to upload 
-
-#include <Adafruit_NeoPixel.h> // imports
+#include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 #ifdef __AVR__
 #include <avr/power.h>  // Required for 16 MHz Adafruit Trinket
 #endif
 
 #define ITERATION_DELAY_MS 10
-#define NAVX_SENSOR_DEVICE_I2C_ADDRESS_7BIT 0x32 // the i2c address (arduino has an file in examples to find this address)
-#define NUM_BYTES_TO_READ 1 // this can be changed to whatever but 1 byte is enough, we don't need anymore
+#define NAVX_SENSOR_DEVICE_I2C_ADDRESS_7BIT 0x32
+#define NUM_BYTES_TO_READ 1
 //I2C Master Code for Arduino Nano
 
 int ledState = 0;
 
-#define LED_PIN 5 // Which pin on the Arduino is connected to the NeoPixels?
+// Which pin on the Arduino is connected to the NeoPixels?
+// On a Trinket or Gemma we suggest changing this to 1:
+#define LED_PIN 5
 
-#define LED_COUNT 18 // How many NeoPixels are attached to the Arduino? 
-// TODO: Might want to recount? Apparently doesn't work on one side? Might want to retest this just in case
-// but since it will be different LEDs on actual robot shouldn't worry about it too much
+// How many NeoPixels are attached to the Arduino?
+#define LED_COUNT 18
 
 // Declare our NeoPixel strip object:
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_BRG + NEO_KHZ800); 
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
 // Argument 3 = Pixel type flags, add together as needed:
 //   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
-//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products) - THIS IS OURS (2023 L-Board)
-//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products) = RBG
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2) = BRG
+//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)  
 
 
 // setup() function -- runs once at startup --------------------------------
@@ -42,8 +38,7 @@ long startTime = -1;
 const long endTime = 30000;                   //timer variables for endgame
 int DHpin = 8;                                //idk, I copied this blindly, I don't think this does anything
 byte dat[5];                                  //same as above
-uint32_t teamColor = strip.Color(0, 0, 255);  //color of team, default to green, can be set by master/robot to alliance color
-
+uint32_t teamColor = strip.Color(0,255,0);  //color of team, default to green, can be set by master/robot to alliance color
 uint32_t MovingRedGreenGradient(int c, int i) {  //pixel depends on ratio of red and green
   return (strip.Color(255 * ((i + c) % LED_COUNT) / LED_COUNT, 0, 255 * (LED_COUNT - (i + c) % LED_COUNT) / LED_COUNT % 255));
 }
@@ -54,6 +49,11 @@ uint32_t TheaterLights(int c, int i, uint32_t color1, uint32_t color2) {  //pixe
   if (i % 2 == c % 2) { return (color1); }
   return (color2);
 }
+uint32_t BlinkingLights(int c, int i, uint32_t color3, uint32_t color4) {
+  if (c % 2 == 0) { return (color3); }
+  return (color4);
+}
+
 uint32_t HSV2RGB(uint32_t h, double s, double v) {  //converts HSV colors to RGB integer, used for rainbows
   //note: idea is copied from google, math is created from thin air, can be trusted, cannot be explained
   h %= 360;
@@ -111,13 +111,21 @@ void loop() {
     Wire.requestFrom(NAVX_SENSOR_DEVICE_I2C_ADDRESS_7BIT, NUM_BYTES_TO_READ);  // Send number of bytes to read     delay(1);
     Wire.endTransmission();                                                    // Stop transmitting
   }
-  switch (pattern) {  //sets up lights to patterns
-                      //  note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
-                      //         the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
-    case 8:           //reset code
+  switch (pattern) {  // sets up lights to patterns
+                      // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
+                      // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
+    case 8:           // reset code
       startTime = -1;
       colorIndex = 0;
       pattern = -1;
+    case 19: // blinking yellow
+      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(245, 149, 24), strip.Color(0, 0, 0))); }
+      delay(150);
+      break;    
+    case 18: // blinking purple
+      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(230,0,255), strip.Color(0, 0, 0))); }
+      delay(150);
+      break;
     case 17:  //green back and forth timer
       if (startTime < 0) { startTime = millis(); }
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, Timer(colorIndex, i, strip.Color(0, 0, 250))); }
@@ -153,7 +161,7 @@ void loop() {
       delay(100);
       break;
     default:  //display team/alliance color
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, teamColor); }
+      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, teamColor); } 
       delay(50);
       break;
   }
