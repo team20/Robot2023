@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -107,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
 
                 //m_turnController.setTolerance(DriveConstants.kTurnTolerance);
 
-                m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),0,0);
+                m_odometry = new DifferentialDriveOdometry(new Rotation2d(),0,0);
                 // this is what they did in 2020 with the navX:
                 // Rotation2d.fromDegrees(getHeading()));
                 resetEncoders();
@@ -116,11 +117,11 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         public void periodic() {
-                //SmartDashboard.putNumber("the angle", getHeading());
+                SmartDashboard.putNumber("the angle", getHeading());
                 // System.out.println("the angle is: " + getHeading());
                 //SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
-                // m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-                //                 getRightEncoderPosition());
+                m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
+                                getRightEncoderPosition());
                  if(DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake && !DriverStation.isAutonomous()){
                          m_frontLeft.setIdleMode(IdleMode.kCoast);
                          m_frontRight.setIdleMode(IdleMode.kCoast);

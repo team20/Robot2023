@@ -22,8 +22,8 @@ public class TagAlignCommand extends CommandBase {
   //PIDController m_controller = new PIDController(0.14, 0.005, 0.000); 
   //i: 0.005 before d: 0.000 before
 
-  private double m_driveSpeed = 0.15;  //constant
-  private double m_speed = 0.15; //changes
+  private double m_driveSpeed = 0.35;  //constant
+  private double m_speed = 0.35; //changes
   private double m_xOffset, m_zOffset; //offsets from april tag
 
   private Pose2d m_goalPose = new Pose2d(); //instantiates pose of where robot is
@@ -137,7 +137,7 @@ public class TagAlignCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     //end when we reach our goal point
-    return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.1 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
+    return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.2 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
   }
   private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
 
@@ -168,6 +168,6 @@ public class TagAlignCommand extends CommandBase {
     //and least when the goal point is directly next to us
     double speedLimitFactor = (distanceSquared > 0.25 ? 1 : 0.5);
     m_driveSpeed = m_speed*Math.cos(vectorAngleAdjusted) * speedLimitFactor;
-    return Math.sin(vectorAngleAdjusted)*m_speed * speedLimitFactor;
+    return Math.sin(vectorAngleAdjusted) * speedLimitFactor;
   }
 }

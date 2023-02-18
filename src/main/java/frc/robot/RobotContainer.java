@@ -66,17 +66,17 @@ public class RobotContainer {
     // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
 
     return new SequentialCommandGroup(new TagAlignCommand(TagNumber.TagGeneral, Position.MiddlePosition, 0.75),
-        new TurnCommand(8.5).withTimeout(1),
+        //new TurnCommand(8.5).withTimeout(1),
         new WaitCommand(1),
         new DriveDistanceCommand(-2).withTimeout(2),
         new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.75),
-        new TurnCommand(8.5).withTimeout(1),
+        new TurnCommand(159).withTimeout(1),
         new WaitCommand(1),
         new DriveDistanceCommand(-2).withTimeout(2),
         new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.75),
-        new TurnCommand(8.5).withTimeout(1),
-        new WaitCommand(1),
-        new DriveDistanceCommand(-2).withTimeout(2));
+        new TurnCommand(159).withTimeout(1),
+        new WaitCommand(1));
+        //new DriveDistanceCommand(-2).withTimeout(2));
     // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
   }
 }
