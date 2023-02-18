@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ArduinoConstants;
+import frc.robot.subsystems.ArduinoSubsystem;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
@@ -22,6 +24,7 @@ public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
+	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 
 	public RobotContainer() {
 		configureButtonBindings();
@@ -31,7 +34,6 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return new GripperCommand(GripperPosition.CLOSE);
-		//return null;
+		return null;
 	}
 }
