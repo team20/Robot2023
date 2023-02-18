@@ -5,6 +5,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
+	public static final class GripperConstants {
+		public static final int kGripperPort = 4;
+		public static final boolean kFrontLeftInvert = false;
+		public static final int kLeftBumpSwitchPort = 0;
+		public static final int kRightBumpSwitchPort = 1;
+		public static final int kWinchPort = 5;
+	}
+
 	public static final class ArmConstants {
 		// Preset angles for arm
 		// Arm is foward
@@ -30,6 +38,8 @@ public final class Constants {
 		 * arm angle
 		 */
 		public static final double kAllowedDegreesError = 4;
+		public static final double kMinEncoderValue = 0.0;
+		public static final double kMaxEncoderValue = 42.0;
 		/** Smallest angle the lower arm can go */
 		public static final double kLowerArmMinAngle = 45;
 		/** Maximum angle the lower arm can go */
