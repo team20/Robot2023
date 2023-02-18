@@ -25,7 +25,9 @@ public class ArduinoSubsystem extends SubsystemBase {
     GREEN_THEATER_LIGHTS((byte)14),
     MOVING_RED_AND_GREEN_GRADIENT((byte)15),
     BLUE_BACK_AND_FORTH_TIMER((byte)16), // TODO: timer currently has a bug (look in arduino IDE)
-    GREEN_BACK_AND_FORTH_TIMER((byte)17);
+    GREEN_BACK_AND_FORTH_TIMER((byte)17),
+    PURPLE_BLINKING((byte)18),
+    YELLOW_BLINKING((byte)19);
     
     public byte code;
     private StatusCode(byte c){
