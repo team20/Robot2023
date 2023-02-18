@@ -4,8 +4,57 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
-
 public final class Constants {
+	public static final class GripperConstants {
+		public static final int kGripperPort = 4;
+		public static final boolean kFrontLeftInvert = false;
+		public static final int kLeftBumpSwitchPort = 0;
+		public static final int kRightBumpSwitchPort = 1;
+		public static final int kWinchPort = 5;
+	}
+
+	public static final class ArmConstants {
+		// Preset offsets for arm
+		public static final double[] kHighOffsets = { 12, 3 };
+		public static final double[] kMediumOffsets = { 12, -1.75 };
+		public static final double[] kLowOffsets = { 8.75, -3.25 };
+		// Change to actual length of arm
+		public static final double kLowerArmLength = 6.2;
+		// Change to actual length of arm
+		public static final double kUpperArmLength = 7;
+		public static final int kCountsPerRevolution = 42;
+		public static final double kAllowedError = 2;
+		public static final double kMinEncoderValue = 0.0;
+		public static final double kMaxEncoderValue = 42.0;
+		public static final double kMinAngle = 45;
+		public static final double kMaxAngle = 135;
+		public static final double kLowerEncoderZeroOffset = 110.2;
+		public static final double kUpperEncoderZeroOffset = 248.9;
+		public static final int kLowerMotor = 2;
+		public static final int kUpperMotor = 1;
+		public static final boolean kInvert = false;
+		public static final int kSmartCurrentLimit = 20;
+		public static final int kPeakCurrentLimit = 30;
+		public static final int kPeakCurrentDurationMillis = 100;
+		public static final double kP = 0.003; // 0.001 will not smash encoders
+		public static final double kI = 0;
+		public static final double kD = 0;
+		public static final double kIz = 5;
+		public static final double kFF = .0;
+		public static final double kMinOutput = -1;
+		public static final double kMaxOutput = 1;
+		public static final int kSlotID = 0;
+		public static final double kMaxAcel = 0;
+		public static final double kMaxVelocity = 0;
+		public static final double kMinVelocity = 0;
+		public static final double kMinPosition = 0;
+		public static final double kInPosition = 0;
+		public static final double kOutPosition = 0;
+		public static final int kBumpSwitchPort = 0;
+		public static final double kBounceDownPosition = 0;
+		public static final double kBounceUpPosition = 0;
+		public static final double kBounceTime = 0;
+	}
 
 	public static final class ArduinoConstants {
 		public static final int kAddress = 2;
@@ -93,15 +142,15 @@ public final class Constants {
 
 	public static final class DriveConstants {
 
-        //TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 3;
+		// TODO CHANGE ALL OF THESE
+		public static final int kFrontLeftPort = 13;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort=2;
+		public static final int kBackLeftPort = 12;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 4;
+		public static final int kFrontRightPort = 11;
 		public static final boolean kFrontRightInvert = false;
-		public static final int kBackRightPort = 5;
+		public static final int kBackRightPort = 10;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
@@ -122,10 +171,10 @@ public final class Constants {
 		public static final SPI.Port kGyroPort = SPI.Port.kMXP;
 		public static final boolean kGyroReversed = true;
 
-        //TODO CHANGE ALL OF THESE
-		public static final double kTurnP = 0.0125; //was 0.005
-		public static final double kTurnI = 0; //was 0.003
-		public static final double kTurnD = 0; //0.0
+		// TODO CHANGE ALL OF THESE
+		public static final double kTurnP = 0.0125; // was 0.005
+		public static final double kTurnI = 0; // was 0.003
+		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
 		public static final double ksVolts = 0.196;
 		public static final double kvVoltSecondsPerMeter = 2.15;
@@ -146,9 +195,10 @@ public final class Constants {
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
 		public static final double kBackupDistance = Units.feetToMeters(2);
-		public static final double kRampRate = .1;//1?
+		public static final double kRampRate = .1;// 1?
 		public static final double kSpeedLimitFactor = .5;
-		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to														// be checked
+		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
+																// // be checked
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
@@ -159,7 +209,6 @@ public final class Constants {
 				* DriveConstants.kWheelDiameterMeters * 60;
 
 	}
-
 
 	public static final class LimelightConstants { // TODO: tune PID loop
 		public static final double kDisP = 0.02;
