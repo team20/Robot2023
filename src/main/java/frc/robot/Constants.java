@@ -6,11 +6,22 @@ import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
 	public static final class GripperConstants {
-		public static final int kGripperPort = 4;
+		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kLeftBumpSwitchPort = 0;
-		public static final int kRightBumpSwitchPort = 1;
-		public static final int kWinchPort = 5;
+		public static final int kPort = 4;
+		public static final double kP = 0.0003; // have to figure out constants later
+		public static final double kI = 0;
+		public static final double kD = 0;
+		public static final double kIz = 5;
+		public static final boolean kInvert = false;
+		public static final int kSmartCurrentLimit = 20;
+		public static final double kWinchEncoderZeroOffset = 110.2;
+		public static final double kCloseTime = 1000; //TODO: change as needed
+		public static final double kHoldPower = .1; //TODO: change as needed
+		public static final double kMinOutput = -0.5;
+		public static final double kMaxOutput = 0.5;
+		public static final int kOpenLimitSwitchPort = 0; // change port
+		public static final int kCloseLimitSwitchPort = 0; // change port
 	}
 
 	public static final class ArmConstants {
@@ -148,7 +159,7 @@ public final class Constants {
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
-		public static final class Axis {
+		public static final class PS4Axis {
 			public static final int kLeftX = 0;
 			public static final int kLeftY = 1;
 			public static final int kRightX = 2;
