@@ -191,7 +191,9 @@ public class ArmSubsystem extends SubsystemBase {
 		// Take the calculated arm position from the forward kinematics code, and
 		// calculate the lower and upper arm angles to make sure everything works
 		double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1]);
-		SmartDashboard.putNumber("IK Lower Arm Angle", armPosition[0]);
-		SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
+		if (armPosition != null) {
+			SmartDashboard.putNumber("IK Lower Arm Angle", armPosition[0]);
+			SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
+		}
 	}
 }

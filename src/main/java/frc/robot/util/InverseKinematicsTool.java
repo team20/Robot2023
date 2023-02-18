@@ -4,7 +4,6 @@
 package frc.robot.util;
 
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.arm.ArmScoreCommand;
 
 /**
  * Contains the inverse kinematics code to calculate the arm angles. That's
