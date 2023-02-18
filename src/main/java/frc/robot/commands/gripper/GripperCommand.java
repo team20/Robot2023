@@ -1,14 +1,11 @@
 package frc.robot.commands.gripper;
 
-import java.time.LocalDateTime;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class GripperCommand extends CommandBase {
     public enum GripperPosition {
-       
         CLOSE,
         OPEN,
         ZERO
@@ -31,6 +28,7 @@ public class GripperCommand extends CommandBase {
     public void execute() {
         switch (m_gripperPosition) {
             case OPEN:
+                //set gripper to open position
                 GripperSubsystem.get().setGripperPosition(GripperConstants.kGripperOpenPosition);
                 break;
             case CLOSE:
@@ -65,7 +63,7 @@ public class GripperCommand extends CommandBase {
                 }
              break;
             case CLOSE:
-                 if (System.currentTimeMillis()-m_startTime > GripperConstants.kCloseTime) {
+                 if (System.currentTimeMillis()-m_startTime >= GripperConstants.kCloseTime) {
                         GripperSubsystem.get().setGripperMotor(GripperConstants.kHoldPower);
                         return true;
                   }
