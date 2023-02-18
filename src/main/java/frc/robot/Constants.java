@@ -101,15 +101,6 @@ public final class Constants {
 		public static final double kMinOutput = -.4;
 		public static final double kMaxOutput = .4;
 		public static final int kSlotID = 0;
-		public static final double kMaxAcel = 0;
-		public static final double kMaxVelocity = 0;
-		public static final double kMinVelocity = 0;
-		public static final double kMinPosition = 0;
-		public static final double kInPosition = 0;
-		public static final double kOutPosition = 0;
-		public static final double kBounceDownPosition = 0;
-		public static final double kBounceUpPosition = 0;
-		public static final double kBounceTime = 0;
 	}
 
 	public static final class ArduinoConstants {
@@ -254,7 +245,7 @@ public final class Constants {
 		public static final double kRampRate = .1;// 1?
 		public static final double kSpeedLimitFactor = .5;
 		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
-																// // be checked
+		// // be checked
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
