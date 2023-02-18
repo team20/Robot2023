@@ -23,6 +23,8 @@ public final class Constants {
 		public static final double[] kMediumForwardAngles = { 90, 90 };
 		// Arm is foward
 		public static final double[] kLowAngles = { 90, 40 };
+		// Angles for putting the arm in the pocket
+		public static final double[] kPocketAngles = { 105, 15 };
 		// Transition position
 		public static final double[] kIntermediateAngles = { 50, 220 };
 		/** Length of lower arm length in inches */

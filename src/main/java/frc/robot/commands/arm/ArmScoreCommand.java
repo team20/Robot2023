@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
-import frc.robot.util.InverseKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
 	double[] angles;
@@ -17,6 +16,7 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_FORWARD,
 		MEDIUM_BACK,
 		LOW,
+		POCKET,
 		INTERMEDIATE
 	}
 
@@ -49,8 +49,13 @@ public class ArmScoreCommand extends CommandBase {
 			case LOW:
 				angles = ArmConstants.kLowAngles;
 				break;
+			case POCKET:
+				angles = ArmConstants.kPocketAngles;
+				break;
 			case INTERMEDIATE:
 				angles = ArmConstants.kIntermediateAngles;
+			default:
+				break;
 		}
 		ArmSubsystem.get().setLowerArmAngle(angles[0]);
 		ArmSubsystem.get().setUpperArmAngle(angles[1]);
