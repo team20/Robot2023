@@ -7,17 +7,26 @@ import edu.wpi.first.wpilibj.SPI;
 public final class Constants {
 	public static final class ArmConstants {
 		// Preset angles for arm
-		// Arm is foward
+		/** The lower and upper arm angles for the arm to be in the high position */
 		public static final double[] kHighAngles = { 50, 160 };
-		// Arm is backward
+		/**
+		 * The lower and upper arm angles for the arm to be flipped over in the medium
+		 * position
+		 */
 		public static final double[] kMediumBackAngles = { 90, 270 };
-		// Arm is forward
+		/**
+		 * The lower and upper arm angles for the arm to be forwards in the medium
+		 * position
+		 */
 		public static final double[] kMediumForwardAngles = { 90, 90 };
-		// Arm is foward
+		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 90, 40 };
-		// Angles for putting the arm in the pocket
+		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 105, 15 };
-		// Transition position
+		/**
+		 * The lower and upper arm angles for the arm to be in the intermediate position
+		 * needed to prevent the arm from going over the height limit
+		 */
 		public static final double[] kIntermediateAngles = { 50, 220 };
 		// Recheck when robot is assembled
 		/** Length of lower arm length in inches */
@@ -76,9 +85,9 @@ public final class Constants {
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
+		// TODO set this back to one?
 		public static final double kMinOutput = -.4;
 		public static final double kMaxOutput = .4;
-		public static final int kSlotID = 0;
 	}
 
 	public static final class ArduinoConstants {

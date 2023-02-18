@@ -20,9 +20,9 @@ import frc.robot.util.InverseKinematicsTool;
 public class ArmSubsystem extends SubsystemBase {
 	/** Stores the instance of the ArmSubsystem */
 	private static ArmSubsystem s_subsystem;
-	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotor, MotorType.kBrushless);
-	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2, MotorType.kBrushless);
-	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotor, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotorID, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
+	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotorID, MotorType.kBrushless);
 
 	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmMotor
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
