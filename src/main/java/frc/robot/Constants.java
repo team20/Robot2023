@@ -27,13 +27,21 @@ public final class Constants {
 		public static final double[] kPocketAngles = { 105, 15 };
 		// Transition position
 		public static final double[] kIntermediateAngles = { 50, 220 };
+		// Recheck when robot is assembled
 		/** Length of lower arm length in inches */
 		public static final double kLowerArmLength = 32.5;
-		// For joystick speed
-		public static final double kSpeedMultiplier = 1.5;
 		/** Length of upper arm length in inches */
-		// Recheck when robot is assembled
 		public static final double kUpperArmLength = 40;
+		/**
+		 * A joystick input multiplier to control how fast the arm moves relative to how
+		 * much the joystick is being moved
+		 */
+		public static final double kArmMovementSpeedMultiplier = 1.5;
+		/**
+		 * A joystick input multipler to control how fast the arm motors spin relative
+		 * to how much the joystick is being moved
+		 */
+		public static final double kManualArmMovementSpeedMultiplier = 0.5;
 		public static final int kCountsPerRevolution = 42;
 		/**
 		 * Allowable difference in degrees between the target arm angle and the current

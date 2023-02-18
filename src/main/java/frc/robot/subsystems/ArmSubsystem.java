@@ -105,6 +105,24 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	/**
+	 * Sets the percent output for the lower arm motor
+	 * 
+	 * @param speed The percent output to run the motor at
+	 */
+	public void setLowerArmMotorSpeed(double speed) {
+		m_lowerArmMotor.set(speed);
+	}
+
+	/**
+	 * Sets the percent output for the upper arm motor
+	 * 
+	 * @param speed The percent output to run the motor at
+	 */
+	public void setUpperArmMotorSpeed(double speed) {
+		m_upperArmMotor.set(speed);
+	}
+
+	/**
 	 * @return The angle of the lower arm in degrees
 	 */
 	public double getLowerArmAngle() {

@@ -52,11 +52,11 @@ public class ChangeOffsetCommand extends CommandBase {
 	public void execute() {
 		// Amount to move on the x-axis
 		m_xOffset = MathUtil.applyDeadband(m_joystickX.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kSpeedMultiplier;
+				* ArmConstants.kArmMovementSpeedMultiplier;
 		// The -1 is because the y-axis values are inverted
 		// Amount to move on the y-axis
 		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kSpeedMultiplier * -1;
+				* ArmConstants.kArmMovementSpeedMultiplier * -1;
 		// Get current (X, Y) position from current actual angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
