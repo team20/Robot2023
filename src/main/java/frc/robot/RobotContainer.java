@@ -21,7 +21,6 @@ public class RobotContainer {
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-	private final Joystick m_controller = new Joystick(ControllerConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
 		configureButtonBindings();
@@ -34,10 +33,6 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kLeftBumper))
-				.onTrue(new GripperCommand(GripperPosition.CLOSE));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
 	}
 
 	public Command getAutonomousCommand() {
