@@ -27,17 +27,6 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// m_armSubsystem.setDefaultCommand(new
-		// ArmCommand(ArmCommand.Operation.CMD_ARM_DOWN));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kCircle))
-				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM));
-		// new Trigger(() ->
-		// m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-		// .onTrue(new UpCommand());
 	}
 
 
@@ -47,21 +36,7 @@ public class RobotContainer {
    * @return a set of commands used at the beginning
    */
   public Command getAutonomousCommand() {
-    // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
-
-    return new SequentialCommandGroup(new TagAlignCommand(TagNumber.TagGeneral, Position.MiddlePosition, 0.75),
-        //new TurnCommand(8.5).withTimeout(1),
-        new WaitCommand(1),
-        new DriveDistanceCommand(-2).withTimeout(2),
-        new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.75),
-        new TurnCommand(159).withTimeout(1),
-        new WaitCommand(1),
-        new DriveDistanceCommand(-2).withTimeout(2),
-        new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.75),
-        new TurnCommand(159).withTimeout(1),
-        new WaitCommand(1));
-        //new DriveDistanceCommand(-2).withTimeout(2));
-    // return new SequentialCommandGroup(new TagAlignCommand(0, -0.5));
+  	return null;
   }
 }
 
