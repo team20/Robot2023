@@ -15,6 +15,7 @@ import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,7 +27,7 @@ public class RobotContainer {
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-
+  private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	public RobotContainer() {
 		configureButtonBindings();
 	}
