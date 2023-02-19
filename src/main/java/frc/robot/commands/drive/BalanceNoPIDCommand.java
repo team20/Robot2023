@@ -39,6 +39,6 @@ public class BalanceNoPIDCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;// DriveSubsystem.get().getPitch() < 2 && DriveSubsystem.get().getPitch() > -2;
+		return false;
 	}
 }
