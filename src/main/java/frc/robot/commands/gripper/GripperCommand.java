@@ -43,7 +43,6 @@ public class GripperCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        //GripperSubsystem.get().setGripperMotor(0);
     }
 
     @Override
