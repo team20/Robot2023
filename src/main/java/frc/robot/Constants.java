@@ -6,43 +6,95 @@ import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
 	public static final class GripperConstants {
-		public static final int kGripperPort = 4;
+		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kLeftBumpSwitchPort = 0;
-		public static final int kRightBumpSwitchPort = 1;
-		public static final int kWinchPort = 5;
+		public static final int kPort = 4;
+		public static final double kP = 0.0003; // have to figure out constants later
+		public static final double kI = 0;
+		public static final double kD = 0;
+		public static final double kIz = 5;
+		public static final boolean kInvert = false;
+		public static final int kSmartCurrentLimit = 20;
+		public static final double kWinchEncoderZeroOffset = 110.2;
+		public static final double kCloseTime = 1000; //TODO: change as needed
+		public static final double kHoldPower = .1; //TODO: change as needed
+		public static final double kMinOutput = -0.5;
+		public static final double kMaxOutput = 0.5;
+		public static final int kOpenLimitSwitchPort = 0; // change port
+		public static final int kCloseLimitSwitchPort = 0; // change port
 	}
 
 	public static final class ArmConstants {
-		// Preset offsets for arm
-		public static final double[] kHighOffsets = { 12, 3 };
-		public static final double[] kMediumOffsets = { 12, -1.75 };
-		public static final double[] kLowOffsets = { 8.75, -3.25 };
-		// Change to actual length of arm
-		public static final double kLowerArmLength = 6.2;
-		// Change to actual length of arm
-		public static final double kUpperArmLength = 7;
+		// Preset angles for arm
+		// Arm is foward
+		public static final double[] kHighAngles = { 50, 160 };
+		// Arm is backward
+		public static final double[] kMediumBackAngles = { 90, 270 };
+		// Arm is forward
+		public static final double[] kMediumForwardAngles = { 90, 90 };
+		// Arm is foward
+		public static final double[] kLowAngles = { 90, 40 };
+		// Angles for putting the arm in the pocket
+		public static final double[] kPocketAngles = { 105, 15 };
+		// Transition position
+		public static final double[] kIntermediateAngles = { 50, 220 };
+		// Recheck when robot is assembled
+		/** Length of lower arm length in inches */
+		public static final double kLowerArmLength = 32.5;
+		/** Length of upper arm length in inches */
+		public static final double kUpperArmLength = 40;
+		/**
+		 * A joystick input multiplier to control how fast the arm moves relative to how
+		 * much the joystick is being moved
+		 */
+		public static final double kArmMovementSpeedMultiplier = 1.5;
+		/**
+		 * A joystick input multipler to control how fast the arm motors spin relative
+		 * to how much the joystick is being moved
+		 */
+		public static final double kManualArmMovementSpeedMultiplier = 0.5;
 		public static final int kCountsPerRevolution = 42;
-		public static final double kAllowedError = 2;
+		/**
+		 * Allowable difference in degrees between the target arm angle and the current
+		 * arm angle
+		 */
+		public static final double kAllowedDegreesError = 4;
 		public static final double kMinEncoderValue = 0.0;
 		public static final double kMaxEncoderValue = 42.0;
-		public static final double kMinAngle = 45;
-		public static final double kMaxAngle = 135;
+		/** Smallest angle the lower arm can go */
+		public static final double kLowerArmMinAngle = 45;
+		/** Maximum angle the lower arm can go */
+		public static final double kLowerArmMaxAngle = 135;
+		/** Smallest angle the lower arm can go */
+		public static final double kUpperArmMinAngle = 15;
+		/** Maximum angle the lower arm can go */
+		public static final double kUpperArmMaxAngle = 270;
+		/** Maximum height in inches the arm can go to */
+		public static final double kMaxHeight = 12;
+		/**
+		 * Number of degrees the lower arm encoder output needs to be offset so it reads
+		 * 0 degrees in our zero position
+		 */
 		public static final double kLowerEncoderZeroOffset = 110.2;
+		/**
+		 * Number of degrees the upper arm encoder output needs to be offset so it reads
+		 * 0 degrees in our zero position
+		 */
 		public static final double kUpperEncoderZeroOffset = 248.9;
-		public static final int kLowerMotor = 2;
 		public static final int kUpperMotor = 1;
+		public static final int kLowerMotor = 2;
+		public static final int kLowerMotor2 = 3;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = 0.003; // 0.001 will not smash encoders
-		public static final double kI = 0;
+		public static final double kP = 0.0070; // 0.005 will not smash encoders
+		public static final double kI = 0.0001;
 		public static final double kD = 0;
 		public static final double kIz = 5;
-		public static final double kFF = .0;
-		public static final double kMinOutput = -1;
-		public static final double kMaxOutput = 1;
+		public static final double kFF = 0.0;
+		public static final double kMinOutput = -.4;
+		public static final double kMaxOutput = .4;
 		public static final int kSlotID = 0;
 		public static final double kMaxAcel = 0;
 		public static final double kMaxVelocity = 0;
@@ -50,7 +102,6 @@ public final class Constants {
 		public static final double kMinPosition = 0;
 		public static final double kInPosition = 0;
 		public static final double kOutPosition = 0;
-		public static final int kBumpSwitchPort = 0;
 		public static final double kBounceDownPosition = 0;
 		public static final double kBounceUpPosition = 0;
 		public static final double kBounceTime = 0;
@@ -108,7 +159,7 @@ public final class Constants {
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
-		public static final class Axis {
+		public static final class PS4Axis {
 			public static final int kLeftX = 0;
 			public static final int kLeftY = 1;
 			public static final int kRightX = 2;
