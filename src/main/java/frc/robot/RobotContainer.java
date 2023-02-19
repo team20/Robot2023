@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import javax.swing.text.html.HTML.Tag;
+
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,9 +15,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.drive.DriveDistanceCommand;
+import frc.robot.commands.drive.TagAlignCommand;
+import frc.robot.commands.drive.TurnCommand;
+import frc.robot.commands.drive.TagAlignCommand.Position;
+import frc.robot.commands.drive.TagAlignCommand.TagNumber;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,7 +35,7 @@ public class RobotContainer {
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-
+  private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	public RobotContainer() {
 		configureButtonBindings();
 	}
@@ -41,6 +50,15 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return null;
+		return new SequentialCommandGroup(
+      new TagAlignCommand(TagNumber.TagGeneral, Position.MiddlePosition, 0.25),
+      new TurnCommand(6).withTimeout(1),
+      new DriveDistanceCommand(-2),
+      new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.25),
+      new TurnCommand(6).withTimeout(1),
+      new DriveDistanceCommand(-2),
+      new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.25),
+      new TurnCommand(6).withTimeout(1)
+      );
 	}
 }

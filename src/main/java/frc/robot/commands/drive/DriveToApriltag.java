@@ -15,11 +15,11 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToApriltag extends CommandBase {
   double m_distance;
   double m_distanceThreshold;
-  long m_timeThreshold;
+  double m_timeThreshold;
   double m_maxStride;
   double m_convergenceRatio;
   double m_maxSpeed;
-  Long m_convergenceStartTime = null;
+  Double m_convergenceStartTime = null;
 
   /**
    * Constructs a {@code DriveDistanceCommand2}.
@@ -39,7 +39,7 @@ public class DriveToApriltag extends CommandBase {
    *                          move by the DriveDistanceCommand (1:
    *                          full speed)
    */
-  public DriveToApriltag(double distance, double distanceThreshold, long timeThreshold, double maxStride,
+  public DriveToApriltag(double distance, double distanceThreshold, double timeThreshold, double maxStride,
       double convergenceRatio, double maxSpeed) {
     m_distance = distance;
     m_distanceThreshold = distanceThreshold;
@@ -91,7 +91,7 @@ public class DriveToApriltag extends CommandBase {
     double rightDisplacement = DriveSubsystem.get().getRightEncoderPosition() - m_distance;
     if (Math.abs(leftDisplacement) < m_distanceThreshold && Math.abs(rightDisplacement) < m_distanceThreshold) {
       if (m_convergenceStartTime == null)
-        m_convergenceStartTime = System.currentTimeMillis();
+        m_convergenceStartTime = (double)System.currentTimeMillis();
       else
         return (System.currentTimeMillis() - m_convergenceStartTime) > m_timeThreshold;
     } else {

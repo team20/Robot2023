@@ -158,11 +158,11 @@ public class ArmSubsystem extends SubsystemBase {
 		// Prevent the lower arm from going more than 10 degrees behind vertical or
 		// below 45 degrees
 		if (lower > ArmConstants.kLowerArmMaxAngle || lower < ArmConstants.kLowerArmMinAngle) {
-			System.out.println("Lower arm angle limit reached");
+			//System.out.println("Lower arm angle limit reached");
 			// Prevent the upper arm from going more than 270 degrees or less than 15
 			// degrees relative to the lower arm
 		} else if (upper > ArmConstants.kUpperArmMaxAngle || upper < ArmConstants.kUpperArmMinAngle) {
-			System.out.println("Upper arm angle limit reached");
+			//System.out.println("Upper arm angle limit reached");
 			// If none of the limits have been reached, set the arm angles
 		} else {
 			m_targetLowerArmAngle = lower;

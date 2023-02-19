@@ -95,17 +95,17 @@ public class InverseKinematicsTool {
 		// angles. If that's the case, log an error, and set the returned angle array to
 		// null
 		if (Double.isNaN(lowerArmAngle) || Double.isNaN(upperArmAngle)) {
-			System.out.println("Target position unreachable");
+			//System.out.println("Target position unreachable");
 			armAngles = null;
 			// Prevent the lower arm from going more than 10 degrees behind vertical or
 			// below 45 degrees
 		} else if (armAngles[0] > ArmConstants.kLowerArmMaxAngle || armAngles[0] < ArmConstants.kLowerArmMinAngle) {
-			System.out.println("Lower arm angle limit reached");
+			//System.out.println("Lower arm angle limit reached");
 			armAngles = null;
 			// Prevent the upper arm from going more than 270 degrees or less than 15
 			// degrees relative to the lower arm
 		} else if (armAngles[1] > ArmConstants.kUpperArmMaxAngle || armAngles[1] < ArmConstants.kUpperArmMinAngle) {
-			System.out.println("Upper arm angle limit reached");
+			//System.out.println("Upper arm angle limit reached");
 			armAngles = null;
 		}
 		return armAngles;

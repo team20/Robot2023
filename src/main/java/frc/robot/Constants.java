@@ -83,7 +83,7 @@ public final class Constants {
 		public static final double kUpperEncoderZeroOffset = 248.9;
 		public static final int kUpperMotor = 1;
 		public static final int kLowerMotor = 2;
-		public static final int kLowerMotor2 = 3;
+		public static final int kLowerMotor2 = 15;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
@@ -194,13 +194,13 @@ public final class Constants {
 	public static final class DriveConstants {
 
 		// TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 13;
-		public static final boolean kFrontLeftInvert = true;
+		public static final int kFrontLeftPort = 3;
+		public static final boolean kFrontLeftInvert = false;
 		public static final int kBackLeftPort = 12;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 11;
-		public static final boolean kFrontRightInvert = false;
+		public static final int kFrontRightPort = 14;
+		public static final boolean kFrontRightInvert = true;
 		public static final int kBackRightPort = 10;
 		public static final boolean kBackRightOppose = false;
 
@@ -240,8 +240,8 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = 4;
-		public static final double kGearRatio = 7;
+		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
+		public static final double kGearRatio = 8.18;
 		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
