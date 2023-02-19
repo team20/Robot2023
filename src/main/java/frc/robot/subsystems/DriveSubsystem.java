@@ -38,9 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private final SparkMaxPIDController m_rightPIDController = m_frontRight.getPIDController();
 
 	private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
-	// private final PIDController m_turnController = new
-	// PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
-	// DriveConstants.kTurnP);
 
 
 	private final DifferentialDriveOdometry m_odometry;
@@ -108,7 +105,6 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setOutputRange(DriveConstants.kMinOutput, DriveConstants.kMaxOutput);
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
 
-		// m_turnController.setTolerance(DriveConstants.kTurnTolerance);
 
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
 		// this is what they did in 2020 with the navX:
@@ -201,9 +197,6 @@ public class DriveSubsystem extends SubsystemBase {
 		return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
 	}
 
-	// public void setTurnAngle(double angle) {
-	// m_turnController.setSetpoint(angle);
-	// }
 
 	/**
 	 * Resets gyro position to 0
