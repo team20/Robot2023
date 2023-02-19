@@ -4,10 +4,6 @@
 
 package frc.robot.commands.drive;
 
-// import java.time.Instant;
-
-// import java.time.Duration;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,22 +14,19 @@ public class DriveDistanceCommand extends CommandBase {
 	private double m_startDistanceLeft;
 	private double m_startDistanceRight;
 	// private Instant m_startTime;
-	// private double m_speed;
+	private double m_speed;
 
 	private ProfiledPIDController m_controller;
 
 	/** Creates a new DriveDistanceCommand. */
 	public DriveDistanceCommand(double distance) {
 		m_distance = distance;
-		// m_speed = 0.4;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
 	public DriveDistanceCommand(double distance, double speed) {
 		m_distance = distance;
-		// m_speed = speed;
-		// Use addRequirements() here to declare subsystem dependencies.
+		m_speed = speed;
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -85,7 +78,6 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
-
 	}
 
 	// Returns true when the command should end.
