@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.drive.TurnCommand;
 import frc.robot.commands.arm.ChangeOffsetCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
@@ -34,6 +35,7 @@ public class RobotContainer {
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	private final Joystick m_controller = new Joystick(ControllerConstants.kOperatorControllerPort);
+	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverPort);
 
 	public RobotContainer() {
 		configureButtonBindings();
@@ -51,9 +53,6 @@ public class RobotContainer {
 				.onTrue(new GripperCommand(GripperPosition.CLOSE));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
 				.onTrue(new GripperCommand(GripperPosition.OPEN));
-		new Trigger(() -> m_controller
-				.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger) > ControllerConstants.kTriggerDeadzone)
-				.onTrue(new GripperCommand(GripperPosition.ZERO));
 
 		// arm joysticks:
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
@@ -98,6 +97,15 @@ public class RobotContainer {
 				.onTrue(new LEDCommand(StatusCode.PURPLE_BLINKING));
 		new Trigger(() -> m_controller.getPOV() == ControllerConstants.DPad.kRight)
 				.onTrue(new LEDCommand(StatusCode.YELLOW_BLINKING));
+
+		// driver controls
+		// gripper: drop/open
+		new Trigger(() -> m_driverController.getRawButton(ControllerConstants.Button.kX))
+				.onTrue(new GripperCommand(GripperPosition.OPEN));
+		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
+				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
+				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
+
 	}
 
 	public Command getAutonomousCommand() {
