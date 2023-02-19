@@ -125,16 +125,6 @@ public class DriveSubsystem extends SubsystemBase {
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
 		// m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 		// getRightEncoderPosition());
-		if (DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake
-				&& !DriverStation.isAutonomous()) {
-			m_frontLeft.setIdleMode(IdleMode.kCoast);
-			m_frontRight.setIdleMode(IdleMode.kCoast);
-
-		} else if (DriverStation.isEnabled() && m_frontLeft.getIdleMode() == IdleMode.kCoast) {
-			m_frontLeft.setIdleMode(IdleMode.kBrake);
-			m_frontRight.setIdleMode(IdleMode.kBrake);
-
-		}
 	}
 
 	/**
