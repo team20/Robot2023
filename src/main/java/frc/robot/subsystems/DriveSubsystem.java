@@ -39,6 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
 
+
 	private final DifferentialDriveOdometry m_odometry;
 
 	public DriveSubsystem() {
@@ -80,23 +81,13 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backRight.setOpenLoopRampRate(DriveConstants.kRampRate);
 		m_backRight.follow(m_frontRight, DriveConstants.kBackRightOppose);
 
-		m_leftEncoder.setPositionConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters);
-		m_leftEncoder.setVelocityConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters / 60.0);
+		m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
+		m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
-		m_rightEncoder.setPositionConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters);
-		m_rightEncoder.setVelocityConversionFactor(
-				(1 / DriveConstants.kGearRatio) * Math.PI * DriveConstants.kWheelDiameterMeters / 60.0);
+		m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
+		m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
 		// m_backRight.setControlFramePeriodMs(10);
-
-                m_odometry = new DifferentialDriveOdometry(new Rotation2d(),0,0);
-                // this is what they did in 2020 with the navX:
-                // Rotation2d.fromDegrees(getHeading()));
-                resetEncoders();
-                // from 2020: resetOdometry(new Pose2d(0, 0, new Rotation2d()));
 
 		m_leftPIDController.setP(DriveConstants.kP);
 		m_leftPIDController.setI(DriveConstants.kI);
@@ -113,22 +104,21 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setFF(DriveConstants.kFF);
 		m_rightPIDController.setOutputRange(DriveConstants.kMinOutput, DriveConstants.kMaxOutput);
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
-        }
-        public void periodic() {
-                SmartDashboard.putNumber("the angle", getHeading());
-                // System.out.println("the angle is: " + getHeading());
-                //SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
-                m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-                                getRightEncoderPosition());
-                 if(DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake && !DriverStation.isAutonomous()){
-                         m_frontLeft.setIdleMode(IdleMode.kCoast);
-                         m_frontRight.setIdleMode(IdleMode.kCoast);
-                 
-                 } else if(DriverStation.isEnabled()&& m_frontLeft.getIdleMode() == IdleMode.kCoast){
-                         m_frontLeft.setIdleMode(IdleMode.kBrake);
-                         m_frontRight.setIdleMode(IdleMode.kBrake);
 
-                 }
+		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
+		// this is what they did in 2020 with the navX:
+		// Rotation2d.fromDegrees(getHeading()));
+		resetEncoders();
+		// from 2020: resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+
+	}
+
+	public void periodic() {
+		SmartDashboard.putNumber("the angle", getHeading());
+		// System.out.println("the angle is: " + getHeading());
+		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
+		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
+		 getRightEncoderPosition());
 	}
 
 	/**
@@ -162,24 +152,23 @@ public class DriveSubsystem extends SubsystemBase {
 	/**
 	 * @return The velocity of the right encoder (meters/s)
 	 */
-	// public double getRightEncoderVelocity() {
-	// return m_rightEncoder.getVelocity();
-	// }
+	public double getRightEncoderVelocity() {
+		return m_rightEncoder.getVelocity();
+	}
 
 	/**
 	 * @return Pose of the robot
 	 */
 	public Pose2d getPose() {
-	return m_odometry.getPoseMeters();
+		return m_odometry.getPoseMeters();
 	}
 
 	/**
 	 * @return Wheel speeds of the robot
 	 */
-	// public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-	// return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(),
-	// getRightEncoderVelocity());
-	// }
+	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+		return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
+	}
 
 	// public double getLeftMotorSpeeds() {
 	// return m_frontLeft.get();
@@ -193,26 +182,27 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @return The heading of the gyro (degrees)
 	 */
 	public double getHeading() {
-	return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+		return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+	}
+
+	public double getPitch() {
+		return m_gyro.getPitch() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
 	}
 
 	/**
 	 * @return The rate of the gyro turn (deg/s)
 	 */
-	// public double getTurnRate() {
-	// return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-	// }
+	public double getTurnRate() {
+		return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+	}
 
-	// public void setTurnAngle(double angle) {
-	// m_turnController.setSetpoint(angle);
-	// }
 
 	/**
 	 * Resets gyro position to 0
 	 */
-	// public void zeroHeading() {
-	// m_gyro.zeroYaw();
-	// }
+	public void zeroHeading() {
+		m_gyro.zeroYaw();
+	}
 
 	/**
 	 * Sets both encoders to 0
@@ -225,10 +215,10 @@ public class DriveSubsystem extends SubsystemBase {
 	/**
 	 * @param pose Pose to set the robot to
 	 */
-	// public void resetOdometry(Pose2d pose) {
-	// resetEncoders();
-	// m_odometry.resetPosition(m_gyro.getRotation2d(), 0, 0, pose);
-	// }
+	public void resetOdometry(Pose2d pose) {
+		resetEncoders();
+		m_odometry.resetPosition(m_gyro.getRotation2d(), 0, 0, pose);
+	}
 
 	public void arcadeDrive(double straight, double left, double right) {
 		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),

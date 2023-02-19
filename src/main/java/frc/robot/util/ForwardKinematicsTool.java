@@ -12,19 +12,20 @@ public class ForwardKinematicsTool {
 		double hypotenuse = Math
 				.sqrt(Math.pow(ArmConstants.kLowerArmLength, 2) + Math.pow(ArmConstants.kUpperArmLength, 2)
 						- 2 * ArmConstants.kLowerArmLength * ArmConstants.kUpperArmLength * Math.cos(upperArmAngle));
-		// find angle d: btwn klowerArmLength and hypotenuse using law of cosines
-		double d = Math.acos((Math.pow(ArmConstants.kUpperArmLength, 2) - Math.pow(ArmConstants.kLowerArmLength, 2)
-				- Math.pow(hypotenuse, 2)) / (-2 * ArmConstants.kLowerArmLength * hypotenuse));
+		// find angle btwn klowerArmLength and hypotenuse using law of cosines
+		double angleBetweenLowerArmAndHypotenuse = Math
+				.acos((Math.pow(ArmConstants.kUpperArmLength, 2) - Math.pow(ArmConstants.kLowerArmLength, 2)
+						- Math.pow(hypotenuse, 2)) / (-2 * ArmConstants.kLowerArmLength * hypotenuse));
 
-		// find angle f: btwn hypotenuse and x length
-		double f;
+		// find angle btwn hypotenuse and x length
+		double combinedArmAngle;
 		if (isElbowUp) {
-			f = lowerArmAngle - d;
+			combinedArmAngle = lowerArmAngle - angleBetweenLowerArmAndHypotenuse;
 		} else {
-			f = lowerArmAngle + d;
+			combinedArmAngle = lowerArmAngle + angleBetweenLowerArmAndHypotenuse;
 		}
-		double y = hypotenuse * Math.sin(f);
-		double x = hypotenuse * Math.cos(f);
+		double y = hypotenuse * Math.sin(combinedArmAngle);
+		double x = hypotenuse * Math.cos(combinedArmAngle);
 		double[] position = { x, y };
 		return position;
 	}
