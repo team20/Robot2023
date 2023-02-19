@@ -41,9 +41,13 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 	}
 
-	/** Creates a new ArduinoSubsystem. */
 	public ArduinoSubsystem() {
+		s_subsystem = this;
 		setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
+	}
+
+	public static ArduinoSubsystem get() {
+		return s_subsystem;
 	}
 
 	// This method will be called once per scheduler run

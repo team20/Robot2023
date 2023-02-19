@@ -98,13 +98,18 @@ public class RobotContainer {
 		new Trigger(() -> m_controller.getPOV() == ControllerConstants.DPad.kRight)
 				.onTrue(new LEDCommand(StatusCode.YELLOW_BLINKING));
 
-		// driver controls
+		// ------------driver controls------------------
+
 		// gripper: drop/open
 		new Trigger(() -> m_driverController.getRawButton(ControllerConstants.Button.kX))
 				.onTrue(new GripperCommand(GripperPosition.OPEN));
-		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
-				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
-				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
+		// last year's code for drive: left joystick and left/right triggers
+
+		m_driveSubsystem.setDefaultCommand(
+				new ArcadeDriveCommand(m_driveSubsystem,
+						() -> -m_driverController.getRawAxis(Axis.kLeftY),
+						() -> m_driverController.getRawAxis(Axis.kLeftTrigger),
+						() -> m_driverController.getRawAxis(Axis.kRightTrigger)));
 
 	}
 
