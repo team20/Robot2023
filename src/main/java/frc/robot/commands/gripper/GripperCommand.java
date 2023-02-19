@@ -5,23 +5,24 @@ import frc.robot.Constants.GripperConstants;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class GripperCommand extends CommandBase {
-    public enum GripperPosition {
-        CLOSE,
-        OPEN
-    }
+	public enum GripperPosition {
+		CLOSE,
+		OPEN,
+		ZERO
+	}
 
-    private GripperPosition m_gripperPosition;
-    private long m_startTime = 0;
+	private GripperPosition m_gripperPosition;
+	private long m_startTime = 0;
 
-    public GripperCommand(GripperPosition gripperPosition) {
-        m_gripperPosition = gripperPosition;
-        addRequirements(GripperSubsystem.get());
-    }
+	public GripperCommand(GripperPosition gripperPosition) {
+		m_gripperPosition = gripperPosition;
+		addRequirements(GripperSubsystem.get());
+	}
 
-    @Override
-    public void initialize() {
+	@Override
+	public void initialize() {
 
-    }
+	}
 
     @Override
     public void execute() {
@@ -63,5 +64,4 @@ public class GripperCommand extends CommandBase {
         }
         return false;
     }
-
 }

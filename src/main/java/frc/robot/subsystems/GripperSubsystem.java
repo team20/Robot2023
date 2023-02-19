@@ -18,9 +18,9 @@ public class GripperSubsystem extends SubsystemBase {
 	private static GripperSubsystem s_subsystem;
 
 	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
-    private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
+	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
 	private SparkMaxLimitSwitch m_openlimitSwitch;
-    private final SparkMaxPIDController m_gripperScrewController = m_gripperScrew.getPIDController();
+  private final SparkMaxPIDController m_gripperScrewController = m_gripperScrew.getPIDController();
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
@@ -37,14 +37,14 @@ public class GripperSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 
-        m_gripperScrew.restoreFactoryDefaults();
+		m_gripperScrew.restoreFactoryDefaults();
 		m_gripperScrew.setInverted(GripperConstants.kInvert);
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_gripperScrew.enableVoltageCompensation(12);
 		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
 		m_gripperScrewEncoder.setPositionConversionFactor(360);
 
-        m_gripperScrewController.setP(GripperConstants.kP);
+		m_gripperScrewController.setP(GripperConstants.kP);
 		m_gripperScrewController.setI(GripperConstants.kI);
 		m_gripperScrewController.setIZone(GripperConstants.kIz);
 		m_gripperScrewController.setD(GripperConstants.kD);
@@ -63,11 +63,11 @@ public class GripperSubsystem extends SubsystemBase {
 		m_gripperScrew.set(speed);
 	}
 
-	public void resetZero(){
+	public void resetZero() {
 		m_gripperScrewEncoder.setPosition(0);
 	}
 
-	public double getGripperEncoderPosition(){
+	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
 	}
 
@@ -79,7 +79,7 @@ public class GripperSubsystem extends SubsystemBase {
 		return s_subsystem;
 	}
 
-	public boolean getOpenLimitSwitch(){
+	public boolean getOpenLimitSwitch() {
 		return m_openlimitSwitch.isPressed();
 	}
 }
