@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.arm.ChangeOffsetCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.commands.arm.ChangeOffsetCommand;
@@ -20,6 +21,11 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ArduinoConstants.LEDColors;
+import frc.robot.subsystems.ArduinoSubsystem;
+
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -27,7 +33,7 @@ public class RobotContainer {
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
-	private final Joystick m_controller = new Joystick(ControllerConstants.kDriverControllerPort);
+	private final Joystick m_controller = new Joystick(ControllerConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
 		configureButtonBindings();
@@ -58,8 +64,7 @@ public class RobotContainer {
 
 		// If the arm is fowards, the intermediate position
 		// does not need to be used to go to high
-		new Trigger(() -> !isArmBackward()
-				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
+		new Trigger(() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
 
 		// If arm is forwards and target button is pressed go to intermediate position
@@ -69,8 +74,7 @@ public class RobotContainer {
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
-		new Trigger(
-				() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
+		new Trigger(() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
 				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
 
 		new Trigger(() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kX))
@@ -78,20 +82,22 @@ public class RobotContainer {
 
 		// If the arm is backwards, we don't have to move to the intermediate position
 		// before moving the arm to the back
-		new Trigger(() -> isArmBackward()
-				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
+		new Trigger(() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.HIGH)));
 
-		new Trigger(
-				() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
+		new Trigger(() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
 		new Trigger(() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kX))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.LOW)));
-
+		// LED cube and cone
+		new Trigger(() -> m_controller.getPOV() == ControllerConstants.DPad.kLeft)
+				.onTrue(new LEDCommand(StatusCode.PURPLE_BLINKING));
+		new Trigger(() -> m_controller.getPOV() == ControllerConstants.DPad.kRight)
+				.onTrue(new LEDCommand(StatusCode.YELLOW_BLINKING));
 	}
 
 	public Command getAutonomousCommand() {

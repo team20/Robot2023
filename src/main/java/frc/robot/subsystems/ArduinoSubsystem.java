@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
 
 public class ArduinoSubsystem extends SubsystemBase {
+	private static ArduinoSubsystem s_subsystem;
 	/**
 	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
 	 * on the MXP port, which runs through the navX
