@@ -128,7 +128,6 @@ public class DriveSubsystem extends SubsystemBase {
                          m_frontLeft.setIdleMode(IdleMode.kBrake);
                          m_frontRight.setIdleMode(IdleMode.kBrake);
 
-		resetEncoders();
                  }
 	}
 
