@@ -21,7 +21,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	private byte[] m_statusCode = new byte[1];
 
 	/** The bytes that control the LED mode */
-	private enum StatusCode {
+	public enum StatusCode {
 		DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte) 9),
 		ORANGE_THEATER_LIGHTS((byte) 10),
 		BLUE_THEATER_LIGHTS((byte) 11),

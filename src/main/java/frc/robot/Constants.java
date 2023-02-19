@@ -5,24 +5,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
-	public static final class GripperConstants {
-		public static final double kGripperOpenPosition = 0.5;
-		public static final boolean kFrontLeftInvert = false;
-		public static final int kPort = 9;
-		public static final double kP = 0.0003; // have to figure out constants later
-		public static final double kI = 0;
-		public static final double kD = 0;
-		public static final double kIz = 5;
-		public static final boolean kInvert = false;
-		public static final int kSmartCurrentLimit = 20;
-		public static final double kWinchEncoderZeroOffset = 110.2;
-		public static final double kCloseTime = 1000; // TODO: change as needed
-		public static final double kHoldPower = .1; // TODO: change as needed
-		public static final double kMinOutput = -0.5;
-		public static final double kMaxOutput = 0.5;
-		public static final int kOpenLimitSwitchPort = 0; // change port
-	}
-
 	public static final class ArmConstants {
 		// Preset angles for arm
 		/** The lower and upper arm angles for the arm to be in the high position */
