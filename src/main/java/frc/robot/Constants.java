@@ -183,7 +183,7 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
+		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
 		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
