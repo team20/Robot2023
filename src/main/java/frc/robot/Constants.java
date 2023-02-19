@@ -228,10 +228,6 @@ public final class Constants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kFrontLeftInvert = false;
 		public static final int kPort = 4;
-		public static final double kP = 0.0003; // have to figure out constants later
-		public static final double kI = 0;
-		public static final double kD = 0;
-		public static final double kIz = 5;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kWinchEncoderZeroOffset = 110.2;

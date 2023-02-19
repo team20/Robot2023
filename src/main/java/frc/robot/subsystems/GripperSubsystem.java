@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
@@ -57,10 +56,6 @@ public class GripperSubsystem extends SubsystemBase {
 
 	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
-	}
-
-	public void setGripperPosition(double position) {
-		m_gripperScrewController.setReference(position, ControlType.kPosition);
 	}
 
 	public static GripperSubsystem get() {
