@@ -9,7 +9,6 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DefaultDriveCommand extends CommandBase {
-
 	private final Supplier<Double> m_speedStraight, m_speedLeft, m_speedRight;
 
 	/**
@@ -45,3 +44,4 @@ public class DefaultDriveCommand extends CommandBase {
 		DriveSubsystem.get().arcadeDrive(speedStraight, speedLeft, speedRight);
 	}
 }
+

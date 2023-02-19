@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
-//TODO REVIEW FOR CHANGES THIS YEAR
 public class DriveSubsystem extends SubsystemBase {
 
 	private static DriveSubsystem s_subsystem;
@@ -41,6 +41,7 @@ public class DriveSubsystem extends SubsystemBase {
 	// private final PIDController m_turnController = new
 	// PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
 	// DriveConstants.kTurnP);
+
 
 	private final DifferentialDriveOdometry m_odometry;
 
@@ -118,21 +119,11 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
-		// SmartDashboard.putNumber("the angle", getHeading());
+		SmartDashboard.putNumber("the angle", getHeading());
 		// System.out.println("the angle is: " + getHeading());
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
-		// m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-		// getRightEncoderPosition());
-		if (DriverStation.isDisabled() && m_frontLeft.getIdleMode() == IdleMode.kBrake
-				&& !DriverStation.isAutonomous()) {
-			m_frontLeft.setIdleMode(IdleMode.kCoast);
-			m_frontRight.setIdleMode(IdleMode.kCoast);
-
-		} else if (DriverStation.isEnabled() && m_frontLeft.getIdleMode() == IdleMode.kCoast) {
-			m_frontLeft.setIdleMode(IdleMode.kBrake);
-			m_frontRight.setIdleMode(IdleMode.kBrake);
-
-		}
+		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
+		 getRightEncoderPosition());
 	}
 
 	/**
@@ -258,7 +249,6 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backLeft.set(leftSpeed);
 		m_frontRight.set(rightSpeed);
 		m_backRight.set(rightSpeed);
-
 	}
 
 	public void tankDriveVelocity(DifferentialDriveWheelSpeeds wheelSpeeds) {

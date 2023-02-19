@@ -14,6 +14,7 @@ public class TurnCommand extends CommandBase {
 	public TurnCommand(double targetAngle) {
 		m_targetAngle = targetAngle;
 		addRequirements(DriveSubsystem.get());
+
 	}
 
 	// Called when the command is initially scheduled.
@@ -32,6 +33,7 @@ public class TurnCommand extends CommandBase {
 		} else if (currAngle < m_targetAngle) {
 			DriveSubsystem.get().tankDrive(-0.1, 0.1);
 		}
+
 	}
 
 	// Called once the command ends or is interrupted.

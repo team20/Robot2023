@@ -4,13 +4,8 @@
 
 package frc.robot.commands.drive;
 
-// import java.time.Instant;
-
-// import java.time.Duration;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -117,6 +112,7 @@ public class DriveDistanceCommand extends CommandBase {
 		// return m_controller.atGoal();
 		// If the distance measured by the encoders is more than the target distance,
 		// stop the command
+
 		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance()) > Math.abs(m_distance);
 	}
 }

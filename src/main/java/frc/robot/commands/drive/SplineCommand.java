@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class SplineCommand extends CommandBase {
-
 	private Trajectory m_splinePath;
 	private double lookahead_distance = 0.5;
 	private double m_lastGuess = 0;

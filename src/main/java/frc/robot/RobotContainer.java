@@ -4,35 +4,45 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.drive.BalanceNoPIDCommand;
-import frc.robot.commands.drive.DefaultDriveCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.arm.ArmScoreCommand;
+import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.gripper.GripperCommand;
+import frc.robot.commands.gripper.GripperCommand.GripperPosition;
+import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.Constants.ControllerConstants.Axis;
+import frc.robot.util.ForwardKinematicsTool;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
-
-	private Joystick m_driverController = new Joystick(0);
-
+	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
+  private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
+  
 	public RobotContainer() {
 		configureButtonBindings();
 	}
 
+	private boolean isArmBackwardAndButtonPressed() {
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(m_armSubsystem.getLowerArmAngle(),
+				m_armSubsystem.getUpperArmAngle());
+		return coordinates[0] < 0;
+	}
+
 	private void configureButtonBindings() {
-		DriveSubsystem.get().setDefaultCommand(new DefaultDriveCommand(
-				() -> -m_driverController.getRawAxis(Axis.kLeftY),
-				() -> m_driverController.getRawAxis(Axis.kLeftTrigger),
-				() -> m_driverController.getRawAxis(Axis.kRightTrigger)));
 	}
 
 	public Command getAutonomousCommand() {
-		return new BalanceNoPIDCommand();
+		return null;
 	}
 }
