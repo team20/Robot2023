@@ -33,67 +33,62 @@ public class RobotContainer {
 		configureButtonBindings();
 	}
 
-	private boolean isArmBackwardAndButtonPressed() {
+	private boolean isArmBackward() {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(m_armSubsystem.getLowerArmAngle(),
 				m_armSubsystem.getUpperArmAngle());
 		return coordinates[0] < 0;
 	}
 
 	private void configureButtonBindings() {
-		// Gripper buttons (close, open, and zero)
+		// Gripper buttons (close, open, and zero):
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kLeftBumper))
 				.onTrue(new GripperCommand(GripperPosition.CLOSE));
 		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
-				.onTrue(new GripperCommand(GripperPosition.ZERO));
+				.onTrue(new GripperCommand(GripperPosition.OPEN));
 		new Trigger(() -> m_controller
 				.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger) > ControllerConstants.kTriggerDeadzone)
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
+				.onTrue(new GripperCommand(GripperPosition.ZERO));
 
+		// arm joysticks:
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
-				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftX),
-				() -> m_controller.getRawAxis(ControllerConstants.Axis.kRightY)));
+				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
+				() -> m_controller.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
 
-		// If the arm is fowards AND the button is pressed, the intermediate position
-		// does not need to be used
-		new Trigger(() -> !isArmBackwardAndButtonPressed()
+		// arm presets:
+
+		// If the arm is fowards, the intermediate position
+		// does not need to be used to go to high
+		new Trigger(() -> !isArmBackward()
 				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
 
-		// If we flip the arm over, go to the intermediate position, then flip the arm
-		// over
-		// new Trigger(
-		// () -> !isArmBackwardAndButtonPressed() &&
-		// m_controller.getRawButton(ControllerConstants.Button.kSquare))
-		// .onTrue(new SequentialCommandGroup(new
-		// ArmScoreCommand(ArmPosition.INTERMEDIATE),
-		// new ArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		// If arm is forwards and target button is pressed go to intermediate position
+		// and medium back
+		new Trigger(() -> !isArmBackward()
+				&& m_controller.getRawButton(ControllerConstants.Button.kSquare))
+				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
 		new Trigger(
-				() -> !isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
+				() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
 				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
 
-		new Trigger(() -> !isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kX))
+		new Trigger(() -> !isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kX))
 				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
-		// If the arm is backwards AND the the button is pressed, go to the intermediate
-		// position, then go to the target position
-		new Trigger(() -> isArmBackwardAndButtonPressed()
+
+		// If the arm is backwards, we don't have to move to the intermediate position
+		// before moving the arm to the back
+		new Trigger(() -> isArmBackward()
 				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.HIGH)));
 
-		// If the arm is backwards, we don't have to move to the intermediate position
-		// before moving the arm to the back
-		// new Trigger(
-		// () -> isArmBackwardAndButtonPressed() &&
-		// m_controller.getRawButton(ControllerConstants.Button.kSquare))
-		// .onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_BACK));
-
 		new Trigger(
-				() -> isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
+				() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
-		new Trigger(() -> isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kX))
+		new Trigger(() -> isArmBackward() && m_controller.getRawButton(ControllerConstants.Button.kX))
 				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.LOW)));
 
