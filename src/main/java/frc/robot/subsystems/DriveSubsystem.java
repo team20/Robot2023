@@ -116,6 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         public void periodic() {
                 SmartDashboard.putNumber("the angle", getHeading());
+                SmartDashboard.putNumber("Curr X", getPose().getX());
+                SmartDashboard.putNumber("Curr Y", getPose().getY());
                 // System.out.println("the angle is: " + getHeading());
                 //SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
                 m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
@@ -128,7 +130,6 @@ public class DriveSubsystem extends SubsystemBase {
                          m_frontLeft.setIdleMode(IdleMode.kBrake);
                          m_frontRight.setIdleMode(IdleMode.kBrake);
                  }
-		resetEncoders();
 	}
 
 

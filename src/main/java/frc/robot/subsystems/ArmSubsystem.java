@@ -110,7 +110,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param speed The percent output to run the motor at
 	 */
 	public void setLowerArmMotorSpeed(double speed) {
-		m_lowerArmMotor.set(speed);
+		//m_lowerArmMotor.set(speed);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param speed The percent output to run the motor at
 	 */
 	public void setUpperArmMotorSpeed(double speed) {
-		m_upperArmMotor.set(speed);
+		//m_upperArmMotor.set(speed);
 	}
 
 	/**
@@ -166,11 +166,11 @@ public class ArmSubsystem extends SubsystemBase {
 			// If none of the limits have been reached, set the arm angles
 		} else {
 			m_targetLowerArmAngle = lower;
-			m_lowerArmController.setReference(lower, ControlType.kPosition);
+			//m_lowerArmController.setReference(lower, ControlType.kPosition);
 			SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 
 			m_targetUpperArmAngle = upper;
-			m_upperArmController.setReference(upper, ControlType.kPosition);
+			//m_upperArmController.setReference(upper, ControlType.kPosition);
 			SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 		}
 	}

@@ -62,7 +62,7 @@ public class GripperSubsystem extends SubsystemBase {
 	}
 
 	public void setGripperMotor(double speed) {
-		m_gripperScrew.set(speed);
+		//m_gripperScrew.set(speed);
 	}
 
 	public void resetZero(){
@@ -74,7 +74,7 @@ public class GripperSubsystem extends SubsystemBase {
 	}
 
 	public void setGripperPosition(double position) {
-		m_gripperScrewController.setReference(position, ControlType.kPosition);
+		//m_gripperScrewController.setReference(position, ControlType.kPosition);
 	}
 
 	public static GripperSubsystem get() {

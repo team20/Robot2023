@@ -8,7 +8,7 @@ public final class Constants {
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kPort = 4;
+		public static final int kPort = 45;
 		public static final double kP = 0.0003; // have to figure out constants later
 		public static final double kI = 0;
 		public static final double kD = 0;
@@ -69,7 +69,7 @@ public final class Constants {
 		public static final double kUpperArmMinAngle = 15;
 		/** Maximum angle the lower arm can go */
 		public static final double kUpperArmMaxAngle = 270;
-		/** Maximum height in inches the arm can go to */
+		/** Maximum height in inches the arm caFn go to */
 		public static final double kMaxHeight = 12;
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
@@ -81,8 +81,8 @@ public final class Constants {
 		 * 0 degrees in our zero position
 		 */
 		public static final double kUpperEncoderZeroOffset = 248.9;
-		public static final int kUpperMotor = 1;
-		public static final int kLowerMotor = 2;
+		public static final int kUpperMotor = 19;
+		public static final int kLowerMotor = 17;
 		public static final int kLowerMotor2 = 15;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
@@ -196,12 +196,12 @@ public final class Constants {
 		// TODO CHANGE ALL OF THESE
 		public static final int kFrontLeftPort = 3;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kBackLeftPort = 12;
+		public static final int kBackLeftPort = 20;
 		public static final boolean kBackLeftOppose = false;
 
 		public static final int kFrontRightPort = 14;
 		public static final boolean kFrontRightInvert = true;
-		public static final int kBackRightPort = 10;
+		public static final int kBackRightPort = 21;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
@@ -246,10 +246,9 @@ public final class Constants {
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
 		public static final double kBackupDistance = Units.feetToMeters(2);
-		public static final double kRampRate = .1;// 1?
+		public static final double kRampRate = .1;//1?
 		public static final double kSpeedLimitFactor = .5;
-		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
-																// // be checked
+		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to														// be checked
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;

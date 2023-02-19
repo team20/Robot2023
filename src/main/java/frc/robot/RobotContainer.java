@@ -52,13 +52,13 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return new SequentialCommandGroup(
       new TagAlignCommand(TagNumber.TagGeneral, Position.MiddlePosition, 0.25),
-      new TurnCommand(6).withTimeout(1),
-      new DriveDistanceCommand(-2),
+      new TurnCommand(22).withTimeout(1),
+      new DriveDistanceCommand(-2).withTimeout(1),
       new TagAlignCommand(TagNumber.TagGeneral, Position.LeftPosition, 0.25),
-      new TurnCommand(6).withTimeout(1),
-      new DriveDistanceCommand(-2),
+      new TurnCommand(22).withTimeout(1),
+      new DriveDistanceCommand(-2).withTimeout(1),
       new TagAlignCommand(TagNumber.TagGeneral, Position.RightPosition, 0.25),
-      new TurnCommand(6).withTimeout(1)
+      new TurnCommand(22)
       );
 	}
 }
