@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
-import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
@@ -20,13 +19,11 @@ public class GripperSubsystem extends SubsystemBase {
 	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
 	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
 	private SparkMaxLimitSwitch m_openlimitSwitch;
-	private SparkMaxLimitSwitch m_closelimitSwitch;
-	private final SparkMaxPIDController m_gripperScrewController = m_gripperScrew.getPIDController();
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
-		m_openlimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_closelimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
 
 		// Singleton
 		if (s_subsystem != null) {
@@ -43,17 +40,7 @@ public class GripperSubsystem extends SubsystemBase {
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_gripperScrew.enableVoltageCompensation(12);
 		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
-		m_gripperScrewEncoder.setPositionConversionFactor(360);
 
-		m_gripperScrewController.setP(GripperConstants.kP);
-		m_gripperScrewController.setI(GripperConstants.kI);
-		m_gripperScrewController.setIZone(GripperConstants.kIz);
-		m_gripperScrewController.setD(GripperConstants.kD);
-		m_gripperScrewController.setOutputRange(GripperConstants.kMinOutput, GripperConstants.kMaxOutput);
-		m_gripperScrewController.setFeedbackDevice(m_gripperScrewEncoder);
-		m_gripperScrewController.setPositionPIDWrappingEnabled(true);
-		m_gripperScrewController.setPositionPIDWrappingMaxInput(360);
-		m_gripperScrewController.setPositionPIDWrappingMinInput(0);
 	}
 
 	@Override
@@ -82,9 +69,5 @@ public class GripperSubsystem extends SubsystemBase {
 
 	public boolean getOpenLimitSwitch() {
 		return m_openlimitSwitch.isPressed();
-	}
-
-	public boolean getCloseLimitSwitch() {
-		return m_closelimitSwitch.isPressed();
 	}
 }
