@@ -20,14 +20,12 @@ public class GripperSubsystem extends SubsystemBase {
 	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
     private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
 	private SparkMaxLimitSwitch m_openlimitSwitch;
-	private SparkMaxLimitSwitch m_closelimitSwitch;
     private final SparkMaxPIDController m_gripperScrewController = m_gripperScrew.getPIDController();
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
-		m_openlimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_closelimitSwitch = m_gripperScrew.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-
+		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
 
 		// Singleton
 		if (s_subsystem != null) {
@@ -83,9 +81,5 @@ public class GripperSubsystem extends SubsystemBase {
 
 	public boolean getOpenLimitSwitch(){
 		return m_openlimitSwitch.isPressed();
-	}
-
-	public boolean getCloseLimitSwitch(){
-		return m_closelimitSwitch.isPressed();
 	}
 }

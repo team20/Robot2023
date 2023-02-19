@@ -7,8 +7,7 @@ import frc.robot.subsystems.GripperSubsystem;
 public class GripperCommand extends CommandBase {
     public enum GripperPosition {
         CLOSE,
-        OPEN,
-        ZERO
+        OPEN
     }
 
     private GripperPosition m_gripperPosition;
@@ -29,19 +28,13 @@ public class GripperCommand extends CommandBase {
         switch (m_gripperPosition) {
             case OPEN:
                 //set gripper to open position
-                GripperSubsystem.get().setGripperPosition(GripperConstants.kGripperOpenPosition);
+                GripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower); // limit switch will stop motor
                 break;
             case CLOSE:
-                GripperSubsystem.get().setGripperMotor(.1);
+                GripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
                 if (m_startTime == 0) {
                     m_startTime = System.currentTimeMillis();
                 }
-                break;
-            case ZERO:
-            GripperSubsystem.get().setGripperMotor(.1);
-            if (m_startTime == 0) {
-                m_startTime = System.currentTimeMillis();
-            }
                 break;
             default:
                 break;
@@ -50,30 +43,21 @@ public class GripperCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        GripperSubsystem.get().setGripperMotor(0);
+        //GripperSubsystem.get().setGripperMotor(0);
     }
 
     @Override
     public boolean isFinished() {
         switch (m_gripperPosition) {
             case OPEN:
-                if (Math.abs(GripperSubsystem.get().getGripperEncoderPosition()-GripperConstants.kGripperOpenPosition) < 10) {
-                     GripperSubsystem.get().setGripperMotor(0);
-                     return true; 
-                }
-             break;
+                m_startTime = 0;
+                return true; 
             case CLOSE:
                  if (System.currentTimeMillis()-m_startTime >= GripperConstants.kCloseTime) {
                         GripperSubsystem.get().setGripperMotor(GripperConstants.kHoldPower);
+                        m_startTime = 0;
                         return true;
                   }
-            break;
-            case ZERO:
-                if (System.currentTimeMillis()-m_startTime > GripperConstants.kCloseTime) {
-                    GripperSubsystem.get().setGripperMotor(0);
-                    GripperSubsystem.get().resetZero();
-                    return true;
-            }
             break;
             default:
                 return false;
