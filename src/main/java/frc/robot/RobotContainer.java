@@ -80,10 +80,10 @@ public class RobotContainer {
 				.onTrue(new GripperCommand(GripperPosition.OPEN));
 		// last year's code for drive: left joystick and left/right triggers
 
-		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
-				() -> -m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftY),
-				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger),
-				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kRightTrigger)));
+		m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
+				() -> -m_driverController.getRawAxis(Axis.kLeftY),
+				() -> m_driverController.getRawAxis(Axis.kLeftTrigger),
+				() -> m_driverController.getRawAxis(Axis.kRightTrigger)));
 
 	}
 
