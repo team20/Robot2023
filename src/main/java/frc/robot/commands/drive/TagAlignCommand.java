@@ -131,11 +131,7 @@ public class TagAlignCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     //end when we reach our goal point
-<<<<<<< Updated upstream
-    return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.2 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
-=======
     return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.35 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
->>>>>>> Stashed changes
   }
   private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
 
