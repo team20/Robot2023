@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -14,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -92,6 +89,7 @@ public class TagAlignCommand extends CommandBase {
       
     }
     m_zOffset = zOffset;
+    m_xOffset -= Constants.LimelightConstants.LLoffset;
     addRequirements(DriveSubsystem.get());
   }
   // Called when the command is initially scheduled.
@@ -133,7 +131,11 @@ public class TagAlignCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     //end when we reach our goal point
+<<<<<<< Updated upstream
     return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.2 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
+=======
+    return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.35 && Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
+>>>>>>> Stashed changes
   }
   private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
 
