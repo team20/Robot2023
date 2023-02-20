@@ -50,7 +50,7 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
