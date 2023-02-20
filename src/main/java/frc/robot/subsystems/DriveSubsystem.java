@@ -23,10 +23,6 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private static DriveSubsystem s_subsystem;
 
-	public static DriveSubsystem get() {
-		return s_subsystem;
-	}
-
 	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftPort, MotorType.kBrushless);
 	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightPort, MotorType.kBrushless);
 	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftPort, MotorType.kBrushless);
@@ -39,11 +35,17 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private final AHRS m_gyro = new AHRS(DriveConstants.kGyroPort);
 
-
 	private final DifferentialDriveOdometry m_odometry;
 
 	public DriveSubsystem() {
-
+		// Singleton
+		if (s_subsystem != null) {
+			try {
+				throw new Exception("Drive subsystem already initalized!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		s_subsystem = this;
 		m_frontLeft.restoreFactoryDefaults();
 		m_frontLeft.setInverted(DriveConstants.kFrontLeftInvert);
@@ -105,7 +107,6 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setOutputRange(DriveConstants.kMinOutput, DriveConstants.kMaxOutput);
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
 
-
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
 		// this is what they did in 2020 with the navX:
 		// Rotation2d.fromDegrees(getHeading()));
@@ -114,12 +115,16 @@ public class DriveSubsystem extends SubsystemBase {
 
 	}
 
+	public static DriveSubsystem get() {
+		return s_subsystem;
+	}
+
 	public void periodic() {
 		SmartDashboard.putNumber("the angle", getHeading());
 		// System.out.println("the angle is: " + getHeading());
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
-		 getRightEncoderPosition());
+				getRightEncoderPosition());
 	}
 
 	/**
@@ -196,7 +201,6 @@ public class DriveSubsystem extends SubsystemBase {
 	public double getTurnRate() {
 		return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
 	}
-
 
 	/**
 	 * Resets gyro position to 0

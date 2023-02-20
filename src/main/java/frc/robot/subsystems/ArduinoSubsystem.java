@@ -10,11 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
 
 public class ArduinoSubsystem extends SubsystemBase {
-  private I2C i2c = new I2C(Port.kMXP, 0x18);
-  /** Creates a new ArduinoSubsystem. */
-
+  private static ArduinoSubsystem s_subsystem;
+  /**
+   * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
+   * on the MXP port, which runs through the navX
+   */
+  private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
+  /** The byte that indicates what LED mode we want to use */
   private byte[] m_statusCode = new byte[1];
 
+  /** The bytes that control the LED mode */
   public enum StatusCode {
     RESET((byte) 8),
     BLINKING_YELLOW((byte) 9),
@@ -30,13 +35,27 @@ public class ArduinoSubsystem extends SubsystemBase {
     }
   }
 
+  /** Creates a new ArduinoSubsystem. */
   public ArduinoSubsystem() {
+    // Singleton
+    if (s_subsystem != null) {
+      try {
+        throw new Exception("Arduino subsystem already initalized!");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    s_subsystem = this;
     setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
   }
 
+  public static ArduinoSubsystem get() {
+    return s_subsystem;
+  }
+
+  // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     i2c.writeBulk(m_statusCode);
   }
 

@@ -21,9 +21,6 @@ public class GripperSubsystem extends SubsystemBase {
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
-		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
-
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -33,13 +30,18 @@ public class GripperSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-
+		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
 		m_gripperScrew.restoreFactoryDefaults();
 		m_gripperScrew.setInverted(GripperConstants.kInvert);
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_gripperScrew.enableVoltageCompensation(12);
 		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
 
+	}
+
+	public static GripperSubsystem get() {
+		return s_subsystem;
 	}
 
 	@Override
@@ -56,10 +58,6 @@ public class GripperSubsystem extends SubsystemBase {
 
 	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
-	}
-
-	public static GripperSubsystem get() {
-		return s_subsystem;
 	}
 
 	public boolean getOpenLimitSwitch() {

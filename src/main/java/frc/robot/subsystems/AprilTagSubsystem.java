@@ -41,9 +41,18 @@ public class AprilTagSubsystem extends SubsystemBase {
   private MedianFilter m_filterPitchT = new MedianFilter(10);
   private MedianFilter m_filterRollT = new MedianFilter(10);
   private MedianFilter m_filterYawT = new MedianFilter(10);
-private boolean m_tagInView;
+  private boolean m_tagInView;
+
   /** Creates a new ApriltagSubsystem. */
   public AprilTagSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
+    // Singleton
+    if (s_subsystem != null) {
+      try {
+        throw new Exception("AprilTag subsystem already initalized!");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
     s_subsystem = this;
   }
 
@@ -65,7 +74,7 @@ private boolean m_tagInView;
     double[] translationRobot = robottran.getDoubleArray(new double[6]);
     double[] translationTarget = targettran.getDoubleArray(new double[6]);
 
-    if(!translationRobot.equals(new double[6])){
+    if (!translationRobot.equals(new double[6])) {
       m_x = m_filterX.calculate(translationRobot[0]);
       m_y = m_filterY.calculate(translationRobot[1]);
       m_z = m_filterZ.calculate(translationRobot[2]);
