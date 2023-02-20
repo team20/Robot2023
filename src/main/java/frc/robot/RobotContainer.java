@@ -48,32 +48,34 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// Gripper buttons (close, open, and zero):
+		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
 				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
-		// Arm Controls
+		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
-
+		// Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
-
+		// Flip the arm over to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
-
+		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-
+		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
-		// LED cube and cone
 
+		// -------------LED signaling-------------
+		// Signal for a cube
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// Signal for a cone
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
