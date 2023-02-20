@@ -144,7 +144,6 @@ public class TagAlignCommand extends CommandBase {
 	}
 
 	private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
-
 		SmartDashboard.putNumber("Goal X", goalPoint.getX());
 		SmartDashboard.putNumber("Goal Y", goalPoint.getY());
 		SmartDashboard.putNumber("Curr X", currPoint.getX());

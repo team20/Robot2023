@@ -21,7 +21,6 @@ public class GripperCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
-
 	}
 
 	@Override

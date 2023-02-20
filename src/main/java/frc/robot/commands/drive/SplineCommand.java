@@ -27,7 +27,6 @@ public class SplineCommand extends CommandBase {
 	}
 
 	public SplineCommand(Trajectory path) {
-
 		m_splinePath = path;
 		m_finalPoint = m_splinePath.sample(m_splinePath.getTotalTimeSeconds()).poseMeters;
 		addRequirements(DriveSubsystem.get());
@@ -81,7 +80,6 @@ public class SplineCommand extends CommandBase {
 	}
 
 	private Pose2d getGoalPoint(Pose2d robotLocation, double lastGuess, Trajectory spline) {
-
 		// robot location
 		double robotX = robotLocation.getX();
 		double robotY = robotLocation.getY();

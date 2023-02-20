@@ -143,7 +143,6 @@ public class CommandComposer {
 
 	// Pick up game piece
 	public static Command getPickupPieceCommand() {
-
 		return new SequentialCommandGroup(
 				new ParallelCommandGroup(
 						new GripperCommand(GripperPosition.OPEN),
