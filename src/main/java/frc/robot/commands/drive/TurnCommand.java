@@ -27,13 +27,11 @@ public class TurnCommand extends CommandBase {
 	public void execute() {
 		// Get the robot's current angle
 		double currAngle = DriveSubsystem.get().getHeading();
-
 		if (currAngle < m_targetAngle) {
 			DriveSubsystem.get().tankDrive(0.1, -0.1);
 		} else if (currAngle < m_targetAngle) {
 			DriveSubsystem.get().tankDrive(-0.1, 0.1);
 		}
-
 	}
 
 	// Called once the command ends or is interrupted.

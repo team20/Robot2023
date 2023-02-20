@@ -10,7 +10,6 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BalancePIDCommand extends CommandBase {
-
 	PIDController m_controller = new PIDController(DriveConstants.kBalanceP, DriveConstants.kBalanceI,
 			DriveConstants.kBalanceD);
 

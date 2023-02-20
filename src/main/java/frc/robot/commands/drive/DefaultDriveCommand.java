@@ -44,4 +44,3 @@ public class DefaultDriveCommand extends CommandBase {
 		DriveSubsystem.get().arcadeDrive(speedStraight, speedLeft, speedRight);
 	}
 }
-

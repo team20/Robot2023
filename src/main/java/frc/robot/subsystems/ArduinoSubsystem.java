@@ -10,56 +10,56 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
 
 public class ArduinoSubsystem extends SubsystemBase {
-  private static ArduinoSubsystem s_subsystem;
-  /**
-   * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
-   * on the MXP port, which runs through the navX
-   */
-  private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
-  /** The byte that indicates what LED mode we want to use */
-  private byte[] m_statusCode = new byte[1];
+	private static ArduinoSubsystem s_subsystem;
+	/**
+	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
+	 * on the MXP port, which runs through the navX
+	 */
+	private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
+	/** The byte that indicates what LED mode we want to use */
+	private byte[] m_statusCode = new byte[1];
 
-  /** The bytes that control the LED mode */
-  public enum StatusCode {
-    RESET((byte) 8),
-    BLINKING_YELLOW((byte) 9),
-    BLINKING_PURPLE((byte) 10),
-    MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
-    MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
-    DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte) 20);
+	/** The bytes that control the LED mode */
+	public enum StatusCode {
+		RESET((byte) 8),
+		BLINKING_YELLOW((byte) 9),
+		BLINKING_PURPLE((byte) 10),
+		MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
+		MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
+		DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte) 20);
 
-    public byte code;
+		public byte code;
 
-    private StatusCode(byte c) {
-      code = c;
-    }
-  }
+		private StatusCode(byte c) {
+			code = c;
+		}
+	}
 
-  /** Creates a new ArduinoSubsystem. */
-  public ArduinoSubsystem() {
-    // Singleton
-    if (s_subsystem != null) {
-      try {
-        throw new Exception("Arduino subsystem already initalized!");
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-    s_subsystem = this;
-    setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
-  }
+	/** Creates a new ArduinoSubsystem. */
+	public ArduinoSubsystem() {
+		// Singleton
+		if (s_subsystem != null) {
+			try {
+				throw new Exception("Arduino subsystem already initalized!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		s_subsystem = this;
+		setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
+	}
 
-  public static ArduinoSubsystem get() {
-    return s_subsystem;
-  }
+	public static ArduinoSubsystem get() {
+		return s_subsystem;
+	}
 
-  // This method will be called once per scheduler run
-  @Override
-  public void periodic() {
-    i2c.writeBulk(m_statusCode);
-  }
+	// This method will be called once per scheduler run
+	@Override
+	public void periodic() {
+		i2c.writeBulk(m_statusCode);
+	}
 
-  public void setCode(StatusCode code) {
-    m_statusCode[0] = code.code;
-  }
+	public void setCode(StatusCode code) {
+		m_statusCode[0] = code.code;
+	}
 }
