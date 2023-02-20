@@ -41,29 +41,29 @@ public class ArmScoreCommand extends CommandBase {
 	public void execute() {
 		// Depending on the ArmPosition selected, set the angles to the corresponding
 		// angle set
-		if (m_armPosition != null) {
-			switch (m_armPosition) {
-				case HIGH:
-					angles = ArmConstants.kHighAngles;
-					break;
-				case MEDIUM_FORWARD:
-					angles = ArmConstants.kMediumForwardAngles;
-					break;
-				case MEDIUM_BACK:
-					angles = ArmConstants.kMediumBackAngles;
-					break;
-				case LOW:
-					angles = ArmConstants.kLowAngles;
-					break;
-				case POCKET:
-					angles = ArmConstants.kPocketAngles;
-					break;
-				case INTERMEDIATE:
-					angles = ArmConstants.kIntermediateAngles;
-			}
-			ArmSubsystem.get().setLowerArmAngle(angles[0]);
-			ArmSubsystem.get().setUpperArmAngle(angles[1]);
+		switch (m_armPosition) {
+			case HIGH:
+				angles = ArmConstants.kHighAngles;
+				break;
+			case MEDIUM_FORWARD:
+				angles = ArmConstants.kMediumForwardAngles;
+				break;
+			case MEDIUM_BACK:
+				angles = ArmConstants.kMediumBackAngles;
+				break;
+			case LOW:
+				angles = ArmConstants.kLowAngles;
+				break;
+			case POCKET:
+				angles = ArmConstants.kPocketAngles;
+				break;
+			case INTERMEDIATE:
+				angles = ArmConstants.kIntermediateAngles;
+			default:
+				break;
 		}
+		ArmSubsystem.get().setLowerArmAngle(angles[0]);
+		ArmSubsystem.get().setUpperArmAngle(angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.

@@ -114,13 +114,9 @@ public final class Constants {
 		}
 
 		public static final class Button {
-			/** Middle left button */
 			public static final int kSquare = 1;
-			/** Bottom button */
 			public static final int kX = 2;
-			/** Middle right */
 			public static final int kCircle = 3;
-			/** Top button */
 			public static final int kTriangle = 4;
 			public static final int kLeftBumper = 5;
 			public static final int kRightBumper = 6;
