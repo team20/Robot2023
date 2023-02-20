@@ -55,8 +55,7 @@ public class DriveDistanceCommand extends CommandBase {
 
 		m_controller = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(125, 150)); // was 196 35
-		// m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderPosition();
-
+		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderDistance();
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.

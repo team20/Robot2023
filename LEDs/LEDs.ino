@@ -37,8 +37,9 @@ long startTime = -1;
 const long endTime = 30000;                   //timer variables for endgame
 int DHpin = 8;                                //idk, I copied this blindly, I don't think this does anything
 byte dat[5];                                  //same as above
-uint32_t teamColor = strip.Color(0,255,0);  //color of team, default to green, can be set by master/robot to alliance color
-uint32_t MovingRedGreenGradient(int c, int i) {  //pixel depends on ratio of red and green
+uint32_t teamColor = strip.Color(0,255,0);    //color of team, default to green, can be set by master/robot to alliance color
+uint32_t allianceColor; 
+uint32_t MovingGreenRedGradient(int c, int i) {  //pixel depends on ratio of red and green
   return (strip.Color(255 * ((i + c) % LED_COUNT) / LED_COUNT, 0, 255 * (LED_COUNT - (i + c) % LED_COUNT) / LED_COUNT % 255));
 }
 uint32_t MovingGreenBlueGradient(int c, int i) {  //pixel depends on ratio of green and blue
@@ -81,14 +82,12 @@ uint32_t Timer(int c, int i, uint32_t color) {  //user timer proportion to light
 }
 // setup() function -- runs once at startup --------------------------------
 void setup() {
-  Serial.println("Starting");
   // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
   // Any other board, you can remove this part (but no harm leaving it):
 #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
   clock_prescale_set(clock_div_1);
 #endif
   // END of Trinket-specific code.
-  Serial.print("Initialized");
   strip.begin();            // INITIALIZE NeoPixel strip object (REQUIRED)
   strip.show();             // Turn OFF all pixels ASAP
   strip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
@@ -112,53 +111,27 @@ void loop() {
     Wire.endTransmission();                                                    // Stop transmitting
   }
   switch (pattern) {  // sets up lights to patterns
-                      // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
-                      // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
+  // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
+  // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
     case 8:           // reset code
       startTime = -1;
       colorIndex = 0;
       pattern = -1;
-    case 19: // blinking yellow
+    case 9: // blinking yellow
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(245, 149, 24), strip.Color(0, 0, 0))); }
       delay(150);
       break;    
-    case 18: // blinking purple
+    case 10: // blinking purple
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(230,0,255), strip.Color(0, 0, 0))); }
       delay(150);
       break;
-    case 17:  //green back and forth timer
-      if (startTime < 0) { startTime = millis(); }
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, Timer(colorIndex, i, strip.Color(0, 0, 250))); }
-      delay(10);
-      break;
-    case 16:  //blue back and forth timer
-      if (startTime < 0) { startTime = millis(); }
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, Timer(colorIndex, i, strip.Color(0, 250, 0))); }
-      delay(10);
-      break;
-    case 15:  //moving red and green gradient
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingRedGreenGradient(colorIndex, i)); }
+    case 11:  //moving green and red gradient
+      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingGreenRedGradient(colorIndex, i)); }
       delay(25);
       break;
-    case 14:  //green theater lights
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, TheaterLights(colorIndex, i, strip.Color(0, 0, 250), strip.Color(0, 0, 0))); }
-      delay(100);
-      break;
-    case 13:  //moving green and blue gradient
+    case 12:  //moving green and blue gradient
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingGreenBlueGradient(colorIndex, i)); }
       delay(25);
-      break;
-    case 12:  //red theater lights
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, TheaterLights(colorIndex, i, strip.Color(250, 0, 0), strip.Color(0, 0, 0))); }
-      delay(100);
-      break;
-    case 11:  //blue theater lights
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, TheaterLights(colorIndex, i, strip.Color(0, 250, 0), strip.Color(0, 0, 0))); }
-      delay(100);
-      break;
-    case 10:  //orange theater lights
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, TheaterLights(colorIndex, i, strip.Color(255, 0, 115), strip.Color(0, 0, 0))); }
-      delay(100);
       break;
     default:  //display team/alliance color
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, teamColor); } 
@@ -174,9 +147,9 @@ void receiveEvent(int howMany) {
   //first code must be non-zero multiple of 10
   if (pattern == 8 && Wire.available()) {  //for code 90 reset, check if new alliance color being set
     x = Wire.read();                       //read in alliance code
-    if (x == 5) {                          //red alliance
+    if (x == 11) {                          //red alliance
       teamColor = strip.Color(255, 0, 0);
-    } else if (x == 15) {  //blue alliance
+    } else if (x == 12) {  //blue alliance
       teamColor = strip.Color(0, 255, 0);
     }
   }
