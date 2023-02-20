@@ -36,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Drive subsystem already initalized!");
+				throw new Exception("Drive subsystem already initialized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

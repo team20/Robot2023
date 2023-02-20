@@ -24,7 +24,7 @@ public class GripperSubsystem extends SubsystemBase {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Gripper subsystem already initalized!");
+				throw new Exception("Gripper subsystem already initialized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

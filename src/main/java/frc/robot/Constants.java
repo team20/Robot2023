@@ -8,7 +8,7 @@ public final class Constants {
 	public static final class ArduinoConstants {
 		/**
 		 * The I2C address of the Arduino as defined by the address passed into
-		 * Wire.begin() in the Arudino code
+		 * Wire.begin() in the Arduino code
 		 */
 		public static final int kAddress = 0x18;
 	}
@@ -47,7 +47,7 @@ public final class Constants {
 		 */
 		public static final double kArmMovementSpeedMultiplier = 1.5;
 		/**
-		 * A joystick input multipler to control how fast the arm motors spin relative
+		 * A joystick input multiplier to control how fast the arm motors spin relative
 		 * to how much the joystick is being moved
 		 */
 		public static final double kManualArmMovementSpeedMultiplier = 0.5;
