@@ -43,7 +43,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 	private MedianFilter m_filterYawT = new MedianFilter(10);
 	private boolean m_tagInView;
 
-	/** Creates a new ApriltagSubsystem. */
+	/** Creates a new AprilTagSubsystem. */
 	public AprilTagSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
 		// Singleton
 		if (s_subsystem != null) {
