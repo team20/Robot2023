@@ -17,17 +17,12 @@ public class ArduinoSubsystem extends SubsystemBase {
   private byte[] m_statusCode = new byte[1];
 
   private enum StatusCode{ 
-    DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte)9),
-    ORANGE_THEATER_LIGHTS((byte)10),
-    BLUE_THEATER_LIGHTS((byte)11),   
-    RED_THEATER_LIGHTS((byte)12),
-    MOVING_GREEN_AND_BLUE_GRADIENT((byte)13),
-    GREEN_THEATER_LIGHTS((byte)14),
-    MOVING_RED_AND_GREEN_GRADIENT((byte)15),
-    BLUE_BACK_AND_FORTH_TIMER((byte)16), // TODO: timer currently has a bug (look in arduino IDE)
-    GREEN_BACK_AND_FORTH_TIMER((byte)17),
-    PURPLE_BLINKING((byte)18),
-    YELLOW_BLINKING((byte)19);
+    RESET((byte)8),
+    BLINKING_YELLOW((byte)9),
+    BLINKING_PURPLE((byte)10),
+    MOVING_GREEN_AND_RED_GRADIENT((byte)11),
+    MOVING_GREEN_AND_BLUE_GRADIENT((byte)12),
+    DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte)20);
     
     public byte code;
     private StatusCode(byte c){
