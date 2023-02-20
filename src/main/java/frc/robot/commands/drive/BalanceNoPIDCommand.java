@@ -2,43 +2,43 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.arm;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.util.InverseKinematicsTool;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class UpCommand extends CommandBase {
-	private Double[] angles = { 90.0, 0.0 };
-
-	/** Creates a new UpCommand. */
-	public UpCommand() {
-		addRequirements(ArmSubsystem.get());
+public class BalanceNoPIDCommand extends CommandBase {
+	/** Creates a new BalanceNoPIDCommand. */
+	public BalanceNoPIDCommand() {
+		addRequirements(DriveSubsystem.get());
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		ArmSubsystem.get().changeYOffset(4);
-		angles = InverseKinematicsTool.getArmAngles(ArmSubsystem.get().getXOffset(),
-				ArmSubsystem.get().getYOffset());
-		ArmSubsystem.get().setLowerArmPosition(angles[0]);
-		ArmSubsystem.get().setUpperArmPosition(angles[1]);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		if (DriveSubsystem.get().getPitch() > 2) {
+			DriveSubsystem.get().tankDrive(-0.1, -0.1);
+		} else if (DriveSubsystem.get().getPitch() < -2) {
+			DriveSubsystem.get().tankDrive(0.1, 0.1);
+		} else {
+			DriveSubsystem.get().tankDrive(0, 0);
+		}
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return true;
+		return false;
 	}
 }

@@ -4,25 +4,27 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
 
 public class GripperSubsystem extends SubsystemBase {
 	private static GripperSubsystem s_subsystem;
-	private TalonSRX m_gripperWinch = new TalonSRX(GripperConstants.kWinchPort);
-	private CANCoder m_lowerCANCoder = new CANCoder(6);
-	private CANCoder m_upperCANCoder = new CANCoder(7);
-	private DigitalInput m_leftBumpSwitch = new DigitalInput(GripperConstants.kLeftBumpSwitchPort);
-	private DigitalInput m_rightBumpSwitch = new DigitalInput(GripperConstants.kRightBumpSwitchPort);
+
+	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
+	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
+	private SparkMaxLimitSwitch m_openlimitSwitch;
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
+		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
+
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -32,35 +34,36 @@ public class GripperSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
+
+		m_gripperScrew.restoreFactoryDefaults();
+		m_gripperScrew.setInverted(GripperConstants.kInvert);
+		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_gripperScrew.enableVoltageCompensation(12);
+		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
+
 	}
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putBoolean("Left Bump Switch", getLeftBumpSwitch());
-		SmartDashboard.putBoolean("Right Bump Switch", getRightBumpSwitch());
-	}
-
-	public double getLowerJointAngle() {
-		return m_lowerCANCoder.getAbsolutePosition();
-	}
-
-	public double getUpperJointAngle() {
-		return m_upperCANCoder.getAbsolutePosition();
 	}
 
 	public void setGripperMotor(double speed) {
-		m_gripperWinch.set(TalonSRXControlMode.PercentOutput, speed);
+		m_gripperScrew.set(speed);
 	}
 
-	public boolean getLeftBumpSwitch() {
-		return m_leftBumpSwitch.get();
+	public void resetZero() {
+		m_gripperScrewEncoder.setPosition(0);
 	}
 
-	public boolean getRightBumpSwitch() {
-		return m_rightBumpSwitch.get();
+	public double getGripperEncoderPosition() {
+		return m_gripperScrewEncoder.getPosition();
 	}
 
 	public static GripperSubsystem get() {
 		return s_subsystem;
+	}
+
+	public boolean getOpenLimitSwitch() {
+		return m_openlimitSwitch.isPressed();
 	}
 }

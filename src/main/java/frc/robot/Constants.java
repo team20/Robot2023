@@ -6,100 +6,109 @@ import edu.wpi.first.wpilibj.SPI;
 
 public final class Constants {
 	public static final class GripperConstants {
-		public static final int kGripperPort = 4;
-		public static final boolean kFrontLeftInvert = false;
-		public static final int kLeftBumpSwitchPort = 0;
-		public static final int kRightBumpSwitchPort = 1;
-		public static final int kWinchPort = 5;
+		public static final double kGripperOpenPosition = 0.5;
+		public static final boolean kInvert = false;
+		public static final int kPort = 4;
+		public static final int kSmartCurrentLimit = 20;
+		public static final double kCloseTime = 1500; //TODO: change as needed
+		public static final double kMovePower = 0.2;
+		public static final double kHoldPower = .03; //TODO: change as needed
+		public static final double kMinOutput = -0.5;
+		public static final double kMaxOutput = 0.5;
+		public static final int kOpenLimitSwitchPort = 0; // change port
 	}
 
 	public static final class ArmConstants {
-		// Preset offsets for arm
-		public static final double[] kHighOffsets = { 12, 3 };
-		public static final double[] kMediumOffsets = { 12, -1.75 };
-		public static final double[] kLowOffsets = { 8.75, -3.25 };
-		// Change to actual length of arm
-		public static final double kLowerArmLength = 6.2;
-		// Change to actual length of arm
-		public static final double kUpperArmLength = 7;
-		public static final int kCountsPerRevolution = 42;
-		public static final double kAllowedError = 2;
-		public static final double kMinEncoderValue = 0.0;
-		public static final double kMaxEncoderValue = 42.0;
-		public static final double kMinAngle = 45;
-		public static final double kMaxAngle = 135;
+		// Preset angles for arm
+		/** The lower and upper arm angles for the arm to be in the high position */
+		public static final double[] kHighAngles = { 50, 160 };
+		/**
+		 * The lower and upper arm angles for the arm to be flipped over in the medium
+		 * position
+		 */
+		public static final double[] kMediumBackAngles = { 90, 270 };
+		/**
+		 * The lower and upper arm angles for the arm to be forwards in the medium
+		 * position
+		 */
+		public static final double[] kMediumForwardAngles = { 90, 90 };
+		/** The lower and upper arm angles for the arm to be in the low position */
+		public static final double[] kLowAngles = { 90, 40 };
+		/** The lower and upper arm angles for the arm to be in the frame pocket */
+		public static final double[] kPocketAngles = { 105, 15 };
+		/**
+		 * The lower and upper arm angles for the arm to be in the intermediate position
+		 * needed to prevent the arm from going over the height limit
+		 */
+		public static final double[] kIntermediateAngles = { 50, 220 };
+		// Recheck when robot is assembled
+		/** Length of lower arm length in inches */
+		public static final double kLowerArmLength = 32.5;
+		/** Length of upper arm length in inches */
+		public static final double kUpperArmLength = 40;
+		/**
+		 * A joystick input multiplier to control how fast the arm moves relative to how
+		 * much the joystick is being moved
+		 */
+		public static final double kArmMovementSpeedMultiplier = 1.5;
+		/**
+		 * A joystick input multipler to control how fast the arm motors spin relative
+		 * to how much the joystick is being moved
+		 */
+		public static final double kManualArmMovementSpeedMultiplier = 0.5;
+		/**
+		 * Allowable difference in degrees between the target arm angle and the current
+		 * arm angle
+		 */
+		public static final double kAllowedDegreesError = 4;
+		/** Smallest angle the lower arm can go */
+		public static final double kLowerArmMinAngle = 45;
+		/** Maximum angle the lower arm can go */
+		public static final double kLowerArmMaxAngle = 135;
+		/** Smallest angle the lower arm can go */
+		public static final double kUpperArmMinAngle = 15;
+		/** Maximum angle the lower arm can go */
+		public static final double kUpperArmMaxAngle = 270;
+		/** Maximum height in inches the arm can go to */
+		public static final double kMaxHeight = 12;
+		/**
+		 * Number of degrees the lower arm encoder output needs to be offset so it reads
+		 * 0 degrees in our zero position
+		 */
 		public static final double kLowerEncoderZeroOffset = 110.2;
+		/**
+		 * Number of degrees the upper arm encoder output needs to be offset so it reads
+		 * 0 degrees in our zero position
+		 */
 		public static final double kUpperEncoderZeroOffset = 248.9;
-		public static final int kLowerMotor = 2;
-		public static final int kUpperMotor = 1;
+		public static final int kUpperMotorID = 1;
+		public static final int kLowerMotorID = 2;
+		public static final int kLowerMotor2ID = 3;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static final double kP = 0.003; // 0.001 will not smash encoders
-		public static final double kI = 0;
-		public static final double kD = 0;
-		public static final double kIz = 5;
-		public static final double kFF = .0;
-		public static final double kMinOutput = -1;
-		public static final double kMaxOutput = 1;
-		public static final int kSlotID = 0;
-		public static final double kMaxAcel = 0;
-		public static final double kMaxVelocity = 0;
-		public static final double kMinVelocity = 0;
-		public static final double kMinPosition = 0;
-		public static final double kInPosition = 0;
-		public static final double kOutPosition = 0;
-		public static final int kBumpSwitchPort = 0;
-		public static final double kBounceDownPosition = 0;
-		public static final double kBounceUpPosition = 0;
-		public static final double kBounceTime = 0;
+		public static final double kLowerArmP = 0.0070;
+		public static final double kLowerArmI = 0.0001;
+		public static final double kLowerArmD = 0;
+		public static final double kLowerArmIz = 5;
+		public static final double kLowerArmFF = 0.0;
+		public static final double kUpperArmP = 0.0070;
+		public static final double kUpperArmI = 0.0001;
+		public static final double kUpperArmD = 0;
+		public static final double kUpperArmIz = 5;
+		public static final double kUpperArmFF = 0.0;
+		// TODO set this back to one?
+		public static final double kMinOutput = -.4;
+		public static final double kMaxOutput = .4;
 	}
 
 	public static final class ArduinoConstants {
-		public static final int kAddress = 2;
-		public static final double kDistanceP = 0;
-		public static final double kDistanceI = 0;
-		public static final double kDistanceD = 0;
-		public static final int kDistanceSetpoint = 0;
-
-		public static final double kAngleP = 0;
-		public static final double kAngleI = 0;
-		public static final double kAngleD = 0;
-		public static final int kAngleSetpoint = 0;
-
-		public static final int kReadTargetInView = 0;
-		public static final int[] kReadXValue = { 1, 2, 3 };
-		public static final int[] kReadDistance = { 4, 5, 6 };
-
-		public static final int kWriteMainLEDMode = 0;
-		public static final int kWriteMainLEDValue = 1;
-		public static final int kWriteShooterLEDMode = 2;
-		public static final int kWriteShooterLEDValue = 3;
-		public static final int kWriteClimberLEDMode = 2;
-		public static final int kWriteClimberLEDValue = 3;
-
-		public static final class LEDModes {
-			public static final byte kReset = 0;
-			public static final byte kOff = 1;
-			public static final byte kSolid = 2;
-			public static final byte kChasing = 3;
-			public static final byte kTheaterLights = 4;
-			public static final byte kRedGreenGradient = 5;
-			public static final byte kBlueGreenGradient = 6;
-			public static final byte kBackForthTimer = 7;
-		}
-
-		public static final class LEDColors {
-			public static final byte kOff = 0;
-			public static final byte kRed = 1;
-			public static final byte kOrange = 2;
-			public static final byte kYellow = 3;
-			public static final byte kGreen = 4;
-			public static final byte kBlue = 5;
-			public static final byte kPurple = 6;
-			public static final byte kWhite = 7;
-		}
+		/**
+		 * The I2C address of the Arduino as defined by the address passed into
+		 * Wire.begin() in the Arudino code
+		 */
+		public static final int kAddress = 0x18;
 	}
 
 	public static final class ControllerConstants {
@@ -108,7 +117,7 @@ public final class Constants {
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
-		public static final class Axis {
+		public static final class PS4Axis {
 			public static final int kLeftX = 0;
 			public static final int kLeftY = 1;
 			public static final int kRightX = 2;
@@ -143,14 +152,14 @@ public final class Constants {
 	public static final class DriveConstants {
 
 		// TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 13;
+		public static final int kFrontLeftPort = 2;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort = 12;
+		public static final int kBackLeftPort = 4;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 11;
+		public static final int kFrontRightPort = 3;
 		public static final boolean kFrontRightInvert = false;
-		public static final int kBackRightPort = 10;
+		public static final int kBackRightPort = 5;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
@@ -172,25 +181,23 @@ public final class Constants {
 		public static final boolean kGyroReversed = true;
 
 		// TODO CHANGE ALL OF THESE
-		public static final double kTurnP = 0.0125; // was 0.005
+		public static final double kTurnP = 0.002; // was 0.005
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
 		public static final double ksVolts = 0.196;
 		public static final double kvVoltSecondsPerMeter = 2.15;
 		public static final double kaVoltSecondsSquaredPerMeter = .53;
-		// TODO change the trackwidth to match our robot - trackwidth = horizontal
-		// distance between the wheels
-		public static final double kTrackwidthMeters = 0.7815245428457417;
+		// Horizontal distance between the wheels
+		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
 				kTrackwidthMeters);
-
 		// TODO change
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = 4;
-		public static final double kGearRatio = 7;
+		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
+		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
@@ -202,11 +209,31 @@ public final class Constants {
 		public static final boolean kRightSensorPhase = false;
 		public static final boolean kEnableVoltageComp = true;
 		public static final double kVoltageComp = 12;
-		public static final double kEncoderCounts = 4096;
+		public static final double kEncoderCounts = 42;
+		/**
+		 * Converts native encoder units(revolutions) to meters
+		 * <p>
+		 * Native units are in revolutions, 1 / gearRatio gives us how many revolutions
+		 * the wheel has turned, and multiplying that by the wheel circumference(pi
+		 * times the wheel diameter) gives the distance the robot has moved in meters
+		 */
 		public static final double kEncoderPositionConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters;
+		/**
+		 * Converts native encoder units(RPM) to meters per minute
+		 * <p>
+		 * Native units are in revolutions per minute, 1 / gearRatio gives us how many
+		 * revolutions the wheel has turned per minute, and multiplying that by the
+		 * wheel circumference(pi times the wheel diameter) gives wheel velocity in
+		 * meters per minute, and dividing that by 60 gives wheel velocity in meters per
+		 * second. It's in meters per second because that's the unit
+		 * DifferentialDriveWheelSpeeds uses
+		 */
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
-				* DriveConstants.kWheelDiameterMeters * 60;
+				* DriveConstants.kWheelDiameterMeters / 60;
+		public static final double kBalanceP = 0.005;
+		public static final double kBalanceI = 0.0001;
+		public static final double kBalanceD = 0.0001;
 
 	}
 

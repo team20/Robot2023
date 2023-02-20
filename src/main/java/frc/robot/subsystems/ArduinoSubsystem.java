@@ -4,11 +4,10 @@
 
 package frc.robot.subsystems;
 
-import java.io.ObjectInputFilter.Status;
-
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArduinoConstants;
 
 public class ArduinoSubsystem extends SubsystemBase {
   private I2C i2c = new I2C(Port.kMXP, 0x18);
@@ -38,6 +37,7 @@ public class ArduinoSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     i2c.writeBulk(m_statusCode);
   }
+  
   public void setCode(StatusCode code){
     m_statusCode[0] = code.code;
   }
