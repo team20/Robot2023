@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnTimeCommand extends CommandBase {
 
-  Instant m_startTime = null;
+  Instant m_startTime;
   private double m_time;
   private double m_clockwise;
   /** Creates a new TurnTimeCommand. 
@@ -30,7 +30,7 @@ public class TurnTimeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_startTime = null;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
