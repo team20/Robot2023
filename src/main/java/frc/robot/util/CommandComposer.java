@@ -18,10 +18,13 @@ import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
- * CommandComposer allows you to use additional logic to determine what command
- * should be executed when a Trigger is true. To do this, create a static method
- * that returns a Command, and put in logic to determine what Command to execute
- * and with what arguments
+ * When you need to construct long command chains, you can put those chains in
+ * here instead of clogging RobotContainer.
+ * <p>
+ * CommandComposer also allows you to use additional logic to determine what
+ * command should be executed when a Trigger is true. To do this, create a
+ * static method that returns a Command, and put in logic to determine what
+ * Command to execute and with what arguments
  */
 public class CommandComposer {
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
