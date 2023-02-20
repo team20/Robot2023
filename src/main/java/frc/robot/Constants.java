@@ -99,8 +99,8 @@ public final class Constants {
 	}
 
 	public static final class ControllerConstants {
-		public static final int kDriverControllerPort = 0;
-		public static final int kOperatorControllerPort = 1;
+		public static final int kDriverControllerPort = 1;
+		public static final int kOperatorControllerPort = 0;
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
@@ -231,7 +231,7 @@ public final class Constants {
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kFrontLeftInvert = false;
-		public static final int kPort = 4;
+		public static final int kPort = 9;
 		public static final boolean kInvert = false;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kWinchEncoderZeroOffset = 110.2;

@@ -55,8 +55,8 @@ public class DriveDistanceCommand extends CommandBase {
 
 		m_controller = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(125, 150)); // was 196 35
-		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderPosition();
-	
+		// m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderPosition();
+
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -65,7 +65,8 @@ public class DriveDistanceCommand extends CommandBase {
 
 		// Calculates the output of the PID algorithm based on the sensor reading
 		// and sends it to a motor
-		double output = m_controller.calculate(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage, m_distance);
+		double output = m_controller
+				.calculate(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage, m_distance);
 		DriveSubsystem.get().tankDrive(output, output);
 
 	}
@@ -80,6 +81,7 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public boolean isFinished() {
 
-		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage) > Math.abs(m_distance);
+		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage) > Math
+				.abs(m_distance);
 	}
 }
