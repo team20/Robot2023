@@ -45,7 +45,6 @@ public class DriveDistanceCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-
 		// Creates a ProfiledPIDController
 		// Max velocity is 5 meters per second
 		// Max acceleration is 10 meters per second
@@ -62,7 +61,6 @@ public class DriveDistanceCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-
 		// Calculates the output of the PID algorithm based on the sensor reading
 		// and sends it to a motor
 		double output = m_controller
@@ -80,7 +78,6 @@ public class DriveDistanceCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-
 		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage) > Math
 				.abs(m_distance);
 	}

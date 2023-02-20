@@ -12,45 +12,47 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnTimeCommand extends CommandBase {
 
-  Instant m_startTime;
-  private double m_time;
-  private double m_clockwise;
-  /** Creates a new TurnTimeCommand. 
-   * clockwise = whether we're going clockwise or counterclockwise
-   * time = time in seconds to turn
-  */
+	Instant m_startTime;
+	private double m_time;
+	private double m_clockwise;
 
-  public TurnTimeCommand(boolean clockwise, double time) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_clockwise = clockwise? 1 : -1;
-    m_time = time;
-    addRequirements(DriveSubsystem.get());
-  }
+	/**
+	 * Creates a new TurnTimeCommand.
+	 * clockwise = whether we're going clockwise or counterclockwise
+	 * time = time in seconds to turn
+	 */
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_startTime = null;
-  }
+	public TurnTimeCommand(boolean clockwise, double time) {
+		// Use addRequirements() here to declare subsystem dependencies.
+		m_clockwise = clockwise ? 1 : -1;
+		m_time = time;
+		addRequirements(DriveSubsystem.get());
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if(m_startTime == null){
-      m_startTime = Instant.now();
-    }
-    DriveSubsystem.get().tankDrive(-0.1*m_clockwise, 0.1*m_clockwise);
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		m_startTime = null;
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		if (m_startTime == null) {
+			m_startTime = Instant.now();
+		}
+		DriveSubsystem.get().tankDrive(-0.1 * m_clockwise, 0.1 * m_clockwise);
+	}
 
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return Duration.between(m_startTime, Instant.now()).toSeconds() > m_time;
-  }
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return Duration.between(m_startTime, Instant.now()).toSeconds() > m_time;
+	}
 }

@@ -37,11 +37,12 @@ public class RobotContainer {
 	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
 
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+
 	public RobotContainer() {
 		m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
 		m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
 		m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
-		m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));//TODO fix distance
+		m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
 		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
 		m_autoChooser.addOption("Score, leave over charge, balance", CommandComposer.getOverTheFulcrumAuto());
 		m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
