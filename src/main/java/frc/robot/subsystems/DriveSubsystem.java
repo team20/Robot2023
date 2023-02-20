@@ -38,7 +38,14 @@ public class DriveSubsystem extends SubsystemBase {
 	private final DifferentialDriveOdometry m_odometry;
 
 	public DriveSubsystem() {
-
+		// Singleton
+		if (s_subsystem != null) {
+			try {
+				throw new Exception("Gripper subsystem already initalized!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		s_subsystem = this;
 		m_frontLeft.restoreFactoryDefaults();
 		m_frontLeft.setInverted(DriveConstants.kFrontLeftInvert);
