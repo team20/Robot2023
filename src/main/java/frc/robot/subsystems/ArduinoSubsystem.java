@@ -15,7 +15,7 @@ public class ArduinoSubsystem extends SubsystemBase {
    * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
    * on the MXP port, which runs through the navX
    */
-  private I2C i2c = new I2C(Port.kMXP, 0x18);
+  private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
   /** The byte that indicates what LED mode we want to use */
   private byte[] m_statusCode = new byte[1];
 
