@@ -10,7 +10,12 @@ import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.subsystems.ArmSubsystem;
 
-/** Add your docs here. */
+/**
+ * CommandComposer allows you to use additional logic to determine what commmand
+ * should be executed when a Trigger is true. To do this, create a static method
+ * that returns a Command, and put in logic to determine what Command to execute
+ * and with what arguements
+ */
 public class CommandComposer {
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
