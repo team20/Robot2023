@@ -84,6 +84,9 @@ public class CommandComposer {
                 getPlacePieceCommand(null)
             ); //TODO: position 
     }
+
+    //Score, Leave Community, Intake, Score again, and balance 
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g12845fa040c_0_5 
     public static Command twoScoreBalance() {
         return new SequentialCommandGroup(
                 getPlacePieceCommand(null), //TODO: need position  
@@ -99,8 +102,10 @@ public class CommandComposer {
                 new DriveDistanceCommand(2), //Distances are guesses, need to adjust based on practice field
                 new BalancePIDCommand());
     }
+
+    //Pick up game piece 
     public static Command getPickupPieceCommand() {
-        
+
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new GripperCommand(GripperPosition.OPEN),
@@ -110,6 +115,7 @@ public class CommandComposer {
         );
     }
 
+    //Place game piece taking in position 
     public static Command getPlacePieceCommand(ArmPosition position) {
         return new SequentialCommandGroup(
             new ArmScoreCommand(position),
