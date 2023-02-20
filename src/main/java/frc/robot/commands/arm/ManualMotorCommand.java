@@ -46,9 +46,9 @@ public class ManualMotorCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		lowerArmMotorSpeed = MathUtil.applyDeadband(m_lowerArmInput.get(), ControllerConstants.kDeadzone)
+		lowerArmMotorSpeed = -MathUtil.applyDeadband(m_lowerArmInput.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kManualArmMovementSpeedMultiplier;
-		upperArmMotorSpeed = MathUtil.applyDeadband(m_upperArmInput.get(), ControllerConstants.kDeadzone)
+		upperArmMotorSpeed = -MathUtil.applyDeadband(m_upperArmInput.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kManualArmMovementSpeedMultiplier;
 		ArmSubsystem.get().setLowerArmMotorSpeed(lowerArmMotorSpeed);
 		ArmSubsystem.get().setUpperArmMotorSpeed(upperArmMotorSpeed);
