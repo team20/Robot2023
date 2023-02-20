@@ -56,29 +56,27 @@ public class CommandComposer {
 
     // Drive out of community
     // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.p
-    public static Command outOfCommunity(double driveDistance) { // start as close to line as possible, just drive
-                                                                 // forward
-        return new DriveDistanceCommand(driveDistance); // about 0.8 probably
+    public static Command getOutOfCommunityAuto(double driveDistance){ //start as close to line as possible, just drive forward
+        return new DriveDistanceCommand(driveDistance); //about 0.8 probably
     }
 
-    // Balance only
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa5c6e9265_0_2
-    public static Command onToCharger(double driveDistance) { // start backed up a meter, figure the running start will
-                                                              // be helpful
+    //Balance only
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa5c6e9265_0_2
+    public static Command getOnToChargerAuto(double driveDistance){ //start backed up a meter, figure the running start will be helpful
         return new SequentialCommandGroup(
                 new DriveDistanceCommand(driveDistance),
                 new BalancePIDCommand());
     }
-
-    // Just Score High Game Piece
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa5c6e9265_0_9
-    public static Command scorePiece() { // start backed up a meter, figure the running start will be helpful
-        return getPlacePieceCommand(null); // TODO: position
+    
+    //Just Score High Game Piece
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa5c6e9265_0_9
+    public static Command getScorePieceAuto(){ //start backed up a meter, figure the running start will be helpful
+        return getPlacePieceCommand(null); //TODO: position 
     }
 
-    // Leave Community and balance
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_0
-    public static Command leaveThenBalance(double driveDistance) { // Start right to the right of Charge station
+    //Leave Community and balance
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_0
+    public static Command getLeaveThenBalanceAuto(double driveDistance){ //Start right to the right of Charge station
         return new SequentialCommandGroup(
                 new DriveDistanceCommand(driveDistance),
                 new TurnCommand(-90),
@@ -88,18 +86,19 @@ public class CommandComposer {
                 new BalancePIDCommand());
     }
 
-    // Score Preloaded and Engage
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa94f33ee4_0_0
-    public static Command scoreThenBalance() { // Start lined up on center of Charge Station pushed up against nodes
-        return new SequentialCommandGroup(
-                getPlacePieceCommand(null), // TODO: position
-                new DriveDistanceCommand(-3),
-                new BalancePIDCommand());
+    //Score Preloaded and Engage
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa94f33ee4_0_0
+    public static Command getScoreThenBalanceAuto(){ //Start lined up on center of Charge Station pushed up against nodes
+        return new SequentialCommandGroup( 
+            getPlacePieceCommand(null), //TODO: position 
+            new DriveDistanceCommand(-3),
+            new BalancePIDCommand()
+        );
     }
 
-    // Score, Over Charging Station -> Out of community, backup to balance
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
-    public static Command overTheFulcrum() { // start lined up with middle node of coopertition zone
+    //Score, Over Charging Station -> Out of community, backup to balance
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
+    public static Command getOverTheFulcrumAuto(){ //start lined up with middle node of coopertition zone
         return new SequentialCommandGroup(
                 getPlacePieceCommand(null), // TODO: position
                 new DriveDistanceCommand(-7),
@@ -107,11 +106,10 @@ public class CommandComposer {
                 new BalancePIDCommand());
     }
 
-    // Score, Leave Community, Intake, and then Score again
-    // Also can be used to Score, Over Charging Station -> Out of Community, and
-    // Score Again
-    // https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1b63d19ef3d_3_0
-    public static Command twoScore() {
+    //Score, Leave Community, Intake, and then Score again
+    //Also can be used to Score, Over Charging Station -> Out of Community, and Score Again 
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1b63d19ef3d_3_0
+    public static Command getTwoScoreAuto() {
         return new SequentialCommandGroup(
                 getPlacePieceCommand(null), // TODO: position
                 new TurnCommand(-180),
@@ -121,8 +119,7 @@ public class CommandComposer {
                 new TagAlignCommand(),
                 getPlacePieceCommand(null)); // TODO: position
     }
-
-    public static Command twoScoreBalance() {
+    public static Command getTwoScoreBalanceAuto() {
         return new SequentialCommandGroup(
                 getPlacePieceCommand(null), // TODO: need position
                 new TurnCommand(-180),
