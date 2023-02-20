@@ -17,7 +17,7 @@ public final class Constants {
 		public static final double kMaxOutput = 0.5;
 		public static final int kOpenLimitSwitchPort = 0; // change port
 	}
-
+  
 	public static final class ArmConstants {
 		// Preset angles for arm
 		/** The lower and upper arm angles for the arm to be in the high position */
@@ -112,8 +112,8 @@ public final class Constants {
 	}
 
 	public static final class ControllerConstants {
-		public static final int kDriverControllerPort = 0;
-		public static final int kOperatorControllerPort = 1;
+		public static final int kDriverControllerPort = 1;
+		public static final int kOperatorControllerPort = 0;
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
