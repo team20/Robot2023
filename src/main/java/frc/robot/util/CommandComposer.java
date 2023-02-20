@@ -84,7 +84,21 @@ public class CommandComposer {
                 getPlacePieceCommand(null)
             ); //TODO: position 
     }
-
+    public static Command twoScoreBalance() {
+        return new SequentialCommandGroup(
+                getPlacePieceCommand(null), //TODO: need position  
+                new TurnCommand(-180),
+                new DriveDistanceCommand(7),
+                getPickupPieceCommand(), 
+                new TurnCommand(-180),
+                new TagAlignCommand(), 
+                getPlacePieceCommand(null),  //TODO: need position 
+                new TurnCommand(-90),
+                new DriveDistanceCommand(2), 
+                new TurnCommand(-90),
+                new DriveDistanceCommand(2), //Distances are guesses, need to adjust based on practice field
+                new BalancePIDCommand());
+    }
     public static Command getPickupPieceCommand() {
         
         return new SequentialCommandGroup(
