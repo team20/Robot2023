@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
@@ -40,32 +41,28 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		// Gripper buttons (close, open, and zero):
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kLeftBumper))
-				.onTrue(new GripperCommand(GripperPosition.CLOSE));
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kRightBumper))
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
-
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
+				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// arm joysticks:
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
 
 		// arm presets:
-		// If the arm is fowards, the intermediate position
-		// does not need to be used to go to high
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kTriangle))
-				.onTrue(CommandComposer.createArmScoreCommand(ArmPosition.HIGH));
 
-		// If arm is forwards and target button is pressed go to intermediate position
-		// and medium back
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
+				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.HIGH));
 
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK));
 
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kX))
-				.onTrue(CommandComposer.createArmScoreCommand(ArmPosition.LOW));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
+
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.LOW));
 
 		// LED cube and cone
 
@@ -78,14 +75,16 @@ public class RobotContainer {
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 				.whileTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
-		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kLeftBumper))
-				.onTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 
 		// ------------driver controls------------------
 
 		// gripper: drop/open
-		new Trigger(() -> m_driverController.getRawButton(ControllerConstants.Button.kX))
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
+
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+				.whileTrue(new GripperCommand(GripperPosition.OPEN));
+
 		// last year's code for drive: left joystick and left/right triggers
 
 		m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
