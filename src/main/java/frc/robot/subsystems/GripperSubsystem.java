@@ -21,9 +21,6 @@ public class GripperSubsystem extends SubsystemBase {
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
-		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
-
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -33,7 +30,8 @@ public class GripperSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-
+		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
 		m_gripperScrew.restoreFactoryDefaults();
 		m_gripperScrew.setInverted(GripperConstants.kInvert);
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
