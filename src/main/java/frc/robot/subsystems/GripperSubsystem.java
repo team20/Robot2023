@@ -42,6 +42,10 @@ public class GripperSubsystem extends SubsystemBase {
 
 	}
 
+	public static GripperSubsystem get() {
+		return s_subsystem;
+	}
+
 	@Override
 	public void periodic() {
 	}
@@ -56,10 +60,6 @@ public class GripperSubsystem extends SubsystemBase {
 
 	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
-	}
-
-	public static GripperSubsystem get() {
-		return s_subsystem;
 	}
 
 	public boolean getOpenLimitSwitch() {
