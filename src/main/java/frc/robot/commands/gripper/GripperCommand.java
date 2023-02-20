@@ -26,21 +26,20 @@ public class GripperCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // switch (m_gripperPosition) {
-        // case OPEN:
-        // //set gripper to open position
-        // GripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower); //
-        // limit switch will stop motor
-        // break;
-        // case CLOSE:
-        // GripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
-        // if (m_startTime == 0) {
-        // m_startTime = System.currentTimeMillis();
-        // }
-        // break;
-        // default:
-        // break;
-        // }
+        switch (m_gripperPosition) {
+            case OPEN:
+                // set gripper to open position
+                GripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower); // limit switch will stop motor
+                break;
+            case CLOSE:
+                GripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
+                if (m_startTime == 0) {
+                    m_startTime = System.currentTimeMillis();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

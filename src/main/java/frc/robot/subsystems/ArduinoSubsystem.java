@@ -15,19 +15,21 @@ public class ArduinoSubsystem extends SubsystemBase {
 
   private byte[] m_statusCode = new byte[1];
 
-  private enum StatusCode{ 
-    RESET((byte)8),
-    BLINKING_YELLOW((byte)9),
-    BLINKING_PURPLE((byte)10),
-    MOVING_GREEN_AND_RED_GRADIENT((byte)11),
-    MOVING_GREEN_AND_BLUE_GRADIENT((byte)12),
-    DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte)20);
-    
+  public enum StatusCode {
+    RESET((byte) 8),
+    BLINKING_YELLOW((byte) 9),
+    BLINKING_PURPLE((byte) 10),
+    MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
+    MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
+    DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte) 20);
+
     public byte code;
-    private StatusCode(byte c){
-      code = c; 
+
+    private StatusCode(byte c) {
+      code = c;
     }
   }
+
   public ArduinoSubsystem() {
     setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
   }
@@ -37,8 +39,8 @@ public class ArduinoSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     i2c.writeBulk(m_statusCode);
   }
-  
-  public void setCode(StatusCode code){
+
+  public void setCode(StatusCode code) {
     m_statusCode[0] = code.code;
   }
 }

@@ -67,9 +67,9 @@ public class RobotContainer {
 		// LED cube and cone
 
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
-				.whileTrue(new LEDCommand(StatusCode.PURPLE_BLINKING));
+				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
-				.whileTrue(new LEDCommand(StatusCode.YELLOW_BLINKING));
+				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
 				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)

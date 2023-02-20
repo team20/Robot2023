@@ -17,9 +17,6 @@ public class TurnCommand extends CommandBase {
 
 	}
 
-	public TurnCommand(Object object, Object object2) {
-	}
-
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
