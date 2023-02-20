@@ -98,6 +98,9 @@ public class ArmSubsystem extends SubsystemBase {
 		// The upper arm can't spin clockwise without hitting the robot, so PID wrapping
 		// is disabled
 		m_upperArmController.setPositionPIDWrappingEnabled(false);
+
+		m_targetLowerArmAngle = getLowerArmAngle();
+		m_targetUpperArmAngle = getUpperArmAngle();
 	}
 
 	public static ArmSubsystem get() {
@@ -155,23 +158,19 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void setAngles(double lower, double upper) {
+		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
+		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 		// Prevent the lower arm from going more than 10 degrees behind vertical or
 		// below 45 degrees
-		if (lower > ArmConstants.kLowerArmMaxAngle || lower < ArmConstants.kLowerArmMinAngle) {
-			System.out.println("Lower arm angle limit reached");
-			// Prevent the upper arm from going more than 270 degrees or less than 15
-			// degrees relative to the lower arm
-		} else if (upper > ArmConstants.kUpperArmMaxAngle || upper < ArmConstants.kUpperArmMinAngle) {
-			System.out.println("Upper arm angle limit reached");
-			// If none of the limits have been reached, set the arm angles
-		} else {
+		// Prevent the upper arm from going more than 270 degrees or less than 15
+		// degrees relative to the lower arm
+		if ((lower <= ArmConstants.kLowerArmMaxAngle && lower >= ArmConstants.kLowerArmMinAngle)
+				&& (upper <= ArmConstants.kUpperArmMaxAngle && upper >= ArmConstants.kUpperArmMinAngle)) {
 			m_targetLowerArmAngle = lower;
 			m_lowerArmController.setReference(lower, ControlType.kPosition);
-			SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 
 			m_targetUpperArmAngle = upper;
 			m_upperArmController.setReference(upper, ControlType.kPosition);
-			SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 		}
 	}
 

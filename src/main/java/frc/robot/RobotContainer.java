@@ -8,14 +8,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ChangeOffsetCommand;
-import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
+import frc.robot.commands.util.DeferredCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
@@ -45,25 +44,23 @@ public class RobotContainer {
 				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
-		// arm joysticks:
+
+		// Arm Controls
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
 
-		// arm presets:
-
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
-				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.HIGH));
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
-				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK));
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
-				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
-				.whileTrue(CommandComposer.createArmScoreCommand(ArmPosition.LOW));
-
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 		// LED cube and cone
 
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
