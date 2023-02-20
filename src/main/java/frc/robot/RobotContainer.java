@@ -78,19 +78,15 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
 				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 
-		// ------------driver controls------------------
-
-		// gripper: drop/open
-
+		// -------------Driver Controls-------------
+		// Opening gripper/dropping game piece
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
-
-		// last year's code for drive: left joystick and left/right triggers
-
-		m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
-				() -> -m_driverController.getRawAxis(Axis.kLeftY),
-				() -> m_driverController.getRawAxis(Axis.kLeftTrigger),
-				() -> m_driverController.getRawAxis(Axis.kRightTrigger)));
+		// Driving
+		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
+				() -> -m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftY),
+				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger),
+				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kRightTrigger)));
 
 	}
 
