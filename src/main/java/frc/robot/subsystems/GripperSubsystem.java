@@ -59,10 +59,6 @@ public class GripperSubsystem extends SubsystemBase {
 		return m_gripperScrewEncoder.getPosition();
 	}
 
-	public void setGripperPosition(double position) {
-		m_gripperScrewController.setReference(position, ControlType.kPosition);
-	}
-
 	public static GripperSubsystem get() {
 		return s_subsystem;
 	}
