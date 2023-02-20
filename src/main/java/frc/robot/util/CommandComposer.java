@@ -119,6 +119,9 @@ public class CommandComposer {
                 new TagAlignCommand(),
                 getPlacePieceCommand(null)); // TODO: position
     }
+    
+    //Score, Leave Community, Intake, Score again, and balance 
+    //https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g12845fa040c_0_5 
     public static Command getTwoScoreBalanceAuto() {
         return new SequentialCommandGroup(
                 getPlacePieceCommand(null), // TODO: need position
@@ -135,6 +138,7 @@ public class CommandComposer {
                 new BalancePIDCommand());
     }
 
+    //Pick up game piece 
     public static Command getPickupPieceCommand() {
 
         return new SequentialCommandGroup(
@@ -144,6 +148,7 @@ public class CommandComposer {
                 new GripperCommand(GripperPosition.CLOSE));
     }
 
+    //Place game piece taking in position 
     public static Command getPlacePieceCommand(ArmPosition position) {
         return new SequentialCommandGroup(
                 new ArmScoreCommand(position),
