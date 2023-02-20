@@ -48,7 +48,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     // Singleton
     if (s_subsystem != null) {
       try {
-        throw new Exception("Gripper subsystem already initalized!");
+        throw new Exception("AprilTag subsystem already initalized!");
       } catch (Exception e) {
         e.printStackTrace();
       }
