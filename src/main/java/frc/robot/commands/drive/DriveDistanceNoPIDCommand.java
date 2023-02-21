@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drive;
 
-import frc.robot.subsystems.AprilTagSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -29,9 +28,9 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 	 * @param distanceThreshold the distance threshold that specifies how close the
 	 *                          robot needs to be within the target (e.g., 0.1)
 	 * @param timeThreshold     the time threshold (in ms) that specifies how long
-	 *                          the robot
-	 *                          needs to be close to the target for the comletion of
-	 *                          the {@code DriveDistanceCommand2} (e.g., 100)
+	 *                          the robot needs to be close to the target for the
+	 *                          completion of the {@code DriveDistanceCommand2}
+	 *                          (e.g., 100)
 	 * @param maxStride         the maximum distance (e.g., 0.08) that the robot can
 	 *                          travel per tick (20 ms)
 	 * @param convergenceRatio  the maximum ratio (e.g., 0.6) that the robot can
@@ -49,7 +48,6 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 		m_maxStride = maxStride;
 		m_convergenceRatio = convergenceRatio;
 		m_maxSpeed = maxSpeed;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -74,10 +72,6 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 		leftSpeed = Math.max(-m_maxSpeed, Math.min(m_maxSpeed, leftSpeed));
 		rightSpeed = Math.max(-m_maxSpeed, Math.min(m_maxSpeed, rightSpeed));
 		DriveSubsystem.get().tankDrive(leftSpeed, rightSpeed);
-		// System.out.println(AprilTagSubsystem.get().m_z + ", " +
-		// DriveSubsystem.get().getLeftEncoderPosition() + ", "
-		// + DriveSubsystem.get().getRightEncoderPosition() + ", " + leftSpeed + ", " +
-		// rightSpeed);
 	}
 
 	/**
@@ -85,11 +79,12 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 	 */
 	@Override
 	public void end(boolean interrupted) {
-		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	/**
-	 * Determines whether or not this {@code DriveDistanceNoPIDCommand} is completed.
+	 * Determines whether or not this {@code DriveDistanceNoPIDCommand} is
+	 * completed.
 	 * 
 	 * @return {@code true} if this {@code DriveDistanceNoPIDCommand} is completed;
 	 *         {@code false} otherwise
