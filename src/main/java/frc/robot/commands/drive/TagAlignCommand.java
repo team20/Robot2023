@@ -4,30 +4,21 @@
 
 package frc.robot.commands.drive;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class TagAlignCommand extends CommandBase {
-	/** Creates a new DefaultDriveCommand. */
-	// PIDController m_controller = new PIDController(0.14, 0.005, 0.000);
-	// i: 0.005 before d: 0.000 before
 
-	private double m_driveSpeed = 0.35; // constant
-	private double m_speed = 0.35; // changes
+	private double m_driveSpeed = LimelightConstants.kSpeed; 
 	private double m_xOffset, m_zOffset; // offsets from april tag
 
 	private Pose2d m_goalPose = new Pose2d(); // instantiates pose of where robot is
-	private double m_vectorDistance; // Vector distance from robot to April tag
 
 	public enum TagNumber { // method of constants for april tag offsets
 		TagGeneral(0.5, -0.5, 0),
@@ -139,12 +130,8 @@ public class TagAlignCommand extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		// end when we reach our goal point
-		return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < 0.2
-				&& Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < 0.1;
-	}
-
-	private double getTurn(Pose2d goalPoint, Pose2d currPoint) {
-		SmartDashboard.putNumber("Goal X", goalPoint.getX());
+		return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < LimelightConstants.zTolerance
+				&& Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < LimelightConstants.xtolerance
 		SmartDashboard.putNumber("Goal Y", goalPoint.getY());
 		SmartDashboard.putNumber("Curr X", currPoint.getX());
 		SmartDashboard.putNumber("Curr Y", currPoint.getY());
@@ -172,8 +159,8 @@ public class TagAlignCommand extends CommandBase {
 		// this means that our speed is the greatest when the goal point is directly in
 		// front of us
 		// and least when the goal point is directly next to us
-		double speedLimitFactor = (distanceSquared > 0.25 ? 1 : 0.5);
-		m_driveSpeed = m_speed * Math.cos(vectorAngleAdjusted) * speedLimitFactor;
+		double speedLimitFactor = (distanceSquared > LimelightConstants.slowDownDistance ? 1 : 0.5);
+		m_driveSpeed = LimelightConstants.kSpeed * Math.cos(vectorAngleAdjusted) * speedLimitFactor;
 		return Math.sin(vectorAngleAdjusted) * speedLimitFactor;
 	}
 }
