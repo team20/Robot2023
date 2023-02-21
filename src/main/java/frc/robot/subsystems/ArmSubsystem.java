@@ -160,6 +160,12 @@ public class ArmSubsystem extends SubsystemBase {
 		setAngles(m_targetLowerArmAngle, angle);
 	}
 
+	/**
+	 * Sets and logs the angles the lower and upper arm will move to
+	 * 
+	 * @param lower The target angle for the lower arm
+	 * @param upper The target angle for the upper arm
+	 */
 	public void setAngles(double lower, double upper) {
 		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
