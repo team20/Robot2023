@@ -279,7 +279,7 @@ public final class Constants {
 		public static final int kRollingMedianSize = 10;
 		public static final double kSlowDownDistance = 0.5;
 		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
-		public static final double kSpeed;
+		public static final double kSpeed = 0.35;
 	}
 
 }

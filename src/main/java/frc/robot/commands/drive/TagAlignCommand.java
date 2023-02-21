@@ -131,7 +131,10 @@ public class TagAlignCommand extends CommandBase {
 	public boolean isFinished() {
 		// end when we reach our goal point
 		return Math.abs(m_goalPose.getX() - DriveSubsystem.get().getPose().getX()) < LimelightConstants.zTolerance
-				&& Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < LimelightConstants.xtolerance
+				&& Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < LimelightConstants.xTolerance;
+	}
+
+	public double getTurn(Pose2d goalPoint, Pose2d currPoint){
 		SmartDashboard.putNumber("Goal Y", goalPoint.getY());
 		SmartDashboard.putNumber("Curr X", currPoint.getX());
 		SmartDashboard.putNumber("Curr Y", currPoint.getY());
