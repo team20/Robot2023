@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
@@ -56,21 +57,21 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
+				.whileTrue(new SequentialCommandGroup(new GripperCommand(GripperPosition.CLOSE),
+						(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
 		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
-				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
-				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
+				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftX),
+				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
 		// Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
 		// Flip the arm over to the medium node
 
-		//TODO one of these should not be SQUARE BUTTON
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
@@ -81,37 +82,30 @@ public class RobotContainer {
 
 		// -------------LED signaling-------------
 		// Signal for a cube
-		//TODO switch to onTrue not whileTrue
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
-				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 		// Signal for a cone
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
-				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
-				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+				.onTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
-				.whileTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
-
-		//TODO add this in sequential with gripper close
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+				.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
-		//TODO make driver controller
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
 
-		//TODO fix logitech and ps4
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
-				() -> -m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftY),
-				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger),
-				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kRightTrigger)));
+				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
+				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
+				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
 
 	}
 
-	//TODO get auto command from auto chooser
+	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
 		return null;
 	}
