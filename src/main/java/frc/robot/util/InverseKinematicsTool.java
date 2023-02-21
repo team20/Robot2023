@@ -34,6 +34,7 @@ public class InverseKinematicsTool {
 	 * @return
 	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
+	//TODO add internet sources
 	public static double[] calculateArmAngles(double x, double y) {
 		// All calculations are in radians
 		// This finds the angle between the arm base(a horizontal line,) and the
@@ -59,6 +60,7 @@ public class InverseKinematicsTool {
 		// on the extended side of the lower arm with the upper arm
 		double angleFormedByArms;
 		// If some random condition, elbow up, else, elbow down
+		//TODO remove negation in absolute value????
 		if (isElbowUp) {
 			angleFormedByArms = Math.abs(-(Math.PI - angleBetweenUpperAndLowerArm));
 		} else {
@@ -90,6 +92,8 @@ public class InverseKinematicsTool {
 			upperArmAngle = Math.PI + angleFormedByArms;
 		}
 		// Convert to degrees and a Double for NaN checks
+
+		//TODO remove commented print lines
 		double[] armAngles = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
 		// angles. If that's the case, log an error, and set the returned angle array to

@@ -36,11 +36,14 @@ public final class Constants {
 		 * needed to prevent the arm from going over the height limit
 		 */
 		public static final double[] kIntermediateAngles = { 50, 220 };
-		// Recheck when robot is assembled
+
+		// TODO remeasure arm lengths
 		/** Length of lower arm length in inches */
 		public static final double kLowerArmLength = 32.5;
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 40;
+
+		//TODO check arm speed multipliers and rename for clarity
 		/**
 		 * A joystick input multiplier to control how fast the arm moves relative to how
 		 * much the joystick is being moved
@@ -51,6 +54,8 @@ public final class Constants {
 		 * to how much the joystick is being moved
 		 */
 		public static final double kManualArmMovementSpeedMultiplier = 0.5;
+
+		//TODO Check allowable error, and max angle and height values
 		/**
 		 * Allowable difference in degrees between the target arm angle and the current
 		 * arm angle
@@ -66,23 +71,29 @@ public final class Constants {
 		public static final double kUpperArmMaxAngle = 270;
 		/** Maximum height in inches the arm can go to */
 		public static final double kMaxHeight = 12;
+
+		//TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
 		public static final double kLowerEncoderZeroOffset = 110.2;
+
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
+		//TODO encoder offsets
 		public static final double kUpperEncoderZeroOffset = 248.9;
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
 		public static final boolean kInvert = false;
+		//TODO evaluate current limits
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
+		//TODO PIDS
 		public static final double kLowerArmP = 0.0070;
 		public static final double kLowerArmI = 0.0001;
 		public static final double kLowerArmD = 0;
@@ -104,6 +115,7 @@ public final class Constants {
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
+		//TODO rename
 		public static final class PS4Axis {
 			public static final int kLeftX = 0;
 			public static final int kLeftY = 1;
@@ -138,7 +150,7 @@ public final class Constants {
 
 	public static final class DriveConstants {
 
-		// TODO CHANGE ALL OF THESE
+		//TODO recheck inversions
 		public static final int kFrontLeftID = 2;
 		public static final boolean kFrontLeftInvert = true;
 		public static final int kBackLeftID = 4;
@@ -149,9 +161,12 @@ public final class Constants {
 		public static final int kBackRightID = 5;
 		public static final boolean kBackRightOppose = false;
 
+		//TODO re-evaluate current limits
 		public static final int kSmartCurrentLimit = 55;
 		public static final double kPeakCurrentLimit = 65;
 		public static final int kPeakCurrentDurationMillis = 0;
+
+		//TODO PIDS
 		public static final double kP = .14;// 0.198;
 		public static final double kI = 0;
 		public static final double kD = 0;
@@ -159,27 +174,38 @@ public final class Constants {
 		public static final double kFF = 0;
 		public static final double kMaxOutput = 1;
 		public static final double kMinOutput = -1;
+
+		//TODO do we need slot id
 		public static final int kSlotID = 0;
 
+		//TODO do we use this
 		public static final double kFineTurningSpeed = .1;
 
 		// navX stuff
 		public static final SPI.Port kGyroPort = SPI.Port.kMXP;
+		//TODO is gyro truly reversed?
 		public static final boolean kGyroReversed = true;
 
-		// TODO CHANGE ALL OF THESE
+		// TODO CHANGE ADJUST PIDS
 		public static final double kTurnP = 0.002; // was 0.005
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
+
+		//TODO unused constants
 		public static final double ksVolts = 0.196;
 		public static final double kvVoltSecondsPerMeter = 2.15;
 		public static final double kaVoltSecondsSquaredPerMeter = .53;
+		
 		// Horizontal distance between the wheels
 		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
+
+		//TODO remove unused
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
 				kTrackwidthMeters);
-		// TODO change
+
+
+		// TODO see which ones of these are used and which are not
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
@@ -218,6 +244,7 @@ public final class Constants {
 		 */
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters / 60;
+		//TODO PIDS
 		public static final double kBalanceP = 0.005;
 		public static final double kBalanceI = 0.0001;
 		public static final double kBalanceD = 0.0001;
@@ -225,19 +252,21 @@ public final class Constants {
 	}
 
 	public static final class GripperConstants {
-		public static final double kGripperOpenPosition = 0.5;
+		public static final double kGripperOpenPosition = 0.5;//TODO is this correct
 		public static final boolean kInvert = false;
 		public static final int kGripperID = 9;
-		public static final int kSmartCurrentLimit = 20;
+		public static final int kSmartCurrentLimit = 20;//TODO evaluate current limit
 		public static final double kCloseTime = 1500; // TODO: change as needed
-		public static final double kMovePower = 0.2;
+		public static final double kMovePower = 0.2; //TODO check
 		public static final double kHoldPower = .03; // TODO: change as needed
-		public static final double kMinOutput = -0.5;
-		public static final double kMaxOutput = 0.5;
-		public static final int kOpenLimitSwitchPort = 0; // change port
+		public static final double kMinOutput = -0.5;//TODO check
+		public static final double kMaxOutput = 0.5;//TODO check
+		public static final int kOpenLimitSwitchPort = 0; // TODO remove
 	}
 
 	public static final class LimelightConstants { // TODO: tune PID loop
+
+		//TODO remove unused PIDS
 		public static final double kDisP = 0.02;
 		public static final double kDisI = 0;
 		public static final double kDisD = 0;
@@ -247,12 +276,15 @@ public final class Constants {
 		public static final double kTurnTolerance = 2; // TODO: this is the amount of error that is considered okay
 														// because obviously we can't get perfectly to the setpoint
 		public static final double kDistanceTolerance = 0.5;
+
+		//TODO remove these
 		public static final double kCameraHeight = 22.5; // TODO: get height once mounted
 		public static final double kCameraAngle = 25.453;// 29.8394991; //TODO: get angle once mounted
 		public static final double kTargetHeight = 104; // TODO: get height of target (inches)
 		public static final double kRefreshRate = 0.01111; // matches with the max of 90 frames/second from the
 															// limelight
-		public static final int kRollingAverageSize = 10; // TODO: change, experiment
+															
+		public static final int kRollingAverageSize = 10; // TODO rename, update to median filters
 	}
 
 }
