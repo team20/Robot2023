@@ -34,14 +34,12 @@ public class InverseKinematicsTool {
 	 * @return
 	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
-	//TODO add internet sources
+	// Source: https://www.youtube.com/watch?v=V4s4Vd2BLi4
 	public static double[] calculateArmAngles(double x, double y) {
 		// All calculations are in radians
 		// This finds the angle between the arm base(a horizontal line,) and the
 		// HYPOTENUSE
 		double combinedArmAngle = Math.atan2(y, x);
-		// Do elbow up when x > 0, elbow down when x < 0
-		boolean isElbowUp = x > 0;
 		// These next three variables are part of the cosine rule
 		double hypotenuseSquared = Math.pow(x, 2) + Math.pow(y, 2);
 		double lowerArmLengthSquared = Math.pow(ArmConstants.kLowerArmLength, 2);
@@ -59,10 +57,10 @@ public class InverseKinematicsTool {
 		// This is the angle formed if you extended the lower arm, and you form an angle
 		// on the extended side of the lower arm with the upper arm
 		double angleFormedByArms;
-		// If some random condition, elbow up, else, elbow down
-		//TODO remove negation in absolute value????
+		// Do elbow up when x > 0, elbow down when x < 0
+		boolean isElbowUp = x > 0;
 		if (isElbowUp) {
-			angleFormedByArms = Math.abs(-(Math.PI - angleBetweenUpperAndLowerArm));
+			angleFormedByArms = Math.abs(Math.PI - angleBetweenUpperAndLowerArm);
 		} else {
 			angleFormedByArms = Math.PI - angleBetweenUpperAndLowerArm;
 		}
@@ -92,24 +90,19 @@ public class InverseKinematicsTool {
 			upperArmAngle = Math.PI + angleFormedByArms;
 		}
 		// Convert to degrees and a Double for NaN checks
-
-		//TODO remove commented print lines
 		double[] armAngles = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
 		// angles. If that's the case, log an error, and set the returned angle array to
 		// null
 		if (Double.isNaN(lowerArmAngle) || Double.isNaN(upperArmAngle)) {
-			// System.out.println("Target position unreachable");
 			armAngles = null;
 			// Prevent the lower arm from going more than 10 degrees behind vertical or
 			// below 45 degrees
 		} else if (armAngles[0] > ArmConstants.kLowerArmMaxAngle || armAngles[0] < ArmConstants.kLowerArmMinAngle) {
-			// System.out.println("Lower arm angle limit reached");
 			armAngles = null;
 			// Prevent the upper arm from going more than 270 degrees or less than 15
 			// degrees relative to the lower arm
 		} else if (armAngles[1] > ArmConstants.kUpperArmMaxAngle || armAngles[1] < ArmConstants.kUpperArmMinAngle) {
-			// System.out.println("Upper arm angle limit reached");
 			armAngles = null;
 		}
 		return armAngles;

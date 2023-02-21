@@ -43,17 +43,20 @@ public final class Constants {
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 40;
 
-		// TODO check arm speed multipliers and rename for clarity
+
+		// TODO check arm speed multipliers
 		/**
 		 * A joystick input multiplier to control how fast the arm moves relative to how
-		 * much the joystick is being moved
+		 * much the joystick is being moved. Used for moving the arm position(x and y
+		 * coordinates)
 		 */
-		public static final double kArmMovementSpeedMultiplier = 1.5;
+		public static final double kCartesianSpeedSensitivity = 1.5;
 		/**
 		 * A joystick input multiplier to control how fast the arm motors spin relative
-		 * to how much the joystick is being moved
+		 * to how much the joystick is being moved. Used for spinning the arm motors
+		 * manually
 		 */
-		public static final double kManualArmMovementSpeedMultiplier = 0.5;
+		public static final double kArmMotorSpeedSensitivity = 0.5;
 
 		// TODO Check allowable error, and max angle and height values
 		/**
@@ -69,9 +72,14 @@ public final class Constants {
 		public static final double kUpperArmMinAngle = 15;
 		/** Maximum angle the lower arm can go */
 		public static final double kUpperArmMaxAngle = 270;
-		/** Maximum height in inches the arm can go to */
-		public static final double kMaxHeight = 12;
-
+		/**
+		 * Maximum height in inches the arm can reach.
+		 * <p>
+		 * The max height for the robot is 6 feet, 6 inches, or 78 inches.
+		 * <p>
+		 * The base of the robot is 10.5 inches, leaving 67.5 inches left for the arm
+		 */
+		public static final double kMaxHeight = 67.5;
 		// TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
@@ -88,30 +96,32 @@ public final class Constants {
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
-		public static final boolean kInvert = false;
 		// TODO evaluate current limits
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
+		public static boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
 		public static final double kLowerArmP = 0.0070;
 		public static final double kLowerArmI = 0.0001;
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
+		public static final boolean kLowerInvert = false;
 		public static final double kUpperArmP = 0.0070;
 		public static final double kUpperArmI = 0.0001;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
+		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
 		public static final double kMinOutput = -.4;
 		public static final double kMaxOutput = .4;
 	}
 
 	public static final class ControllerConstants {
-		public static final int kDriverControllerPort = 1;
-		public static final int kOperatorControllerPort = 0;
+		public static final int kDriverControllerPort = 0;
+		public static final int kOperatorControllerPort = 1;
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
