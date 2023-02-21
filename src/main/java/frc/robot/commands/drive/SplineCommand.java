@@ -11,7 +11,7 @@ public class SplineCommand extends CommandBase {
 	private double lookahead_distance = 0.5;
 	private double m_lastGuess = 0;
 	private Pose2d m_finalPoint;
-	private boolean m_reversed;
+	private boolean m_reversed; //might be necessary at some point
 	private double speed = 0.3;
 	private int m_numLoops = 0;
 	private Pose2d m_goalPoint;
