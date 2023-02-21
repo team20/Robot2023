@@ -51,7 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
 		s_subsystem = this;
 		// Initialize lower arm
 		m_lowerArmMotor.restoreFactoryDefaults();
-		m_lowerArmMotor.setInverted(ArmConstants.kInvert);//TODO don't assume its the same inversion
+		m_lowerArmMotor.setInverted(ArmConstants.kLowerInvert);
 		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
@@ -71,17 +71,17 @@ public class ArmSubsystem extends SubsystemBase {
 
 		// Initialize 2nd lower arm motor
 		m_lowerArmMotor2.restoreFactoryDefaults();
-		m_lowerArmMotor2.setInverted(ArmConstants.kInvert); //TODO don't assume its the same inversion
+		m_lowerArmMotor2.setInverted(ArmConstants.kLowerInvert);
 		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted
-		m_lowerArmMotor2.follow(m_lowerArmMotor, true);//TODO make invert be a constant
+		m_lowerArmMotor2.follow(m_lowerArmMotor, ArmConstants.kLowerArmMotor2Oppose);
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
-		m_upperArmMotor.setInverted(ArmConstants.kInvert); //TODO don't assume its the same inversion
+		m_upperArmMotor.setInverted(ArmConstants.kUpperInvert);
 		m_upperArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_upperArmMotor.enableVoltageCompensation(12);
 		m_upperArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
@@ -137,27 +137,6 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public double getUpperArmAngle() {
 		return m_upperArmEncoder.getPosition();
-	}
-
-
-	//TODO make these split
-	/**
-	 * Sets the angle for the lower arm, and logs the angle
-	 * 
-	 * @param angle The target angle of the lower arm in degrees
-	 */
-	public void setLowerArmAngle(double angle) {
-		setAngles(angle, m_targetUpperArmAngle);
-	}
-
-	//TODO make these split
-	/**
-	 * Sets the angle for the upper arm, and logs the angle
-	 * 
-	 * @param angle The target angle of the upper arm in degrees
-	 */
-	public void setUpperArmAngle(double angle) {
-		setAngles(m_targetLowerArmAngle, angle);
 	}
 
 	/**

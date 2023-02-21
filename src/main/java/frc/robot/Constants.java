@@ -92,22 +92,24 @@ public final class Constants {
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
-		public static final boolean kInvert = false;
 		// TODO evaluate current limits
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
+		public static boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
 		public static final double kLowerArmP = 0.0070;
 		public static final double kLowerArmI = 0.0001;
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
+		public static final boolean kLowerInvert = false;
 		public static final double kUpperArmP = 0.0070;
 		public static final double kUpperArmI = 0.0001;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
+		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
 		public static final double kMinOutput = -.4;
 		public static final double kMaxOutput = .4;
