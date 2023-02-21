@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drive;
 
-import frc.robot.subsystems.AprilTagSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -13,6 +12,8 @@ import frc.robot.subsystems.DriveSubsystem;
  * 
  * @author Jeong Hyon Hwang
  */
+
+//TODO rename this
 public class DriveToApriltag extends CommandBase {
 	double m_distance;
 	double m_distanceThreshold;
@@ -74,6 +75,8 @@ public class DriveToApriltag extends CommandBase {
 		leftSpeed = Math.max(-m_maxSpeed, Math.min(m_maxSpeed, leftSpeed));
 		rightSpeed = Math.max(-m_maxSpeed, Math.min(m_maxSpeed, rightSpeed));
 		DriveSubsystem.get().tankDrive(leftSpeed, rightSpeed);
+
+		//TODO remove unnecessary comments
 		// System.out.println(AprilTagSubsystem.get().m_z + ", " +
 		// DriveSubsystem.get().getLeftEncoderPosition() + ", "
 		// + DriveSubsystem.get().getRightEncoderPosition() + ", " + leftSpeed + ", " +

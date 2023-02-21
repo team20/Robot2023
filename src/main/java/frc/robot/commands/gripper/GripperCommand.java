@@ -4,7 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
 import frc.robot.subsystems.GripperSubsystem;
 
+//TODO revisit this command
 public class GripperCommand extends CommandBase {
+
+	//TODO remove zero
 	public enum GripperPosition {
 		CLOSE,
 		OPEN,
@@ -43,10 +46,12 @@ public class GripperCommand extends CommandBase {
 
 	@Override
 	public void end(boolean interrupted) {
+		
 	}
 
 	@Override
 	public boolean isFinished() {
+		//TODO revisit reset start time
 		switch (m_gripperPosition) {
 			case OPEN:
 				m_startTime = 0;

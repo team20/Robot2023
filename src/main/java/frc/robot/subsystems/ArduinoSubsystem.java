@@ -19,6 +19,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
+	//TODO give default a better name
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
@@ -40,7 +41,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Arduino subsystem already initalized!");
+				throw new Exception("Arduino subsystem already initialized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

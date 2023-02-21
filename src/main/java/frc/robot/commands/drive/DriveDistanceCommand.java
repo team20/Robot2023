@@ -52,6 +52,7 @@ public class DriveDistanceCommand extends CommandBase {
 		double kI = 0.000;
 		double kD = 0.00;
 
+		//TODO fix Trapezoidal profiles
 		m_controller = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(125, 150)); // was 196 35
 		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderDistance();
@@ -72,7 +73,7 @@ public class DriveDistanceCommand extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	// Returns true when the command should end.

@@ -2,19 +2,14 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -23,10 +18,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private static DriveSubsystem s_subsystem;
 
-	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftPort, MotorType.kBrushless);
-	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightPort, MotorType.kBrushless);
-	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftPort, MotorType.kBrushless);
-	private final CANSparkMax m_backRight = new CANSparkMax(DriveConstants.kBackRightPort, MotorType.kBrushless);
+	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, MotorType.kBrushless);
+	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightID, MotorType.kBrushless);
+	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftID, MotorType.kBrushless);
+	private final CANSparkMax m_backRight = new CANSparkMax(DriveConstants.kBackRightID, MotorType.kBrushless);
 
 	private final RelativeEncoder m_leftEncoder = m_frontLeft.getEncoder();
 	private final RelativeEncoder m_rightEncoder = m_frontRight.getEncoder();
@@ -41,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Drive subsystem already initalized!");
+				throw new Exception("Drive subsystem already initialized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -89,6 +84,7 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
 		m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
+		//TODO remove this
 		// m_backRight.setControlFramePeriodMs(10);
 
 		m_leftPIDController.setP(DriveConstants.kP);
@@ -108,9 +104,12 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
 
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
+		
+		//TODO remove this
 		// this is what they did in 2020 with the navX:
 		// Rotation2d.fromDegrees(getHeading()));
 		resetEncoders();
+		//TODO remove this
 		// from 2020: resetOdometry(new Pose2d(0, 0, new Rotation2d()));
 
 	}
@@ -120,7 +119,10 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
+		//TODO give this a better name
 		SmartDashboard.putNumber("the angle", getHeading());
+
+		//TODO remove these comments
 		// System.out.println("the angle is: " + getHeading());
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
@@ -169,6 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
 		return m_odometry.getPoseMeters();
 	}
 
+	//TODO remove this - unused
 	/**
 	 * @return Wheel speeds of the robot
 	 */
@@ -176,6 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
 		return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
 	}
 
+	//TODO remove these
 	// public double getLeftMotorSpeeds() {
 	// return m_frontLeft.get();
 	// }
@@ -222,6 +226,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void resetOdometry(Pose2d pose) {
 		resetEncoders();
+		//TODO make the new position match the original we set in the constructor
 		m_odometry.resetPosition(m_gyro.getRotation2d(), 0, 0, pose);
 	}
 
@@ -240,14 +245,17 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param rightSpeed Right motors percent output
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
+		//TODO remove prints
 		// System.out.println("Left speed: " + leftSpeed);
 		// System.out.println("Right speed:" + rightSpeed);
+		//TODO only set front? back should follow
 		m_frontLeft.set(leftSpeed);
 		m_backLeft.set(leftSpeed);
 		m_frontRight.set(rightSpeed);
 		m_backRight.set(rightSpeed);
 	}
 
+	//TODO remove this method
 	public void tankDriveVelocity(DifferentialDriveWheelSpeeds wheelSpeeds) {
 
 		double leftNativeVelocity = wheelSpeeds.leftMetersPerSecond

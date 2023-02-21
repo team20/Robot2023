@@ -62,8 +62,7 @@ public class ArmScoreCommand extends CommandBase {
 			default:
 				break;
 		}
-		ArmSubsystem.get().setLowerArmAngle(angles[0]);
-		ArmSubsystem.get().setUpperArmAngle(angles[1]);
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -80,9 +79,7 @@ public class ArmScoreCommand extends CommandBase {
 		// If the y-coordinate of the upper arm is about to exceed the height, stop the
 		// motors by setting their target angles to their current angles
 		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
-			// System.out.println("Height limit protection tripped!");
-			ArmSubsystem.get().setLowerArmAngle(ArmSubsystem.get().getLowerArmAngle());
-			ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle());
+			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
 			return true;
 		}
 		// If the lower and upper arm is close enough to the target angle, finish the
