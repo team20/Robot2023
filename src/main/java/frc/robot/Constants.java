@@ -227,7 +227,7 @@ public final class Constants {
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kInvert = false;
-		public static final int kGripperID = 4;
+		public static final int kGripperID = 9;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kCloseTime = 1500; // TODO: change as needed
 		public static final double kMovePower = 0.2;
