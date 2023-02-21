@@ -2,20 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.drive;
+package frc.robot.commands.LEDs;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 
-//TODO fix this command
-public class TurnCommand extends CommandBase {
-	private double m_targetAngle;
+public class LEDCommand extends CommandBase {
+	private StatusCode m_StatusCode;
 
-	/** Creates a new TurnCommand. */
-	public TurnCommand(double targetAngle) {
-		m_targetAngle = targetAngle;
-		addRequirements(DriveSubsystem.get());
-
+	/** Creates a new LEDCommand. */
+	public LEDCommand(StatusCode code) {
+		m_StatusCode = code;
+		addRequirements(ArduinoSubsystem.get());
 	}
 
 	// Called when the command is initially scheduled.
@@ -26,13 +25,7 @@ public class TurnCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		// Get the robot's current angle
-		double currAngle = DriveSubsystem.get().getHeading();
-		if (currAngle < m_targetAngle) {
-			DriveSubsystem.get().tankDrive(0.1, -0.1);
-		} else if (currAngle < m_targetAngle) {
-			DriveSubsystem.get().tankDrive(-0.1, 0.1);
-		}
+		ArduinoSubsystem.get().setCode(m_StatusCode);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -43,6 +36,6 @@ public class TurnCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		return true;
 	}
 }

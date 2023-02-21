@@ -8,9 +8,9 @@ import frc.robot.Constants.ArmConstants;
 /**
  * Contains the inverse kinematics code to calculate the arm angles. That's
  * literally all it does, it contains one method to do inverse kinematics to
- * determine the angles the arms should at.
+ * determine the angles the arms should be at.
  * <p>
- * IMPORTANT NOTES/DEFINTIONS:
+ * IMPORTANT NOTES/DEFINITIONS:
  * <p>
  * ORIGIN is defined as the location of the lower arm motor. This is because
  * the lower arm motor is effectively where the arm starts, so it makes sense
@@ -34,6 +34,7 @@ public class InverseKinematicsTool {
 	 * @return
 	 *         The angle of the lower arm and the angle of the upper arm in degrees
 	 */
+	//TODO add internet sources
 	public static double[] calculateArmAngles(double x, double y) {
 		// All calculations are in radians
 		// This finds the angle between the arm base(a horizontal line,) and the
@@ -59,6 +60,7 @@ public class InverseKinematicsTool {
 		// on the extended side of the lower arm with the upper arm
 		double angleFormedByArms;
 		// If some random condition, elbow up, else, elbow down
+		//TODO remove negation in absolute value????
 		if (isElbowUp) {
 			angleFormedByArms = Math.abs(-(Math.PI - angleBetweenUpperAndLowerArm));
 		} else {
@@ -90,22 +92,24 @@ public class InverseKinematicsTool {
 			upperArmAngle = Math.PI + angleFormedByArms;
 		}
 		// Convert to degrees and a Double for NaN checks
+
+		//TODO remove commented print lines
 		double[] armAngles = { Math.toDegrees(lowerArmAngle), Math.toDegrees(upperArmAngle) };
 		// If the position is invalid, the code will output NaN for at least one of the
 		// angles. If that's the case, log an error, and set the returned angle array to
 		// null
 		if (Double.isNaN(lowerArmAngle) || Double.isNaN(upperArmAngle)) {
-			System.out.println("Target position unreachable");
+			// System.out.println("Target position unreachable");
 			armAngles = null;
 			// Prevent the lower arm from going more than 10 degrees behind vertical or
 			// below 45 degrees
 		} else if (armAngles[0] > ArmConstants.kLowerArmMaxAngle || armAngles[0] < ArmConstants.kLowerArmMinAngle) {
-			System.out.println("Lower arm angle limit reached");
+			// System.out.println("Lower arm angle limit reached");
 			armAngles = null;
 			// Prevent the upper arm from going more than 270 degrees or less than 15
 			// degrees relative to the lower arm
 		} else if (armAngles[1] > ArmConstants.kUpperArmMaxAngle || armAngles[1] < ArmConstants.kUpperArmMinAngle) {
-			System.out.println("Upper arm angle limit reached");
+			// System.out.println("Upper arm angle limit reached");
 			armAngles = null;
 		}
 		return armAngles;

@@ -4,81 +4,68 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
 import frc.robot.subsystems.GripperSubsystem;
 
+//TODO revisit this command
 public class GripperCommand extends CommandBase {
-    public enum GripperPosition {
-        CLOSE,
-        OPEN,
-        ZERO
-    }
 
-    private GripperPosition m_gripperPosition;
-    private long m_startTime = 0;
+	//TODO remove zero
+	public enum GripperPosition {
+		CLOSE,
+		OPEN,
+		ZERO
+	}
 
-    public GripperCommand(GripperPosition gripperPosition) {
-        m_gripperPosition = gripperPosition;
-        addRequirements(GripperSubsystem.get());
-    }
+	private GripperPosition m_gripperPosition;
+	private long m_startTime = 0;
 
-    @Override
-    public void initialize() {
+	public GripperCommand(GripperPosition gripperPosition) {
+		m_gripperPosition = gripperPosition;
+		addRequirements(GripperSubsystem.get());
+	}
 
-    }
+	@Override
+	public void initialize() {
+	}
 
-    @Override
-    public void execute() {
-        switch (m_gripperPosition) {
-            case OPEN:
-                //set gripper to open position
-                GripperSubsystem.get().setGripperPosition(GripperConstants.kGripperOpenPosition);
-                break;
-            case CLOSE:
-                GripperSubsystem.get().setGripperMotor(.1);
-                if (m_startTime == 0) {
-                    m_startTime = System.currentTimeMillis();
-                }
-                break;
-            case ZERO:
-            GripperSubsystem.get().setGripperMotor(.1);
-            if (m_startTime == 0) {
-                m_startTime = System.currentTimeMillis();
-            }
-                break;
-            default:
-                break;
-        }
-    }
+	@Override
+	public void execute() {
+		switch (m_gripperPosition) {
+			case OPEN:
+				// set gripper to open position
+				GripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower); // limit switch will stop motor
+				break;
+			case CLOSE:
+				GripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
+				if (m_startTime == 0) {
+					m_startTime = System.currentTimeMillis();
+				}
+				break;
+			default:
+				break;
+		}
+	}
 
-    @Override
-    public void end(boolean interrupted) {
-        GripperSubsystem.get().setGripperMotor(0);
-    }
+	@Override
+	public void end(boolean interrupted) {
+		
+	}
 
-    @Override
-    public boolean isFinished() {
-        switch (m_gripperPosition) {
-            case OPEN:
-                if (Math.abs(GripperSubsystem.get().getGripperEncoderPosition()-GripperConstants.kGripperOpenPosition) < 10) {
-                     GripperSubsystem.get().setGripperMotor(0);
-                     return true; 
-                }
-             break;
-            case CLOSE:
-                 if (System.currentTimeMillis()-m_startTime >= GripperConstants.kCloseTime) {
-                        GripperSubsystem.get().setGripperMotor(GripperConstants.kHoldPower);
-                        return true;
-                  }
-            break;
-            case ZERO:
-                if (System.currentTimeMillis()-m_startTime > GripperConstants.kCloseTime) {
-                    GripperSubsystem.get().setGripperMotor(0);
-                    GripperSubsystem.get().resetZero();
-                    return true;
-            }
-            break;
-            default:
-                return false;
-        }
-        return false;
-    }
-
+	@Override
+	public boolean isFinished() {
+		//TODO revisit reset start time
+		switch (m_gripperPosition) {
+			case OPEN:
+				m_startTime = 0;
+				return true;
+			case CLOSE:
+				if (System.currentTimeMillis() - m_startTime >= GripperConstants.kCloseTime) {
+					GripperSubsystem.get().setGripperMotor(GripperConstants.kHoldPower);
+					m_startTime = 0;
+					return true;
+				}
+				break;
+			default:
+				return false;
+		}
+		return false;
+	}
 }

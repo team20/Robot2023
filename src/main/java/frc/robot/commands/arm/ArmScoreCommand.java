@@ -9,8 +9,10 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 
 public class ArmScoreCommand extends CommandBase {
+	/** Stores the angles we want the arm to move to */
 	double[] angles;
 
+	/** Indicates the positions we want the arm to move to */
 	public enum ArmPosition {
 		HIGH,
 		MEDIUM_FORWARD,
@@ -20,6 +22,7 @@ public class ArmScoreCommand extends CommandBase {
 		INTERMEDIATE
 	}
 
+	/** Stores the position we want the arm to move to */
 	private ArmPosition m_armPosition;
 
 	/** Creates a new ArmScoreCommand. */
@@ -36,6 +39,8 @@ public class ArmScoreCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		// Depending on the ArmPosition selected, set the angles to the corresponding
+		// angle set
 		switch (m_armPosition) {
 			case HIGH:
 				angles = ArmConstants.kHighAngles;
@@ -75,11 +80,14 @@ public class ArmScoreCommand extends CommandBase {
 		// If the y-coordinate of the upper arm is about to exceed the height, stop the
 		// motors by setting their target angles to their current angles
 		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
-			System.out.println("Height limit protection tripped!");
+			//TODO remove commented print line
+			// System.out.println("Height limit protection tripped!");
 			ArmSubsystem.get().setLowerArmAngle(ArmSubsystem.get().getLowerArmAngle());
 			ArmSubsystem.get().setUpperArmAngle(ArmSubsystem.get().getUpperArmAngle());
 			return true;
 		}
+		// If the lower and upper arm is close enough to the target angle, finish the
+		// command
 		return ArmSubsystem.get().isNearTargetAngle();
 	}
 }

@@ -5,20 +5,26 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.arm.ArmScoreCommand;
+import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
-import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.util.DeferredCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.util.ForwardKinematicsTool;
+import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -26,79 +32,86 @@ public class RobotContainer {
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private final Joystick m_controller = new Joystick(ControllerConstants.kDriverControllerPort);
+	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
+	/** The PS4 controller the operator uses */
+	private final Joystick m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
+	/** The PS4 controller the driver uses */
+	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
+
+	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 	public RobotContainer() {
+		m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
+		m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
+		m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
+		m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
+		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
+		m_autoChooser.addOption("Score, leave over charge, balance", CommandComposer.getOverTheFulcrumAuto());
+		m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
+		m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
+		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
 	}
 
-	private boolean isArmBackwardAndButtonPressed() {
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(m_armSubsystem.getLowerArmAngle(),
-				m_armSubsystem.getUpperArmAngle());
-		return coordinates[0] < 0;
-	}
-
 	private void configureButtonBindings() {
-		// Gripper buttons (close, open, and zero)
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kLeftBumper))
-				.onTrue(new GripperCommand(GripperPosition.CLOSE));
-		new Trigger(() -> m_controller.getRawButton(ControllerConstants.Button.kRightBumper))
-				.onTrue(new GripperCommand(GripperPosition.ZERO));
-		new Trigger(() -> m_controller
-				.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger) > ControllerConstants.kTriggerDeadzone)
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
+		// -------------Gripper Controls-------------
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
+				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
-
+		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
-				() -> m_controller.getRawAxis(ControllerConstants.Axis.kLeftX),
-				() -> m_controller.getRawAxis(ControllerConstants.Axis.kRightY)));
+				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
+				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
+		// Move the arm to the high node
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
+		// Flip the arm over to the medium node
 
+		//TODO one of these should not be SQUARE BUTTON
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		// Move the arm to the medium node
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
+		// Move the arm to the low position
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
-		// If the arm is fowards AND the button is pressed, the intermediate position
-		// does not need to be used
-		new Trigger(() -> !isArmBackwardAndButtonPressed()
-				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-				.onTrue(new ArmScoreCommand(ArmPosition.HIGH));
+		// -------------LED signaling-------------
+		// Signal for a cube
+		//TODO switch to onTrue not whileTrue
+		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
+				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// Signal for a cone
+		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
+				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
+				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
+				.whileTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
-		// If we flip the arm over, go to the intermediate position, then flip the arm
-		// over
-		// new Trigger(
-		// () -> !isArmBackwardAndButtonPressed() &&
-		// m_controller.getRawButton(ControllerConstants.Button.kSquare))
-		// .onTrue(new SequentialCommandGroup(new
-		// ArmScoreCommand(ArmPosition.INTERMEDIATE),
-		// new ArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		//TODO add this in sequential with gripper close
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 
-		new Trigger(
-				() -> !isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD));
+		// -------------Driver Controls-------------
+		// Opening gripper/dropping game piece
+		//TODO make driver controller
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+				.whileTrue(new GripperCommand(GripperPosition.OPEN));
+		// Driving
 
-		new Trigger(() -> !isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kX))
-				.onTrue(new ArmScoreCommand(ArmPosition.LOW));
-		// If the arm is backwards AND the the button is pressed, go to the intermediate
-		// position, then go to the target position
-		new Trigger(() -> isArmBackwardAndButtonPressed()
-				&& m_controller.getRawButton(ControllerConstants.Button.kTriangle))
-				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.HIGH)));
-
-		// If the arm is backwards, we don't have to move to the intermediate position
-		// before moving the arm to the back
-		// new Trigger(
-		// () -> isArmBackwardAndButtonPressed() &&
-		// m_controller.getRawButton(ControllerConstants.Button.kSquare))
-		// .onTrue(new ArmScoreCommand(ArmPosition.MEDIUM_BACK));
-
-		new Trigger(
-				() -> isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kSquare))
-				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-
-		new Trigger(() -> isArmBackwardAndButtonPressed() && m_controller.getRawButton(ControllerConstants.Button.kX))
-				.onTrue(new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.LOW)));
+		//TODO fix logitech and ps4
+		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
+				() -> -m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftY),
+				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger),
+				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kRightTrigger)));
 
 	}
 
+	//TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
 		return null;
 	}

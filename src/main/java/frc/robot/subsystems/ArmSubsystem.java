@@ -20,9 +20,9 @@ import frc.robot.util.InverseKinematicsTool;
 public class ArmSubsystem extends SubsystemBase {
 	/** Stores the instance of the ArmSubsystem */
 	private static ArmSubsystem s_subsystem;
-	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotor, MotorType.kBrushless);
-	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2, MotorType.kBrushless);
-	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotor, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotorID, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
+	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotorID, MotorType.kBrushless);
 
 	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmMotor
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
@@ -51,18 +51,18 @@ public class ArmSubsystem extends SubsystemBase {
 		s_subsystem = this;
 		// Initialize lower arm
 		m_lowerArmMotor.restoreFactoryDefaults();
-		m_lowerArmMotor.setInverted(ArmConstants.kInvert);
+		m_lowerArmMotor.setInverted(ArmConstants.kInvert);//TODO don't assume its the same inversion
 		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		m_lowerArmEncoder.setPositionConversionFactor(360);
 		m_lowerArmEncoder.setZeroOffset(ArmConstants.kLowerEncoderZeroOffset);
 
-		m_lowerArmController.setP(ArmConstants.kP);
-		m_lowerArmController.setI(ArmConstants.kI);
-		m_lowerArmController.setIZone(ArmConstants.kIz);
-		m_lowerArmController.setD(ArmConstants.kD);
-		m_lowerArmController.setFF(ArmConstants.kFF);
+		m_lowerArmController.setP(ArmConstants.kLowerArmP);
+		m_lowerArmController.setI(ArmConstants.kLowerArmI);
+		m_lowerArmController.setIZone(ArmConstants.kLowerArmIz);
+		m_lowerArmController.setD(ArmConstants.kLowerArmD);
+		m_lowerArmController.setFF(ArmConstants.kLowerArmFF);
 		m_lowerArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 		m_lowerArmController.setFeedbackDevice(m_lowerArmEncoder);
 		// The lower arm doesn't need PID wrapping, it has a very specific range it
@@ -71,33 +71,36 @@ public class ArmSubsystem extends SubsystemBase {
 
 		// Initialize 2nd lower arm motor
 		m_lowerArmMotor2.restoreFactoryDefaults();
-		m_lowerArmMotor2.setInverted(ArmConstants.kInvert);
+		m_lowerArmMotor2.setInverted(ArmConstants.kInvert); //TODO don't assume its the same inversion
 		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted
-		m_lowerArmMotor2.follow(m_lowerArmMotor, true);
+		m_lowerArmMotor2.follow(m_lowerArmMotor, true);//TODO make invert be a constant
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
-		m_upperArmMotor.setInverted(ArmConstants.kInvert);
+		m_upperArmMotor.setInverted(ArmConstants.kInvert); //TODO don't assume its the same inversion
 		m_upperArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_upperArmMotor.enableVoltageCompensation(12);
 		m_upperArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		m_upperArmEncoder.setPositionConversionFactor(360);
 		m_upperArmEncoder.setZeroOffset(ArmConstants.kUpperEncoderZeroOffset);
 
-		m_upperArmController.setP(ArmConstants.kP);
-		m_upperArmController.setI(ArmConstants.kI);
-		m_upperArmController.setIZone(ArmConstants.kIz);
-		m_upperArmController.setD(ArmConstants.kD);
-		m_upperArmController.setFF(ArmConstants.kFF);
+		m_upperArmController.setP(ArmConstants.kUpperArmP);
+		m_upperArmController.setI(ArmConstants.kUpperArmI);
+		m_upperArmController.setIZone(ArmConstants.kUpperArmIz);
+		m_upperArmController.setD(ArmConstants.kUpperArmD);
+		m_upperArmController.setFF(ArmConstants.kUpperArmFF);
 		m_upperArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 		m_upperArmController.setFeedbackDevice(m_upperArmEncoder);
 		// The upper arm can't spin clockwise without hitting the robot, so PID wrapping
 		// is disabled
 		m_upperArmController.setPositionPIDWrappingEnabled(false);
+
+		m_targetLowerArmAngle = getLowerArmAngle();
+		m_targetUpperArmAngle = getUpperArmAngle();
 	}
 
 	public static ArmSubsystem get() {
@@ -136,6 +139,8 @@ public class ArmSubsystem extends SubsystemBase {
 		return m_upperArmEncoder.getPosition();
 	}
 
+
+	//TODO make these split
 	/**
 	 * Sets the angle for the lower arm, and logs the angle
 	 * 
@@ -145,6 +150,7 @@ public class ArmSubsystem extends SubsystemBase {
 		setAngles(angle, m_targetUpperArmAngle);
 	}
 
+	//TODO make these split
 	/**
 	 * Sets the angle for the upper arm, and logs the angle
 	 * 
@@ -155,23 +161,19 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void setAngles(double lower, double upper) {
+		SmartDashboard.putNumber("Target Lower Arm Angle", lower);
+		SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 		// Prevent the lower arm from going more than 10 degrees behind vertical or
 		// below 45 degrees
-		if (lower > ArmConstants.kLowerArmMaxAngle || lower < ArmConstants.kLowerArmMinAngle) {
-			System.out.println("Lower arm angle limit reached");
-			// Prevent the upper arm from going more than 270 degrees or less than 15
-			// degrees relative to the lower arm
-		} else if (upper > ArmConstants.kUpperArmMaxAngle || upper < ArmConstants.kUpperArmMinAngle) {
-			System.out.println("Upper arm angle limit reached");
-			// If none of the limits have been reached, set the arm angles
-		} else {
+		// Prevent the upper arm from going more than 270 degrees or less than 15
+		// degrees relative to the lower arm
+		if ((lower <= ArmConstants.kLowerArmMaxAngle && lower >= ArmConstants.kLowerArmMinAngle)
+				&& (upper <= ArmConstants.kUpperArmMaxAngle && upper >= ArmConstants.kUpperArmMinAngle)) {
 			m_targetLowerArmAngle = lower;
 			m_lowerArmController.setReference(lower, ControlType.kPosition);
-			SmartDashboard.putNumber("Target Lower Arm Angle", lower);
 
 			m_targetUpperArmAngle = upper;
 			m_upperArmController.setReference(upper, ControlType.kPosition);
-			SmartDashboard.putNumber("Target Upper Arm Angle", upper);
 		}
 	}
 

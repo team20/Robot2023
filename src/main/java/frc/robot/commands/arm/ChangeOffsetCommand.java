@@ -85,8 +85,10 @@ public class ChangeOffsetCommand extends CommandBase {
 		// Calculate angles for new position
 		double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
 		if (m_newY > ArmConstants.kMaxHeight) {
+
+			//TODO remove commented print line
 			// Height limit!
-			System.out.println("Height limit reached!");
+			// System.out.println("Height limit reached!");
 			armAngles = null;
 		}
 		// Set angles, if they are invalid, do nothing
