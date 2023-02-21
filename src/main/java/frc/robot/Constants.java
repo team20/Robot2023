@@ -43,10 +43,11 @@ public final class Constants {
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 40;
 
-		// TODO check arm speed multipliers and rename for clarity
+		// TODO check arm speed multipliers
 		/**
 		 * A joystick input multiplier to control how fast the arm moves relative to how
-		 * much the joystick is being moved
+		 * much the joystick is being moved. Used for moving the arm position(x and y
+		 * coordinates)
 		 */
 		public static final double kArmMovementSpeedMultiplier = 1.5;
 		/**
