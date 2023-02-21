@@ -88,7 +88,7 @@ public class RobotContainer {
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
-				.onTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+				.onTrue(new LEDCommand(StatusCode.DEFAULT));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 				.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
@@ -98,7 +98,7 @@ public class RobotContainer {
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
 
-		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
+		m_driveSubsystem.setCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
