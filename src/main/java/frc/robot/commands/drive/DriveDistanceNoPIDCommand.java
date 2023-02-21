@@ -13,7 +13,7 @@ import frc.robot.subsystems.DriveSubsystem;
  * 
  * @author Jeong Hyon Hwang
  */
-public class DriveToApriltag extends CommandBase {
+public class DriveDistanceNoPIDCommand extends CommandBase {
 	double m_distance;
 	double m_distanceThreshold;
 	double m_timeThreshold;
@@ -23,7 +23,7 @@ public class DriveToApriltag extends CommandBase {
 	Double m_convergenceStartTime = null;
 
 	/**
-	 * Constructs a {@code DriveDistanceCommand2}.
+	 * Constructs a {@code DriveDistanceNoPIDCommand}.
 	 * 
 	 * @param distance          the distance to travel (e.g., 1.0)
 	 * @param distanceThreshold the distance threshold that specifies how close the
@@ -41,7 +41,7 @@ public class DriveToApriltag extends CommandBase {
 	 *                          allowed to move by the DriveDistanceCommand (1: full
 	 *                          speed)
 	 */
-	public DriveToApriltag(double distance, double distanceThreshold, double timeThreshold, double maxStride,
+	public DriveDistanceNoPIDCommand(double distance, double distanceThreshold, double timeThreshold, double maxStride,
 			double convergenceRatio, double maxSpeed) {
 		m_distance = distance;
 		m_distanceThreshold = distanceThreshold;
@@ -54,7 +54,7 @@ public class DriveToApriltag extends CommandBase {
 	}
 
 	/**
-	 * Is called when this {@code DriveDistanceCommand2} is initially scheduled.
+	 * Is called when this {@code DriveDistanceNoPIDCommand} is initially scheduled.
 	 */
 	@Override
 	public void initialize() {
@@ -89,9 +89,9 @@ public class DriveToApriltag extends CommandBase {
 	}
 
 	/**
-	 * Determines whether or not this {@code DriveDistanceCommand2} is completed.
+	 * Determines whether or not this {@code DriveDistanceNoPIDCommand} is completed.
 	 * 
-	 * @return {@code true} if this {@code DriveDistanceCommand2} is completed;
+	 * @return {@code true} if this {@code DriveDistanceNoPIDCommand} is completed;
 	 *         {@code false} otherwise
 	 */
 	@Override
