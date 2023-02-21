@@ -159,7 +159,7 @@ public class TagAlignCommand extends CommandBase {
 		// this means that our speed is the greatest when the goal point is directly in
 		// front of us
 		// and least when the goal point is directly next to us
-		double speedLimitFactor = (distanceSquared > LimelightConstants.slowDownDistance ? 1 : 0.5);
+		double speedLimitFactor = (distanceSquared > LimelightConstants.kSlowDownDistanceSquared ? 1 : 0.5);
 		m_driveSpeed = LimelightConstants.kSpeed * Math.cos(vectorAngleAdjusted) * speedLimitFactor;
 		return Math.sin(vectorAngleAdjusted) * speedLimitFactor;
 	}
