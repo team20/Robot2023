@@ -79,8 +79,6 @@ public class ArmScoreCommand extends CommandBase {
 		// If the y-coordinate of the upper arm is about to exceed the height, stop the
 		// motors by setting their target angles to their current angles
 		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
-			// TODO remove commented print line
-			// System.out.println("Height limit protection tripped!");
 			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
 			return true;
 		}
