@@ -18,10 +18,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private static DriveSubsystem s_subsystem;
 
-	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftPort, MotorType.kBrushless);
-	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightPort, MotorType.kBrushless);
-	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftPort, MotorType.kBrushless);
-	private final CANSparkMax m_backRight = new CANSparkMax(DriveConstants.kBackRightPort, MotorType.kBrushless);
+	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, MotorType.kBrushless);
+	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightID, MotorType.kBrushless);
+	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftID, MotorType.kBrushless);
+	private final CANSparkMax m_backRight = new CANSparkMax(DriveConstants.kBackRightID, MotorType.kBrushless);
 
 	private final RelativeEncoder m_leftEncoder = m_frontLeft.getEncoder();
 	private final RelativeEncoder m_rightEncoder = m_frontRight.getEncoder();

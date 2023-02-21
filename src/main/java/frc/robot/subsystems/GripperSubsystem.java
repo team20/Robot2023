@@ -15,7 +15,7 @@ import frc.robot.Constants.GripperConstants;
 public class GripperSubsystem extends SubsystemBase {
 	private static GripperSubsystem s_subsystem;
 
-	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
+	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kGripperID, MotorType.kBrushless);
 	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
 	private SparkMaxLimitSwitch m_openLimitSwitch;
 

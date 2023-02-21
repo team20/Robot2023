@@ -139,14 +139,14 @@ public final class Constants {
 	public static final class DriveConstants {
 
 		// TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 2;
+		public static final int kFrontLeftID = 2;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort = 4;
+		public static final int kBackLeftID = 4;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 3;
+		public static final int kFrontRightID = 3;
 		public static final boolean kFrontRightInvert = false;
-		public static final int kBackRightPort = 5;
+		public static final int kBackRightID = 5;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
@@ -227,7 +227,7 @@ public final class Constants {
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kInvert = false;
-		public static final int kPort = 4;
+		public static final int kGripperID = 4;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kCloseTime = 1500; // TODO: change as needed
 		public static final double kMovePower = 0.2;
