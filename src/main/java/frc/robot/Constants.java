@@ -272,27 +272,14 @@ public final class Constants {
 		public static final int kOpenLimitSwitchPort = 0; // TODO remove
 	}
 
-	public static final class LimelightConstants { // TODO: tune PID loop
-
-		// TODO remove unused PIDS
-		public static final double kDisP = 0.02;
-		public static final double kDisI = 0;
-		public static final double kDisD = 0;
-		public static final double kTurnP = 0.03;
-		public static final double kTurnI = 0.0000;
-		public static final double kTurnD = 0.0;
-		public static final double kTurnTolerance = 2; // TODO: this is the amount of error that is considered okay
-														// because obviously we can't get perfectly to the setpoint
-		public static final double kDistanceTolerance = 0.5;
-
-		// TODO remove these
-		public static final double kCameraHeight = 22.5; // TODO: get height once mounted
-		public static final double kCameraAngle = 25.453;// 29.8394991; //TODO: get angle once mounted
-		public static final double kTargetHeight = 104; // TODO: get height of target (inches)
-		public static final double kRefreshRate = 0.01111; // matches with the max of 90 frames/second from the
-															// limelight
-
-		public static final int kRollingAverageSize = 10; // TODO rename, update to median filters
+	public static final class LimelightConstants { 
+		//TODO make real numbers
+		public static final double zTolerance = 0.2; 
+		public static final double xTolerance = 0.2;
+		public static final int kRollingMedianSize = 10;
+		public static final double kSlowDownDistance = 0.5;
+		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
+		public static final double kSpeed;
 	}
 
 }
