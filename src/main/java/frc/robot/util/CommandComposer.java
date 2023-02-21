@@ -27,6 +27,14 @@ import frc.robot.subsystems.ArmSubsystem;
  * Command to execute and with what arguments
  */
 public class CommandComposer {
+	/**
+	 * Creates a command or command group to move the arm. The command or command
+	 * group changes depending on where the arm is moving to and where the arm is
+	 * 
+	 * @param armPosition The position the arm should move to
+	 * @return A command or command group to has all the necessary steps to move the
+	 *         arm to the desired position
+	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
