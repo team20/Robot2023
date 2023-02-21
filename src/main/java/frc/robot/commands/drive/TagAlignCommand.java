@@ -15,7 +15,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class TagAlignCommand extends CommandBase {
 
-	private double m_driveSpeed = LimelightConstants.kSpeed; 
+	private double m_driveSpeed = LimelightConstants.kSpeed;
 	private double m_xOffset, m_zOffset; // offsets from april tag
 
 	private Pose2d m_goalPose = new Pose2d(); // instantiates pose of where robot is
@@ -53,7 +53,6 @@ public class TagAlignCommand extends CommandBase {
 	 * Line up to apriltag directly
 	 */
 	public TagAlignCommand() {
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -62,7 +61,6 @@ public class TagAlignCommand extends CommandBase {
 	 * zOffset = offset perpendicular to the tag plane
 	 */
 	public TagAlignCommand(double xOffset, double zOffset) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		m_xOffset = xOffset;
 		m_zOffset = zOffset;
 		addRequirements(DriveSubsystem.get());
@@ -72,7 +70,6 @@ public class TagAlignCommand extends CommandBase {
 	 * Use offsets based on the tag and what position we want to go to
 	 */
 	public TagAlignCommand(TagNumber tagId, Position pos, double zOffset) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		switch (pos) { // switch for position based on parameter
 			case LeftPosition:
 				m_xOffset = tagId.yOffsetLeft;
@@ -134,7 +131,7 @@ public class TagAlignCommand extends CommandBase {
 				&& Math.abs(m_goalPose.getY() - DriveSubsystem.get().getPose().getY()) < LimelightConstants.xTolerance;
 	}
 
-	public double getTurn(Pose2d goalPoint, Pose2d currPoint){
+	public double getTurn(Pose2d goalPoint, Pose2d currPoint) {
 		SmartDashboard.putNumber("Goal Y", goalPoint.getY());
 		SmartDashboard.putNumber("Curr X", currPoint.getX());
 		SmartDashboard.putNumber("Curr Y", currPoint.getY());
