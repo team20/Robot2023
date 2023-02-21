@@ -52,11 +52,11 @@ public class ChangeOffsetCommand extends CommandBase {
 	public void execute() {
 		// Amount to move on the x-axis
 		m_xOffset = MathUtil.applyDeadband(m_joystickX.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kArmMovementSpeedMultiplier;
+				* ArmConstants.kCartesianSpeedSensitivity;
 		// The -1 is because the y-axis values are inverted
 		// Amount to move on the y-axis
 		m_yOffset = MathUtil.applyDeadband(m_joystickY.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kArmMovementSpeedMultiplier * -1;
+				* ArmConstants.kCartesianSpeedSensitivity * -1;
 		// Get current (X, Y) position from current actual angles
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
@@ -85,10 +85,7 @@ public class ChangeOffsetCommand extends CommandBase {
 		// Calculate angles for new position
 		double[] armAngles = InverseKinematicsTool.calculateArmAngles(m_newX, m_newY);
 		if (m_newY > ArmConstants.kMaxHeight) {
-
-			//TODO remove commented print line
 			// Height limit!
-			// System.out.println("Height limit reached!");
 			armAngles = null;
 		}
 		// Set angles, if they are invalid, do nothing
@@ -97,8 +94,7 @@ public class ChangeOffsetCommand extends CommandBase {
 			// to the calculated angle
 			SmartDashboard.putNumber("Target Lower Arm Angle", armAngles[0]);
 			SmartDashboard.putNumber("Target Upper Arm Angle", armAngles[1]);
-			ArmSubsystem.get().setLowerArmAngle(armAngles[0]);
-			ArmSubsystem.get().setUpperArmAngle(armAngles[1]);
+			ArmSubsystem.get().setAngles(armAngles[0], armAngles[1]);
 		}
 	}
 }

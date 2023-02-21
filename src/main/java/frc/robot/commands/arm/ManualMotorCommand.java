@@ -47,9 +47,9 @@ public class ManualMotorCommand extends CommandBase {
 	@Override
 	public void execute() {
 		lowerArmMotorSpeed = -MathUtil.applyDeadband(m_lowerArmInput.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kManualArmMovementSpeedMultiplier;
+				* ArmConstants.kArmMotorSpeedSensitivity;
 		upperArmMotorSpeed = -MathUtil.applyDeadband(m_upperArmInput.get(), ControllerConstants.kDeadzone)
-				* ArmConstants.kManualArmMovementSpeedMultiplier;
+				* ArmConstants.kArmMotorSpeedSensitivity;
 		ArmSubsystem.get().setLowerArmMotorSpeed(lowerArmMotorSpeed);
 		ArmSubsystem.get().setUpperArmMotorSpeed(upperArmMotorSpeed);
 	}

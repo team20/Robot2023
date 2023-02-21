@@ -11,19 +11,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnTimeCommand extends CommandBase {
-
 	Instant m_startTime;
 	private double m_time;
 	private double m_clockwise;
 
 	/**
 	 * Creates a new TurnTimeCommand.
-	 * clockwise = whether we're going clockwise or counterclockwise
-	 * time = time in seconds to turn
+	 * 
+	 * @param clockwise Whether we're going clockwise or counterclockwise
+	 * @param time      Time in seconds to turn
 	 */
-
 	public TurnTimeCommand(boolean clockwise, double time) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		m_clockwise = clockwise ? 1 : -1;
 		m_time = time;
 		addRequirements(DriveSubsystem.get());
