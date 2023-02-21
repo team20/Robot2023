@@ -97,8 +97,7 @@ public class ChangeOffsetCommand extends CommandBase {
 			// to the calculated angle
 			SmartDashboard.putNumber("Target Lower Arm Angle", armAngles[0]);
 			SmartDashboard.putNumber("Target Upper Arm Angle", armAngles[1]);
-			ArmSubsystem.get().setLowerArmAngle(armAngles[0]);
-			ArmSubsystem.get().setUpperArmAngle(armAngles[1]);
+			ArmSubsystem.get().setAngles(armAngles[0], armAngles[1]);
 		}
 	}
 }
