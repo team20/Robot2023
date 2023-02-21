@@ -43,6 +43,7 @@ public final class Constants {
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 40;
 
+
 		// TODO check arm speed multipliers
 		/**
 		 * A joystick input multiplier to control how fast the arm moves relative to how
@@ -124,8 +125,7 @@ public final class Constants {
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
-		// TODO rename
-		public static final class PS4Axis {
+		public static final class Axis {
 			public static final int kLeftX = 0;
 			public static final int kLeftY = 1;
 			public static final int kRightX = 2;
