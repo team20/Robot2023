@@ -19,7 +19,6 @@ public class ArduinoSubsystem extends SubsystemBase {
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
-	//TODO give default a better name
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
@@ -27,7 +26,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		BLINKING_PURPLE((byte) 10),
 		MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
 		MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
-		DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR((byte) 20);
+		DEFAULT((byte) 20);
 
 		public byte code;
 
@@ -47,7 +46,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-		setCode(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR);
+		setCode(StatusCode.DEFAULT);
 	}
 
 	public static ArduinoSubsystem get() {

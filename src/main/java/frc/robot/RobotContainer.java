@@ -87,13 +87,13 @@ public class RobotContainer {
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
-				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+				.whileTrue(new LEDCommand(StatusCode.DEFAULT));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 				.whileTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
 		//TODO add this in sequential with gripper close
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
+				.whileTrue(new LEDCommand(StatusCode.DEFAULT));
 
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
