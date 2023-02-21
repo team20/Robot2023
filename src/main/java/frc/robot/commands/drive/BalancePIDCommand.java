@@ -31,6 +31,7 @@ public class BalancePIDCommand extends CommandBase {
 		DriveSubsystem.get().tankDrive(setpoint, setpoint);
 	}
 
+	//TODO add stop motors in end
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {

@@ -67,6 +67,8 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
 		// Flip the arm over to the medium node
+
+		//TODO one of these should not be SQUARE BUTTON
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 		// Move the arm to the medium node
@@ -78,6 +80,7 @@ public class RobotContainer {
 
 		// -------------LED signaling-------------
 		// Signal for a cube
+		//TODO switch to onTrue not whileTrue
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 		// Signal for a cone
@@ -88,14 +91,18 @@ public class RobotContainer {
 		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 				.whileTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
+		//TODO add this in sequential with gripper close
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
 				.whileTrue(new LEDCommand(StatusCode.DEFAULT_OR_TEAMCOLOR_OR_ALLIANCECOLOR));
 
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
+		//TODO make driver controller
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
+
+		//TODO fix logitech and ps4
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.PS4Axis.kLeftTrigger),
@@ -103,6 +110,7 @@ public class RobotContainer {
 
 	}
 
+	//TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
 		return null;
 	}
