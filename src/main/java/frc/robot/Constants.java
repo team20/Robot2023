@@ -277,7 +277,8 @@ public final class Constants {
 		public static final double zTolerance = 0.2; 
 		public static final double xTolerance = 0.2;
 		public static final int kRollingMedianSize = 10;
-		public static final double slowDownDistance = 0.25;
+		public static final double kSlowDownDistance = 0.5;
+		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
 		public static final double kSpeed;
 	}
 
