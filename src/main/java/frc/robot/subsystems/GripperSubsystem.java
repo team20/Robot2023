@@ -15,23 +15,23 @@ import frc.robot.Constants.GripperConstants;
 public class GripperSubsystem extends SubsystemBase {
 	private static GripperSubsystem s_subsystem;
 
-	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kPort, MotorType.kBrushless);
+	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kGripperID, MotorType.kBrushless);
 	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
-	private SparkMaxLimitSwitch m_openlimitSwitch;
+	private SparkMaxLimitSwitch m_openLimitSwitch;
 
 	/** Creates a new GripperSubsystem. */
 	public GripperSubsystem() {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
-				throw new Exception("Gripper subsystem already initalized!");
+				throw new Exception("Gripper subsystem already initialized!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		s_subsystem = this;
-		m_openlimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		m_openlimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
+		m_openLimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_openLimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
 		m_gripperScrew.restoreFactoryDefaults();
 		m_gripperScrew.setInverted(GripperConstants.kInvert);
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -61,6 +61,6 @@ public class GripperSubsystem extends SubsystemBase {
 	}
 
 	public boolean getOpenLimitSwitch() {
-		return m_openlimitSwitch.isPressed();
+		return m_openLimitSwitch.isPressed();
 	}
 }

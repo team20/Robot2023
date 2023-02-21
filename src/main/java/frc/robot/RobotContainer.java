@@ -8,18 +8,23 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.LEDs.LEDCommand;
-import frc.robot.commands.drive.*;
-import frc.robot.commands.arm.*;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
-import frc.robot.commands.gripper.*;
+import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.drive.DefaultDriveCommand;
+import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
-import frc.robot.commands.util.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.util.DeferredCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
-import frc.robot.util.*;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -48,32 +53,34 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// Gripper buttons (close, open, and zero):
+		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
 				.whileTrue(new GripperCommand(GripperPosition.CLOSE));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
-		// Arm Controls
+		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.PS4Axis.kRightY)));
-
+		// Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
-
+		// Flip the arm over to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
-
+		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-
+		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
-		// LED cube and cone
 
+		// -------------LED signaling-------------
+		// Signal for a cube
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// Signal for a cone
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
 				.whileTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)

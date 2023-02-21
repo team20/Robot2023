@@ -8,9 +8,9 @@ import frc.robot.Constants.ArmConstants;
 /**
  * Contains the inverse kinematics code to calculate the arm angles. That's
  * literally all it does, it contains one method to do inverse kinematics to
- * determine the angles the arms should at.
+ * determine the angles the arms should be at.
  * <p>
- * IMPORTANT NOTES/DEFINTIONS:
+ * IMPORTANT NOTES/DEFINITIONS:
  * <p>
  * ORIGIN is defined as the location of the lower arm motor. This is because
  * the lower arm motor is effectively where the arm starts, so it makes sense

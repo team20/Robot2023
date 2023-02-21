@@ -8,7 +8,7 @@ public final class Constants {
 	public static final class ArduinoConstants {
 		/**
 		 * The I2C address of the Arduino as defined by the address passed into
-		 * Wire.begin() in the Arudino code
+		 * Wire.begin() in the Arduino code
 		 */
 		public static final int kAddress = 0x18;
 	}
@@ -47,7 +47,7 @@ public final class Constants {
 		 */
 		public static final double kArmMovementSpeedMultiplier = 1.5;
 		/**
-		 * A joystick input multipler to control how fast the arm motors spin relative
+		 * A joystick input multiplier to control how fast the arm motors spin relative
 		 * to how much the joystick is being moved
 		 */
 		public static final double kManualArmMovementSpeedMultiplier = 0.5;
@@ -139,14 +139,14 @@ public final class Constants {
 	public static final class DriveConstants {
 
 		// TODO CHANGE ALL OF THESE
-		public static final int kFrontLeftPort = 2;
+		public static final int kFrontLeftID = 2;
 		public static final boolean kFrontLeftInvert = true;
-		public static final int kBackLeftPort = 4;
+		public static final int kBackLeftID = 4;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightPort = 3;
+		public static final int kFrontRightID = 3;
 		public static final boolean kFrontRightInvert = false;
-		public static final int kBackRightPort = 5;
+		public static final int kBackRightID = 5;
 		public static final boolean kBackRightOppose = false;
 
 		public static final int kSmartCurrentLimit = 55;
@@ -227,7 +227,7 @@ public final class Constants {
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;
 		public static final boolean kInvert = false;
-		public static final int kPort = 9;
+		public static final int kGripperID = 9;
 		public static final int kSmartCurrentLimit = 20;
 		public static final double kCloseTime = 1500; // TODO: change as needed
 		public static final double kMovePower = 0.2;
