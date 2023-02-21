@@ -32,7 +32,6 @@ public class RobotContainer {
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-	private final Joystick m_controller = new Joystick(ControllerConstants.kDriverControllerPort);
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	/** The PS4 controller the operator uses */
 	private final Joystick m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
