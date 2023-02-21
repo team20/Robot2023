@@ -49,12 +49,13 @@ public final class Constants {
 		 * much the joystick is being moved. Used for moving the arm position(x and y
 		 * coordinates)
 		 */
-		public static final double kArmMovementSpeedMultiplier = 1.5;
+		public static final double kCartesianSpeedSensitivity = 1.5;
 		/**
 		 * A joystick input multiplier to control how fast the arm motors spin relative
-		 * to how much the joystick is being moved
+		 * to how much the joystick is being moved. Used for spinning the arm motors
+		 * manually
 		 */
-		public static final double kManualArmMovementSpeedMultiplier = 0.5;
+		public static final double kArmMotorSpeedSensitivity = 0.5;
 
 		// TODO Check allowable error, and max angle and height values
 		/**
@@ -78,6 +79,7 @@ public final class Constants {
 		 * The base of the robot is 10.5 inches, leaving 67.5 inches left for the arm
 		 */
 		public static final double kMaxHeight = 67.5;
+		// TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
