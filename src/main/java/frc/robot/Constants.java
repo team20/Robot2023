@@ -110,8 +110,8 @@ public final class Constants {
 	}
 
 	public static final class ControllerConstants {
-		public static final int kDriverControllerPort = 1;
-		public static final int kOperatorControllerPort = 0;
+		public static final int kDriverControllerPort = 0;
+		public static final int kOperatorControllerPort = 1;
 		public static final double kDeadzone = 0.1;
 		public static final double kTriggerDeadzone = .05;
 
