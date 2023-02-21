@@ -48,6 +48,7 @@ public class TurnTimeCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		//TODO stop on end
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	// Returns true when the command should end.
