@@ -30,18 +30,16 @@ public class RobotContainer {
 	}
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.MiddlePosition, 0.75),
-    new TurnCommand(3).withTimeout(1),
+    return new SequentialCommandGroup(new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.MiddlePosition, 0.5),
+    new TurnCommand(1.5).withTimeout(1),
     new WaitCommand(1),
     new DriveDistanceCommand(-2).withTimeout(2),
-    new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.LeftPosition, 0.75),
-    new TurnCommand(3).withTimeout(1),
+    new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.LeftPosition, 0.5),
+    new TurnCommand(1.5).withTimeout(1),
     new WaitCommand(1),
     new DriveDistanceCommand(-2).withTimeout(2),
-    new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.RightPosition, 0.75),
-    new TurnCommand(3).withTimeout(1),
-    new WaitCommand(1),
-    new DriveDistanceCommand(-2).withTimeout(2));
+    new TagAlignCommand(TagNumber.TagGeneral, TagAlignCommand.Position.RightPosition, 0.5),
+    new TurnCommand(1.5).withTimeout(1));
     // return new WaitCommand(1);
   }
 }

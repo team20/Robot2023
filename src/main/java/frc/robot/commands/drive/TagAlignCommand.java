@@ -108,6 +108,7 @@ public class TagAlignCommand extends CommandBase {
   m_goalPose = new Pose2d(currPose.getX() + goalTranslation.getX(), currPose.getY() - goalTranslation.getY(), currPose.getRotation());
   }
     
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
