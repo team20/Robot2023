@@ -97,7 +97,7 @@ public class RobotContainer {
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
 
-		m_driveSubsystem.setCommand(new DefaultDriveCommand(
+		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
