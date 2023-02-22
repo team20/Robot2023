@@ -96,7 +96,6 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
-
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
