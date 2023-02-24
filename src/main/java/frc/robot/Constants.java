@@ -98,6 +98,11 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
+		/**
+		 * When the 2nd lower arm motor is following the 1st lower arm motor, this
+		 * controls if the 2nd lower arm motor should spin in the opposite direction of
+		 * the 1st motor
+		 */
 		public static final boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
 		public static final double kLowerArmP = 0.0070;
@@ -105,12 +110,14 @@ public final class Constants {
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
+		/** Controls the direction of the lower arm motor */
 		public static final boolean kLowerInvert = false;
 		public static final double kUpperArmP = 0.0070;
 		public static final double kUpperArmI = 0.0001;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
+		/** Controls the direction of the upper arm motor */
 		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
 		public static final double kMinOutput = -.4;
