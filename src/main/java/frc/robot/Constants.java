@@ -98,7 +98,7 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 20;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
-		public static boolean kLowerArmMotor2Oppose = true;
+		public static final boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
 		public static final double kLowerArmP = 0.0070;
 		public static final double kLowerArmI = 0.0001;
