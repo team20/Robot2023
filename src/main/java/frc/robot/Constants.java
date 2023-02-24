@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -42,7 +41,6 @@ public final class Constants {
 		public static final double kLowerArmLength = 32.5;
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 40;
-
 
 		// TODO check arm speed multipliers
 		/**
@@ -183,13 +181,6 @@ public final class Constants {
 		public static final double kFF = 0;
 		public static final double kMaxOutput = 1;
 		public static final double kMinOutput = -1;
-
-		// TODO do we need slot id
-		public static final int kSlotID = 0;
-
-		// TODO do we use this
-		public static final double kFineTurningSpeed = .1;
-
 		// navX stuff
 		public static final SPI.Port kGyroPort = SPI.Port.kMXP;
 		// TODO is gyro truly reversed?
@@ -200,18 +191,8 @@ public final class Constants {
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
-
-		// TODO unused constants
-		public static final double ksVolts = 0.196;
-		public static final double kvVoltSecondsPerMeter = 2.15;
-		public static final double kaVoltSecondsSquaredPerMeter = .53;
-
 		// Horizontal distance between the wheels
 		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
-
-		// TODO remove unused
-		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-				kTrackwidthMeters);
 
 		// TODO see which ones of these are used and which are not
 		public static final double kMaxSpeedMetersPerSecond = 1;
@@ -272,13 +253,13 @@ public final class Constants {
 		public static final int kOpenLimitSwitchPort = 0; // TODO remove
 	}
 
-	public static final class LimelightConstants { 
-		//TODO make real numbers
-		public static final double zTolerance = 0.2; 
+	public static final class LimelightConstants {
+		// TODO make real numbers
+		public static final double zTolerance = 0.2;
 		public static final double xTolerance = 0.2;
 		public static final int kRollingMedianSize = 10;
 		public static final double kSlowDownDistance = 0.5;
-		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
+		public static final double kSlowDownDistanceSquared = kSlowDownDistance * kSlowDownDistance;
 		public static final double kSpeed = 0.35;
 	}
 
