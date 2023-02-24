@@ -39,9 +39,9 @@ public final class Constants {
 
 		// TODO remeasure arm lengths
 		/** Length of lower arm length in inches */
-		public static final double kLowerArmLength = 32.5;
+		public static final double kLowerArmLength = 33;
 		/** Length of upper arm length in inches */
-		public static final double kUpperArmLength = 40;
+		public static final double kUpperArmLength = 43.5;
 
 
 		// TODO check arm speed multipliers
@@ -56,7 +56,7 @@ public final class Constants {
 		 * to how much the joystick is being moved. Used for spinning the arm motors
 		 * manually
 		 */
-		public static final double kArmMotorSpeedSensitivity = 0.5;
+		public static final double kArmMotorSpeedSensitivity = 0.4;
 
 		// TODO Check allowable error, and max angle and height values
 		/**
@@ -79,20 +79,20 @@ public final class Constants {
 		 * <p>
 		 * The base of the robot is 10.5 inches, leaving 67.5 inches left for the arm
 		 */
-		public static final double kMaxHeight = 67.5;
+		public static final double kMaxHeight = 80;
 		// TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 110.2;
+		public static final double kLowerEncoderZeroOffset = 29.967;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
 		// TODO encoder offsets
-		public static final double kUpperEncoderZeroOffset = 248.9;
+		public static final double kUpperEncoderZeroOffset = 356.282;
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
@@ -102,21 +102,21 @@ public final class Constants {
 		public static final int kPeakCurrentDurationMillis = 100;
 		public static boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
-		public static final double kLowerArmP = 0.0070;
-		public static final double kLowerArmI = 0.0001;
+		public static final double kLowerArmP = 0.04000;
+		public static final double kLowerArmI = 0.000;
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
-		public static final boolean kLowerInvert = false;
-		public static final double kUpperArmP = 0.0070;
-		public static final double kUpperArmI = 0.0001;
+		public static final boolean kLowerInvert = true;
+		public static final double kUpperArmP = 0.080;
+		public static final double kUpperArmI = 0.000;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
 		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
-		public static final double kMinOutput = -.4;
-		public static final double kMaxOutput = .4;
+		public static final double kMinOutput = -1;
+		public static final double kMaxOutput = 1;
 	}
 
 	public static final class ControllerConstants {
@@ -161,12 +161,12 @@ public final class Constants {
 
 		// TODO recheck inversions
 		public static final int kFrontLeftID = 2;
-		public static final boolean kFrontLeftInvert = true;
+		public static final boolean kFrontLeftInvert = false;
 		public static final int kBackLeftID = 4;
 		public static final boolean kBackLeftOppose = false;
 
 		public static final int kFrontRightID = 3;
-		public static final boolean kFrontRightInvert = false;
+		public static final boolean kFrontRightInvert = true;
 		public static final int kBackRightID = 5;
 		public static final boolean kBackRightOppose = false;
 

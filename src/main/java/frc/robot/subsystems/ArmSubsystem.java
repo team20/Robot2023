@@ -57,6 +57,7 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		m_lowerArmEncoder.setPositionConversionFactor(360);
 		m_lowerArmEncoder.setZeroOffset(ArmConstants.kLowerEncoderZeroOffset);
+		m_lowerArmEncoder.setInverted(true);
 
 		m_lowerArmController.setP(ArmConstants.kLowerArmP);
 		m_lowerArmController.setI(ArmConstants.kLowerArmI);
@@ -87,6 +88,7 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		m_upperArmEncoder.setPositionConversionFactor(360);
 		m_upperArmEncoder.setZeroOffset(ArmConstants.kUpperEncoderZeroOffset);
+		m_upperArmEncoder.setInverted(true);
 
 		m_upperArmController.setP(ArmConstants.kUpperArmP);
 		m_upperArmController.setI(ArmConstants.kUpperArmI);

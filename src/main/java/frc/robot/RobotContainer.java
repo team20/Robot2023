@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
@@ -62,16 +64,16 @@ public class RobotContainer {
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
 		// -------------Arm Controls-------------
-		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
+		m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
-		// Move the arm to the high node
+		// // Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
 		// Flip the arm over to the medium node
 
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		// new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
+		// 		.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
@@ -80,16 +82,16 @@ public class RobotContainer {
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
 		// -------------LED signaling-------------
-		// Signal for a cube
-		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
-				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
-		// Signal for a cone
-		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
-				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
-		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
-				.onTrue(new LEDCommand(StatusCode.DEFAULT));
-		new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
-				.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
+		// // Signal for a cube
+		// new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
+		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// // Signal for a cone
+		// new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
+		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		// new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
+		// 		.onTrue(new LEDCommand(StatusCode.DEFAULT));
+		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
+		// 		.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
@@ -106,6 +108,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return null;
+		return null;////new ArmScoreCommand(ArmPosition.HIGH);
 	}
 }
