@@ -204,23 +204,11 @@ public final class Constants {
 		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
 
 		// TODO see which ones of these are used and which are not
-		public static final double kMaxSpeedMetersPerSecond = 1;
-		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
-		public static final double kMaxRotSpeedMetersPerSecond = 1;
 		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
 		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
-		public static final double kQuickStopThreshold = .2;
-		public static final double kQuickStopAlpha = .1;
-		public static final double kBackupDistance = Units.feetToMeters(2);
 		public static final double kRampRate = .1;// 1?
 		public static final double kSpeedLimitFactor = .5;
-		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
-																// // be checked
-		public static final boolean kRightSensorPhase = false;
-		public static final boolean kEnableVoltageComp = true;
-		public static final double kVoltageComp = 12;
-		public static final double kEncoderCounts = 42;
 		/**
 		 * Converts native encoder units(revolutions) to meters
 		 * <p>
@@ -246,7 +234,6 @@ public final class Constants {
 		public static final double kBalanceP = 0.005;
 		public static final double kBalanceI = 0.0001;
 		public static final double kBalanceD = 0.0001;
-
 	}
 
 	public static final class GripperConstants {
@@ -271,5 +258,4 @@ public final class Constants {
 		public static final double kSlowDownDistanceSquared = kSlowDownDistance * kSlowDownDistance;
 		public static final double kSpeed = 0.35;
 	}
-
 }
