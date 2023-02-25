@@ -13,8 +13,8 @@ import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DriveDistanceCommand;
 import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
-import frc.robot.commands.gripper.GripperCommand;
-import frc.robot.commands.gripper.GripperCommand.GripperPosition;
+// import frc.robot.commands.gripper.GripperCommand;
+// import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
@@ -154,17 +154,19 @@ public class CommandComposer {
 
 	// Pick up game piece
 	public static Command getPickupPieceCommand() {
-		return new SequentialCommandGroup(
-				new ParallelCommandGroup(
-						new GripperCommand(GripperPosition.OPEN),
-						new ArmScoreCommand(ArmPosition.POCKET)),
-				new GripperCommand(GripperPosition.CLOSE));
+		return null;
+		// return new SequentialCommandGroup(
+		// 		new ParallelCommandGroup(
+		// 				new GripperCommand(GripperPosition.OPEN),
+		// 				new ArmScoreCommand(ArmPosition.POCKET)),
+		// 		new GripperCommand(GripperPosition.CLOSE));
 	}
 
 	// Place game piece taking in position
 	public static Command getPlacePieceCommand(ArmPosition position) {
-		return new SequentialCommandGroup(
-				new ArmScoreCommand(position),
-				new GripperCommand(GripperPosition.OPEN));
+		return null;
+		// return new SequentialCommandGroup(
+		// 		new ArmScoreCommand(position),
+		// 		new GripperCommand(GripperPosition.OPEN));
 	}
 }

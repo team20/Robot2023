@@ -20,21 +20,21 @@ import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.TurnCommand;
-import frc.robot.commands.gripper.GripperCommand;
-import frc.robot.commands.gripper.GripperCommand.GripperPosition;
+import frc.robot.commands.gripper.WheelGripperCommand;
+import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.WheelGripperSubsystem;
 import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
-	private GripperSubsystem m_gripperSubsystem = new GripperSubsystem();
+	private WheelGripperSubsystem m_gripperSubsystem = new WheelGripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	/** The PS4 controller the operator uses */
@@ -45,25 +45,27 @@ public class RobotContainer {
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 	public RobotContainer() {
-		m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
-		m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
-		m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
-		m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
-		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
-		m_autoChooser.addOption("Score, leave over charge, balance", CommandComposer.getOverTheFulcrumAuto());
-		m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
-		m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
-		SmartDashboard.putData(m_autoChooser);
+		// m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
+		// m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
+		// m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
+		// m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
+		// m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
+		// m_autoChooser.addOption("Score, leave over charge, balance", CommandComposer.getOverTheFulcrumAuto());
+		// m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
+		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
+		// SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
 	}
 
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.onTrue(new SequentialCommandGroup(new GripperCommand(GripperPosition.CLOSE),
+				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE),
 						(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
-				.onTrue(new GripperCommand(GripperPosition.OPEN));
+				.onTrue(new WheelGripperCommand(WheelGripperPosition.STOP));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightTrigger)
+				.onTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
 
 		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
@@ -98,9 +100,9 @@ public class RobotContainer {
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
-				.whileTrue(new GripperCommand(GripperPosition.OPEN));
-		// Driving
+				.whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
 
+		// Driving
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),

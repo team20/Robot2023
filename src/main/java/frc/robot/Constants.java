@@ -143,6 +143,8 @@ public final class Constants {
 			public static final int kTriangle = 4;
 			public static final int kLeftBumper = 5;
 			public static final int kRightBumper = 6;
+			public static final int kLeftTrigger = 7;
+			public static final int kRightTrigger = 8;
 			public static final int kShare = 9;
 			public static final int kOptions = 10;
 			public static final int kLeftStick = 11;
@@ -221,12 +223,12 @@ public final class Constants {
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
 		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
 		public static final double kGearRatio = 9.4;
-		public static final double kTurningMultiplier = .45;
+		public static final double kTurningMultiplier = .3;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
 		public static final double kBackupDistance = Units.feetToMeters(2);
-		public static final double kRampRate = .1;// 1?
-		public static final double kSpeedLimitFactor = .5;
+		public static final double kRampRate = .5;// 1?
+		public static final double kSpeedLimitFactor = 1.0;
 		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
 																// // be checked
 		public static final boolean kRightSensorPhase = false;
@@ -259,16 +261,17 @@ public final class Constants {
 		public static final double kBalanceI = 0.0001;
 		public static final double kBalanceD = 0.0001;
 
-	}
+][\
+]	}
 
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;// TODO is this correct
 		public static final boolean kInvert = false;
 		public static final int kGripperID = 9;
-		public static final int kSmartCurrentLimit = 30;// TODO evaluate current limit
-		public static final double kCloseTime = 2500; // TODO: change as needed
-		public static final double kMovePower = 0.2; // TODO check
-		public static final double kHoldPower = 0.05; // TODO: change as needed
+		public static final int kSmartCurrentLimit = 15;// TODO evaluate current limit (37 for gripper, 15 for wheel)
+		public static final double kCloseTime = 3000; // TODO: change as needed
+		public static final double kMovePower = 0.6; // TODO check (0.2 for gripper, 0.4 for wheel gripper)
+		public static final double kHoldPower = 0.1; // TODO: change as needed
 	}
 
 	public static final class LimelightConstants { 

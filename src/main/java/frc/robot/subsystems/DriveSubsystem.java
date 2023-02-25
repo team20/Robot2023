@@ -120,7 +120,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public void periodic() {
 		//TODO give this a better name
-		SmartDashboard.putNumber("the angle", getHeading());
+		// SmartDashboard.putNumber("the angle", getHeading());
+		SmartDashboard.putNumber("L RPM: ", getLeftEncoderVelocity());
+		SmartDashboard.putNumber("R RPM: ", getRightEncoderVelocity());
 
 		//TODO remove these comments
 		// System.out.println("the angle is: " + getHeading());
