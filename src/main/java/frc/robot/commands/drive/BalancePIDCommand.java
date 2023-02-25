@@ -28,7 +28,7 @@ public class BalancePIDCommand extends CommandBase {
 	@Override
 	public void execute() {
 		double setpoint = m_controller.calculate(DriveSubsystem.get().getPitch());
-		DriveSubsystem.get().tankDrive(setpoint, setpoint);
+		DriveSubsystem.get().tankDrive(-setpoint, -setpoint);
 	}
 
 	// Called once the command ends or is interrupted.

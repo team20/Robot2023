@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
 
@@ -46,9 +47,11 @@ public class GripperSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		SmartDashboard.putNumber("Gripper output", m_gripperScrew.getOutputCurrent());
 	}
 
 	public void setGripperMotor(double speed) {
+		SmartDashboard.putNumber("target gripper speed", speed);
 		m_gripperScrew.set(speed);
 	}
 
@@ -59,6 +62,7 @@ public class GripperSubsystem extends SubsystemBase {
 	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
 	}
+
 
 	public boolean getOpenLimitSwitch() {
 		return m_openLimitSwitch.isPressed();

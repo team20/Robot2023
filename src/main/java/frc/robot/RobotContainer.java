@@ -17,7 +17,9 @@ import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ChangeOffsetCommand;
 import frc.robot.commands.arm.ManualMotorCommand;
+import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
+import frc.robot.commands.drive.TurnCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -58,10 +60,10 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.whileTrue(new SequentialCommandGroup(new GripperCommand(GripperPosition.CLOSE),
+				.onTrue(new SequentialCommandGroup(new GripperCommand(GripperPosition.CLOSE),
 						(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
-				.whileTrue(new GripperCommand(GripperPosition.OPEN));
+				.onTrue(new GripperCommand(GripperPosition.OPEN));
 
 		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
@@ -108,6 +110,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return null;////new ArmScoreCommand(ArmPosition.HIGH);
+		return new TurnCommand(-90);
 	}
 }

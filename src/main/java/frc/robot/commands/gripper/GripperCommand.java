@@ -1,5 +1,8 @@
 package frc.robot.commands.gripper;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
 import frc.robot.subsystems.GripperSubsystem;
@@ -10,12 +13,11 @@ public class GripperCommand extends CommandBase {
 	//TODO remove zero
 	public enum GripperPosition {
 		CLOSE,
-		OPEN,
-		ZERO
+		OPEN
 	}
 
 	private GripperPosition m_gripperPosition;
-	private long m_startTime = 0;
+	private Instant m_startTime = null;
 
 	public GripperCommand(GripperPosition gripperPosition) {
 		m_gripperPosition = gripperPosition;
@@ -24,6 +26,7 @@ public class GripperCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
+		m_startTime = null;
 	}
 
 	@Override
@@ -35,8 +38,8 @@ public class GripperCommand extends CommandBase {
 				break;
 			case CLOSE:
 				GripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
-				if (m_startTime == 0) {
-					m_startTime = System.currentTimeMillis();
+				if (m_startTime == null) {
+					m_startTime = Instant.now();
 				}
 				break;
 			default:
@@ -51,15 +54,12 @@ public class GripperCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		//TODO revisit reset start time
 		switch (m_gripperPosition) {
 			case OPEN:
-				m_startTime = 0;
 				return true;
 			case CLOSE:
-				if (System.currentTimeMillis() - m_startTime >= GripperConstants.kCloseTime) {
+				if (Duration.between(m_startTime, Instant.now()).toMillis() >= GripperConstants.kCloseTime) {
 					GripperSubsystem.get().setGripperMotor(GripperConstants.kHoldPower);
-					m_startTime = 0;
 					return true;
 				}
 				break;

@@ -16,7 +16,7 @@ public final class Constants {
 	public static final class ArmConstants {
 		// Preset angles for arm
 		/** The lower and upper arm angles for the arm to be in the high position */
-		public static final double[] kHighAngles = { 50, 160 };
+		public static final double[] kHighAngles = { 52, 153 };
 		/**
 		 * The lower and upper arm angles for the arm to be flipped over in the medium
 		 * position
@@ -26,7 +26,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to be forwards in the medium
 		 * position
 		 */
-		public static final double[] kMediumForwardAngles = { 90, 90 };
+		public static final double[] kMediumForwardAngles = { 87, 94 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 90, 40 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
@@ -102,7 +102,7 @@ public final class Constants {
 		public static final int kPeakCurrentDurationMillis = 100;
 		public static boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
-		public static final double kLowerArmP = 0.04000;
+		public static final double kLowerArmP = 0.06000;
 		public static final double kLowerArmI = 0.000;
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
@@ -115,8 +115,10 @@ public final class Constants {
 		public static final double kUpperArmFF = 0.0;
 		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
-		public static final double kMinOutput = -1;
-		public static final double kMaxOutput = 1;
+		public static final double kMinOutputLower = -1;
+		public static final double kMaxOutputLower = 1;
+		public static final double kMinOutputUpper = -0.66;
+		public static final double kMaxOutputUpper = 0.66;
 	}
 
 	public static final class ControllerConstants {
@@ -196,7 +198,7 @@ public final class Constants {
 		public static final boolean kGyroReversed = true;
 
 		// TODO CHANGE ADJUST PIDS
-		public static final double kTurnP = 0.002; // was 0.005
+		public static final double kTurnP = 0.004; // was 0.005
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
@@ -263,13 +265,10 @@ public final class Constants {
 		public static final double kGripperOpenPosition = 0.5;// TODO is this correct
 		public static final boolean kInvert = false;
 		public static final int kGripperID = 9;
-		public static final int kSmartCurrentLimit = 20;// TODO evaluate current limit
-		public static final double kCloseTime = 1500; // TODO: change as needed
+		public static final int kSmartCurrentLimit = 30;// TODO evaluate current limit
+		public static final double kCloseTime = 2500; // TODO: change as needed
 		public static final double kMovePower = 0.2; // TODO check
-		public static final double kHoldPower = .03; // TODO: change as needed
-		public static final double kMinOutput = -0.5;// TODO check
-		public static final double kMaxOutput = 0.5;// TODO check
-		public static final int kOpenLimitSwitchPort = 0; // TODO remove
+		public static final double kHoldPower = 0.05; // TODO: change as needed
 	}
 
 	public static final class LimelightConstants { 
