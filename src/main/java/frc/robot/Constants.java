@@ -31,7 +31,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to be forwards in the medium
 		 * position
 		 */
-		public static final double[] kMediumForwardAngles = { 84, 98 };
+		public static final double[] kMediumForwardAngles = { 84, 102 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 90, 40 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
@@ -197,7 +197,7 @@ public final class Constants {
 		public static final int kSlotID = 0;
 
 		// TODO do we use this
-		public static final double kFineTurningSpeed = .1;
+		public static final double kFineTurningSpeed = .3;
 
 		// navX stuff
 		public static final SPI.Port kGyroPort = SPI.Port.kMXP;
@@ -228,7 +228,7 @@ public final class Constants {
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
 		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
 		public static final double kGearRatio = 9.4;
-		public static final double kTurningMultiplier = .3;
+		public static final double kTurningMultiplier = .45;
 		public static final double kQuickStopThreshold = .2;
 		public static final double kQuickStopAlpha = .1;
 		public static final double kBackupDistance = Units.feetToMeters(2);
@@ -276,7 +276,7 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 15;// TODO evaluate current limit (37 for gripper, 15 for wheel)
 		public static final double kCloseTime = 3000; // TODO: change as needed
 		public static final double kMovePower = 0.6; // TODO check (0.2 for gripper, 0.4 for wheel gripper)
-		public static final double kHoldPower = 0.1; // TODO: change as needed
+		public static final double kHoldPower = 0.08; // TODO: change as needed (0.1 for gripper, 0.03 for wheel)
 	}
 
 	public static final class LimelightConstants { 

@@ -38,7 +38,7 @@ public class WheelGripperCommand extends CommandBase {
                 WheelGripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
 				break;
             case STOP:
-                WheelGripperSubsystem.get().setGripperMotor(0.0);
+                WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kHoldPower);
 			default:
 				break;
 		}

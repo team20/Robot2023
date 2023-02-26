@@ -37,10 +37,8 @@ public class DefaultDriveCommand extends CommandBase {
 		double speedLeft = MathUtil.applyDeadband(m_speedLeft.get(), ControllerConstants.kTriggerDeadzone);
 		double speedRight = MathUtil.applyDeadband(m_speedRight.get(), ControllerConstants.kTriggerDeadzone);
 		// If we are driving foward, slow down our turning
-		if (speedStraight != 0) {
-			speedLeft *= DriveConstants.kTurningMultiplier;
-			speedRight *= DriveConstants.kTurningMultiplier;
-		}
+		speedLeft *= DriveConstants.kTurningMultiplier;
+		speedRight *= DriveConstants.kTurningMultiplier;
 		DriveSubsystem.get().arcadeDrive(speedStraight, speedLeft, speedRight);
 	}
 }

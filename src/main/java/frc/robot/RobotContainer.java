@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ArmScoreCommand;
@@ -118,6 +119,11 @@ public class RobotContainer {
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
 
+		// Fine Turning
+		new JoystickButton(m_driverController, ControllerConstants.Button.kRightBumper)
+			.whileTrue(new DefaultDriveCommand(()->0.0, ()->0.0, ()->DriveConstants.kFineTurningSpeed));
+		new JoystickButton(m_driverController, ControllerConstants.Button.kLeftBumper)
+			.whileTrue(new DefaultDriveCommand(()->0.0, ()->DriveConstants.kFineTurningSpeed, ()->0.0));
 	}
 
 	// TODO get auto command from auto chooser
