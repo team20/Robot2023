@@ -7,12 +7,17 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DriveDistanceCommand;
+import frc.robot.commands.drive.DriveTimeCommand;
 import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
+import frc.robot.commands.gripper.WheelGripperCommand;
+import frc.robot.commands.gripper.GripperCommand.GripperPosition;
+import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 // import frc.robot.commands.gripper.GripperCommand;
 // import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.subsystems.ArmSubsystem;
@@ -104,8 +109,14 @@ public class CommandComposer {
 	public static Command getScoreThenBalanceAuto() { // Start lined up on center of Charge Station pushed up against
 														// nodes
 		return new SequentialCommandGroup(
-				getPlacePieceCommand(null), // TODO: position
-				new DriveDistanceCommand(-3),
+				getPickupPieceCommand(),
+				new ArmScoreCommand(ArmPosition.HIGH),
+				new DriveDistanceCommand(0.6),
+				getPlacePieceCommand(ArmPosition.HIGH), // TODO: position
+				new ArmScoreCommand(ArmPosition.LOW),
+				new ArmScoreCommand(ArmPosition.HOLD),
+				new DriveDistanceCommand(-0.2),
+				new DriveTimeCommand(-0.7, 500),
 				new BalancePIDCommand());
 	}
 
@@ -154,19 +165,20 @@ public class CommandComposer {
 
 	// Pick up game piece
 	public static Command getPickupPieceCommand() {
-		return null;
-		// return new SequentialCommandGroup(
-		// 		new ParallelCommandGroup(
-		// 				new GripperCommand(GripperPosition.OPEN),
-		// 				new ArmScoreCommand(ArmPosition.POCKET)),
-		// 		new GripperCommand(GripperPosition.CLOSE));
+		return new SequentialCommandGroup(
+				new SequentialCommandGroup(
+						new ArmScoreCommand(ArmPosition.POCKET),
+						new WheelGripperCommand(WheelGripperPosition.INTAKE),
+						new WaitCommand(0.35),
+						new WheelGripperCommand(WheelGripperPosition.STOP)));
 	}
 
 	// Place game piece taking in position
 	public static Command getPlacePieceCommand(ArmPosition position) {
-		return null;
-		// return new SequentialCommandGroup(
-		// 		new ArmScoreCommand(position),
-		// 		new GripperCommand(GripperPosition.OPEN));
+		return new SequentialCommandGroup(
+				new ArmScoreCommand(position),
+				new WheelGripperCommand(WheelGripperPosition.OUTTAKE),
+				new WaitCommand(0.5),
+				new WheelGripperCommand(WheelGripperPosition.STOP));
 	}
 }

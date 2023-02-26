@@ -186,7 +186,10 @@ public class ArmSubsystem extends SubsystemBase {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
 		// Simple bounds checking without accounting for wraparound
-		if (currentAngle < upperAngleBound && currentAngle > lowerAngleBound) {
+		// System.out.println(targetAngle);
+		// System.out.println(currentAngle);
+
+		if (Math.abs(currentAngle-targetAngle) < ArmConstants.kAllowedDegreesError) {
 			return true;
 			/*
 			 * If there's wraparound, there's two parts of the accepted range: The part that
@@ -196,6 +199,7 @@ public class ArmSubsystem extends SubsystemBase {
 			 * wrappedUpperAngleBound covers 0-5, so all angles are covered.
 			 */
 		} else if (lowerAngleBound < 0 || upperAngleBound > 360) {
+			// System.out.println(0/0);
 			double wrappedLowerAngleBound = MathUtil.inputModulus(lowerAngleBound, 0, 360);
 			double wrappedUpperAngleBound = MathUtil.inputModulus(upperAngleBound, 0, 360);
 			if (currentAngle > wrappedLowerAngleBound || currentAngle < wrappedUpperAngleBound) {

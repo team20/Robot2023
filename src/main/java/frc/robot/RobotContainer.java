@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
@@ -19,7 +21,9 @@ import frc.robot.commands.arm.ChangeOffsetCommand;
 import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
+import frc.robot.commands.drive.DriveDistanceCommand;
 import frc.robot.commands.drive.TurnCommand;
+import frc.robot.commands.drive.TurnCommandProfiled;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -73,11 +77,17 @@ public class RobotContainer {
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
 		// // Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH)));
+				.onTrue(new SequentialCommandGroup(
+					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)), 
+					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
 		// Flip the arm over to the medium node
 
-		// new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
-		// 		.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+
+		 new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
+		 		.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
+
 		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
@@ -112,6 +122,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return new TurnCommand(-90);
+		return CommandComposer.getScoreThenBalanceAuto();
 	}
 }

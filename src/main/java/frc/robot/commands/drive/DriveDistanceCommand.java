@@ -48,13 +48,13 @@ public class DriveDistanceCommand extends CommandBase {
 		// Creates a ProfiledPIDController
 		// Max velocity is 5 meters per second
 		// Max acceleration is 10 meters per second
-		double kP = .1;
+		double kP = .3;
 		double kI = 0.000;
 		double kD = 0.00;
 
 		//TODO fix Trapezoidal profiles
 		m_controller = new ProfiledPIDController(kP, kI, kD,
-				new TrapezoidProfile.Constraints(125, 150)); // was 196 35
+				new TrapezoidProfile.Constraints(3, 2)); // was 196 35
 		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderDistance();
 
 	}
@@ -79,7 +79,6 @@ public class DriveDistanceCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage) > Math
-				.abs(m_distance);
+		return Math.abs(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage - m_distance) < 0.1;
 	}
 }

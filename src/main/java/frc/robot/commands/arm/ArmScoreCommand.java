@@ -19,11 +19,14 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
-		INTERMEDIATE
+		INTERMEDIATE,
+		HIGH_INTERMEDIATE,
+		HOLD
 	}
 
 	/** Stores the position we want the arm to move to */
 	private ArmPosition m_armPosition;
+	private boolean ranBefore;
 
 	/** Creates a new ArmScoreCommand. */
 	public ArmScoreCommand(ArmPosition armPosition) {
@@ -34,12 +37,8 @@ public class ArmScoreCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-	}
-
-	// Called every time the scheduler runs while the command is scheduled.
-	@Override
-	public void execute() {
-		// Depending on the ArmPosition selected, set the angles to the corresponding
+		//System.out.println(m_armPosition);
+			// Depending on the ArmPosition selected, set the angles to the corresponding
 		// angle set
 		switch (m_armPosition) {
 			case HIGH:
@@ -50,6 +49,8 @@ public class ArmScoreCommand extends CommandBase {
 				break;
 			case MEDIUM_BACK:
 				angles = ArmConstants.kMediumBackAngles;
+				angles[0] = 87;
+				angles[1] = 280;
 				break;
 			case LOW:
 				angles = ArmConstants.kLowAngles;
@@ -59,10 +60,32 @@ public class ArmScoreCommand extends CommandBase {
 				break;
 			case INTERMEDIATE:
 				angles = ArmConstants.kIntermediateAngles;
+				break;
+			case HIGH_INTERMEDIATE:
+				angles = ArmConstants.kHighIntermediateAngles;
+				break;
+			case HOLD:
+				angles = new double[2]; 
+				angles[0] = ArmSubsystem.get().getLowerArmAngle();
+				angles[1] = ArmSubsystem.get().getUpperArmAngle();
+				break;
 			default:
+				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0/0);
 				break;
 		}
+		// System.out.println(angles[0]);
+		// System.out.println(angles[1]);
+
 		ArmSubsystem.get().setAngles(angles[0], angles[1]);
+
+	}
+
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
+	
 	}
 
 	// Called once the command ends or is interrupted.
@@ -73,6 +96,9 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
+		if(m_armPosition == ArmPosition.HOLD){
+			return true;
+		}
 		// Calculate the arm position
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
@@ -84,6 +110,8 @@ public class ArmScoreCommand extends CommandBase {
 		}
 		// If the lower and upper arm is close enough to the target angle, finish the
 		// command
-		return ArmSubsystem.get().isNearTargetAngle();
+		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
+		ranBefore = true;
+		return ret;
 	}
 }

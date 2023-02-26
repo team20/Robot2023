@@ -50,6 +50,7 @@ public class ManualMotorCommand extends CommandBase {
 				* ArmConstants.kArmMotorSpeedSensitivity;
 		upperArmMotorSpeed = -MathUtil.applyDeadband(m_upperArmInput.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kArmMotorSpeedSensitivity;
+		
 		ArmSubsystem.get().setLowerArmMotorSpeed(lowerArmMotorSpeed);
 		ArmSubsystem.get().setUpperArmMotorSpeed(upperArmMotorSpeed);
 	}

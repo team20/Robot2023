@@ -17,20 +17,25 @@ public final class Constants {
 		// Preset angles for arm
 		/** The lower and upper arm angles for the arm to be in the high position */
 		public static final double[] kHighAngles = { 52, 153 };
+		public static final double[] kHighIntermediateAngles = { (90 + (kHighAngles[0]))/2, kHighAngles[1] };
+
 		/**
 		 * The lower and upper arm angles for the arm to be flipped over in the medium
 		 * position
 		 */
-		public static final double[] kMediumBackAngles = { 90, 270 };
+		public static final double[] kHighBackAngles = { 109, 236 };
+
+		public static final double[] kMediumBackAngles = { 87, 280 };
+
 		/**
 		 * The lower and upper arm angles for the arm to be forwards in the medium
 		 * position
 		 */
-		public static final double[] kMediumForwardAngles = { 87, 94 };
+		public static final double[] kMediumForwardAngles = { 84, 98 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 90, 40 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 105, 15 };
+		public static final double[] kPocketAngles = { 90, 33 };
 		/**
 		 * The lower and upper arm angles for the arm to be in the intermediate position
 		 * needed to prevent the arm from going over the height limit
@@ -71,7 +76,7 @@ public final class Constants {
 		/** Smallest angle the lower arm can go */
 		public static final double kUpperArmMinAngle = 15;
 		/** Maximum angle the lower arm can go */
-		public static final double kUpperArmMaxAngle = 270;
+		public static final double kUpperArmMaxAngle = 290;
 		/**
 		 * Maximum height in inches the arm can reach.
 		 * <p>
@@ -108,7 +113,7 @@ public final class Constants {
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
 		public static final boolean kLowerInvert = true;
-		public static final double kUpperArmP = 0.080;
+		public static final double kUpperArmP = 0.1;//0.25
 		public static final double kUpperArmI = 0.000;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
@@ -117,8 +122,8 @@ public final class Constants {
 		// TODO set this back to one?
 		public static final double kMinOutputLower = -1;
 		public static final double kMaxOutputLower = 1;
-		public static final double kMinOutputUpper = -0.66;
-		public static final double kMaxOutputUpper = 0.66;
+		public static final double kMinOutputUpper = -1;
+		public static final double kMaxOutputUpper = 1;
 	}
 
 	public static final class ControllerConstants {
@@ -221,7 +226,7 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1;
 		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
 		public static final double kMaxRotSpeedMetersPerSecond = 1;
-		public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
+		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
 		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .3;
 		public static final double kQuickStopThreshold = .2;
@@ -257,12 +262,12 @@ public final class Constants {
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters / 60;
 		// TODO PIDS
-		public static final double kBalanceP = 0.005;
+		public static final double kBalanceP = 0.0085;
 		public static final double kBalanceI = 0.0001;
-		public static final double kBalanceD = 0.0001;
+		public static final double kBalanceD = 0.001;
 
-][\
-]	}
+
+	}
 
 	public static final class GripperConstants {
 		public static final double kGripperOpenPosition = 0.5;// TODO is this correct

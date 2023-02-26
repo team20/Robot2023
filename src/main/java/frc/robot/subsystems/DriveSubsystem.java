@@ -120,10 +120,14 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public void periodic() {
 		//TODO give this a better name
-		// SmartDashboard.putNumber("the angle", getHeading());
+		SmartDashboard.putNumber("Heading", getHeading());
 		SmartDashboard.putNumber("L RPM: ", getLeftEncoderVelocity());
 		SmartDashboard.putNumber("R RPM: ", getRightEncoderVelocity());
 
+		SmartDashboard.putNumber("Curr X", DriveSubsystem.get().getPose().getX());
+		SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());
+
+		SmartDashboard.putNumber("Curr Encoder Position", DriveSubsystem.get().getAverageEncoderDistance());
 		//TODO remove these comments
 		// System.out.println("the angle is: " + getHeading());
 		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
