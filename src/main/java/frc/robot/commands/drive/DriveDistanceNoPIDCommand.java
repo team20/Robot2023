@@ -61,7 +61,7 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 
 	/**
 	 * Is called every time the scheduler runs while this
-	 * {@code DriveDistanceCommand2} is scheduled.
+	 * {@code DriveDistanceNoPIDCommand} is scheduled.
 	 */
 	@Override
 	public void execute() {
@@ -75,7 +75,7 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 	}
 
 	/**
-	 * Is called once this {@code DriveDistanceCommand2} ends or is interrupted.
+	 * Is called once this {@code DriveDistanceNoPIDCommand} ends or is interrupted.
 	 */
 	@Override
 	public void end(boolean interrupted) {
