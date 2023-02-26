@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.io.File;
-import java.lang.ModuleLayer.Controller;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -49,6 +48,8 @@ public class RobotContainer {
 	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
 
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+	private final SendableChooser<Command> m_autoAlignChooser = new SendableChooser<>();
+	
 	private AutoAligner m_autoAligner = new AutoAlignerBasic(DriveConstants.kTrackwidthMeters, 0.1, 10 * Math.PI / 180,
 			0.5, 0.1,
 			0.08, new PoseMap(Filesystem.getDeployDirectory() + File.separator + "poses.json"));
@@ -65,6 +66,12 @@ public class RobotContainer {
 		m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
 		m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
+
+		m_autoAlignChooser.addOption("Move to Target 1", new AutoAlignCommand("1", m_autoAligner, m_poseSubsystem, 0.1));
+		m_autoAlignChooser.addOption("Move to Target 2", new AutoAlignCommand("2", m_autoAligner, m_poseSubsystem, 0.1));
+		m_autoAlignChooser.addOption("Move to Target 3", new AutoAlignCommand("3", m_autoAligner, m_poseSubsystem, 0.1));
+		SmartDashboard.putData(m_autoAlignChooser);
+
 		configureButtonBindings();
 	}
 
@@ -93,7 +100,6 @@ public class RobotContainer {
 		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
-		
 
 		// -------------LED signaling-------------
 		// Signal for a cube
@@ -112,8 +118,11 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
-		new JoystickButton((m_driverController), ControllerConstants.Button.kCircle)
-		.whileTrue(new AutoAlignCommand("2", m_autoAligner, m_poseSubsystem, 0.1));
+		new JoystickButton(m_driverController, ControllerConstants.Button.kCircle)
+				.whileTrue(new AutoAlignCommand("2", m_autoAligner, m_poseSubsystem, 0.1));
+
+		new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle)
+				.whileTrue(new AutoAlignCommand("3", m_autoAligner, m_poseSubsystem, 0.1));
 
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
@@ -126,7 +135,9 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return null;
 	}
+
 	public void periodic() {
 		m_poseSubsystem.periodic();
 	}
+
 }
