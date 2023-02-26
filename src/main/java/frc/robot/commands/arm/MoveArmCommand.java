@@ -15,7 +15,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.util.InverseKinematicsTool;
 
-public class ChangeOffsetCommand extends CommandBase {
+public class MoveArmCommand extends CommandBase {
 	// Saved value for how much to move
 	private double m_xOffset;
 	private double m_yOffset;
@@ -27,12 +27,12 @@ public class ChangeOffsetCommand extends CommandBase {
 	private Supplier<Double> m_joystickY;
 
 	/**
-	 * Creates a new ChangeOffsetCommand.
+	 * Creates a new MoveArmCommand.
 	 * 
 	 * @param joystickX Joystick input for moving the arm horizontally
 	 * @param joystickY Joystick input for moving the arm vertically
 	 */
-	public ChangeOffsetCommand(Supplier<Double> joystickX, Supplier<Double> joystickY) {
+	public MoveArmCommand(Supplier<Double> joystickX, Supplier<Double> joystickY) {
 		m_joystickX = joystickX;
 		m_joystickY = joystickY;
 		addRequirements(ArmSubsystem.get());

@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
-import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.arm.MoveArmCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
@@ -62,7 +62,7 @@ public class RobotContainer {
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 
 		// -------------Arm Controls-------------
-		m_armSubsystem.setDefaultCommand(new ChangeOffsetCommand(
+		m_armSubsystem.setDefaultCommand(new MoveArmCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
 		// Move the arm to the high node
