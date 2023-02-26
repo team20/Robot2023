@@ -280,6 +280,7 @@ public final class Constants {
 		public static final double kSlowDownDistance = 0.5;
 		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
 		public static final double kSpeed = 0.35;
+        public static final double LLoffset = 0;
 	}
 
 }

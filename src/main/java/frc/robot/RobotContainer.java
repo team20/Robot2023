@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.lang.ModuleLayer.Controller;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,9 +16,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ChangeOffsetCommand;
+import frc.robot.commands.drive.AutoAlignCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.gripper.GripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
@@ -25,7 +31,11 @@ import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.PoseEstimationSubsystem;
 import frc.robot.util.CommandComposer;
+import frc.robot.util.PoseMap;
+import hlib.drive.AutoAligner;
+import hlib.drive.AutoAlignerBasic;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -39,6 +49,11 @@ public class RobotContainer {
 	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
 
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+	private AutoAligner m_autoAligner = new AutoAlignerBasic(DriveConstants.kTrackwidthMeters, 0.1, 10 * Math.PI / 180,
+			0.5, 0.1,
+			0.08, new PoseMap(Filesystem.getDeployDirectory() + File.separator + "poses.json"));
+	private PoseEstimationSubsystem m_poseSubsystem = new PoseEstimationSubsystem(DriveConstants.kTrackwidthMeters, 0.5,
+			10, 0.1);
 
 	public RobotContainer() {
 		m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
@@ -78,6 +93,7 @@ public class RobotContainer {
 		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
+		
 
 		// -------------LED signaling-------------
 		// Signal for a cube
@@ -96,6 +112,8 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new GripperCommand(GripperPosition.OPEN));
 		// Driving
+		new JoystickButton((m_driverController), ControllerConstants.Button.kCircle)
+		.whileTrue(new AutoAlignCommand("2", m_autoAligner, m_poseSubsystem, 0.1));
 
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
@@ -107,5 +125,8 @@ public class RobotContainer {
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
 		return null;
+	}
+	public void periodic() {
+		m_poseSubsystem.periodic();
 	}
 }
