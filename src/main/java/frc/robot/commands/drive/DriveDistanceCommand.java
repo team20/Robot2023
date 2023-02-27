@@ -17,8 +17,8 @@ public class DriveDistanceCommand extends CommandBase {
 	private double m_startDistanceAverage;
 	// private double m_speed;
 
-	private ProfiledPIDController m_controller;
-
+	private ProfiledPIDController m_leftController;
+	private ProfiledPIDController m_rightController;
 	/**
 	 * Creates a new DriveDistanceCommand.
 	 * 
@@ -53,7 +53,9 @@ public class DriveDistanceCommand extends CommandBase {
 		double kD = 0.00;
 
 		//TODO fix Trapezoidal profiles
-		m_controller = new ProfiledPIDController(kP, kI, kD,
+		m_leftController = new ProfiledPIDController(kP, kI, kD,
+				new TrapezoidProfile.Constraints(3, 2)); // was 196 35
+		m_rightController = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(3, 2)); // was 196 35
 		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderDistance();
 
@@ -64,9 +66,11 @@ public class DriveDistanceCommand extends CommandBase {
 	public void execute() {
 		// Calculates the output of the PID algorithm based on the sensor reading
 		// and sends it to a motor
-		double output = m_controller
+		double outputLeft = m_leftController
 				.calculate(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage, m_distance);
-		DriveSubsystem.get().tankDrive(output, output);
+		double outputRight = m_leftController
+				.calculate(DriveSubsystem.get().getAverageEncoderDistance() - m_startDistanceAverage, m_distance);
+		DriveSubsystem.get().tankDrive(outputLeft, outputRight);
 
 	}
 

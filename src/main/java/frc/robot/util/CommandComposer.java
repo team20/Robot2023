@@ -4,6 +4,7 @@
 
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -15,6 +16,7 @@ import frc.robot.commands.drive.DriveDistanceCommand;
 import frc.robot.commands.drive.DriveTimeCommand;
 import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
+import frc.robot.commands.drive.TurnRelativeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.GripperCommand.GripperPosition;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
@@ -103,21 +105,52 @@ public class CommandComposer {
 				new DriveDistanceCommand(driveDistance + 0.5), // 0.5 should get on chargerstation, idk
 				new BalancePIDCommand());
 	}
+	public static Command getScoreThenLeaveCommand() { // Start right to the right of Charge station
+		return new SequentialCommandGroup(
+				new ParallelCommandGroup(
+				getEnsurePreloadCommand(),
+				new TurnRelativeCommand(-5)),
+				new DriveDistanceCommand(4.8), // maybe second parameter for how far this is?
+				getPickupPieceCommand(),
+				new ParallelCommandGroup(
+					new SequentialCommandGroup(
+						new TurnRelativeCommand(-1.5),
+						new DriveDistanceCommand(-4.8)
+					),
+					new SequentialCommandGroup(
+						new ArmScoreCommand(ArmPosition.INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.HIGH_BACK)
+					)
+				),
+				getOuttakePieceCommand()
+				/*new BalancePIDCommand()*/);
+	}
 
 	// Score Preloaded and Engage
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa94f33ee4_0_0
 	public static Command getScoreThenBalanceAuto() { // Start lined up on center of Charge Station pushed up against
 														// nodes
 		return new SequentialCommandGroup(
-				getPickupPieceCommand(),
-				new ArmScoreCommand(ArmPosition.HIGH),
-				new DriveDistanceCommand(0.6),
-				getPlacePieceCommand(ArmPosition.HIGH), // TODO: position
-				new ArmScoreCommand(ArmPosition.LOW),
-				new ArmScoreCommand(ArmPosition.HOLD),
-				new DriveDistanceCommand(-0.2),
-				new DriveTimeCommand(-0.7, 500),
-				new BalancePIDCommand());
+				getEnsurePreloadCommand(),
+				new ParallelCommandGroup(
+					new ArmScoreCommand(ArmPosition.HIGH),
+					new SequentialCommandGroup(
+						new WaitCommand(0.65),
+						new DriveDistanceCommand(0.6)
+					)
+				),
+				new ParallelCommandGroup(
+					new SequentialCommandGroup(
+						getOuttakePieceCommand(),
+						new ArmScoreCommand(ArmPosition.LOW)
+					),
+					new SequentialCommandGroup(
+						new DriveDistanceCommand(-0.2),
+						new DriveTimeCommand(-0.7, 500)
+					)
+				),
+				new BalancePIDCommand()
+		);
 	}
 
 	// Score, Over Charging Station -> Out of community, backup to balance
@@ -173,10 +206,25 @@ public class CommandComposer {
 						new WheelGripperCommand(WheelGripperPosition.STOP)));
 	}
 
+	// Pick up game piece
+	public static Command getEnsurePreloadCommand() {
+		return new SequentialCommandGroup(
+						new WheelGripperCommand(WheelGripperPosition.INTAKE),
+						new WaitCommand(0.35),
+						new WheelGripperCommand(WheelGripperPosition.STOP));
+	}
 	// Place game piece taking in position
 	public static Command getPlacePieceCommand(ArmPosition position) {
 		return new SequentialCommandGroup(
 				new ArmScoreCommand(position),
+				new WheelGripperCommand(WheelGripperPosition.OUTTAKE),
+				new WaitCommand(0.5),
+				new WheelGripperCommand(WheelGripperPosition.STOP));
+	}
+
+	// Place game piece
+	public static Command getOuttakePieceCommand() {
+		return new SequentialCommandGroup(
 				new WheelGripperCommand(WheelGripperPosition.OUTTAKE),
 				new WaitCommand(0.5),
 				new WheelGripperCommand(WheelGripperPosition.STOP));

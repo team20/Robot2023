@@ -1,18 +1,19 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TurnCommandProfiled extends CommandBase {
+public class TurnRelativeCommand extends CommandBase {
   /** Creates a new TurnCommand. */
   private double m_targetAngle;
   private PIDController m_turnController = new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD);
 
 	/** Creates a new TurnCommand. */
-  public TurnCommandProfiled(double targetAngle) {
+  public TurnRelativeCommand(double targetAngle) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_targetAngle = targetAngle;
     addRequirements(DriveSubsystem.get());
@@ -21,8 +22,8 @@ public class TurnCommandProfiled extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_turnController.setSetpoint(m_targetAngle);
     m_turnController.enableContinuousInput(-180, 180);
+    m_turnController.setSetpoint(DriveSubsystem.get().getHeading() + m_targetAngle);
     m_turnController.setTolerance(DriveConstants.kTurnTolerance);
     //m_turnController.setIntegratorRange(-0.05, 0.05);
   }
@@ -36,6 +37,7 @@ public class TurnCommandProfiled extends CommandBase {
     //if turn speed is less than 0.1 make it 0.1 in the right direction
     turnSpeed = Math.abs(turnSpeed) < 0.1 ? Math.signum(turnSpeed)*0.1 : turnSpeed;
 
+    turnSpeed = MathUtil.clamp(turnSpeed, -0.5, 0.5);
     SmartDashboard.putNumber("Heading", currAngle);
     DriveSubsystem.get().tankDrive(-turnSpeed, turnSpeed);
   }

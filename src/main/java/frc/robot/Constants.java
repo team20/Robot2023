@@ -102,7 +102,7 @@ public final class Constants {
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
 		// TODO evaluate current limits
-		public static final int kSmartCurrentLimit = 20;
+		public static final int kSmartCurrentLimit = 55;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
 		public static boolean kLowerArmMotor2Oppose = true;

@@ -23,8 +23,10 @@ import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveDistanceCommand;
+import frc.robot.commands.drive.DriveToApriltag;
+import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
-import frc.robot.commands.drive.TurnCommandProfiled;
+import frc.robot.commands.drive.TurnProfiledCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -128,6 +130,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return CommandComposer.getScoreThenBalanceAuto();
+		return new TagAlignCommand(0,0.75);
 	}
 }

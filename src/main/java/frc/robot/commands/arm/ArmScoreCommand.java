@@ -15,11 +15,16 @@ public class ArmScoreCommand extends CommandBase {
 	/** Indicates the positions we want the arm to move to */
 	public enum ArmPosition {
 		HIGH,
+		HIGH_BACK,
 		MEDIUM_FORWARD,
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
 		INTERMEDIATE,
+		/**
+		 * To ensure the arm doesn't hit the grid when moving to the high node, the arm
+		 * moves to this position first before going to the high position
+		 */
 		HIGH_INTERMEDIATE,
 		HOLD
 	}
@@ -37,20 +42,21 @@ public class ArmScoreCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		//System.out.println(m_armPosition);
-			// Depending on the ArmPosition selected, set the angles to the corresponding
+		// System.out.println(m_armPosition);
+		// Depending on the ArmPosition selected, set the angles to the corresponding
 		// angle set
 		switch (m_armPosition) {
 			case HIGH:
 				angles = ArmConstants.kHighAngles;
+				break;
+			case HIGH_BACK:
+				angles = ArmConstants.kHighBackAngles;
 				break;
 			case MEDIUM_FORWARD:
 				angles = ArmConstants.kMediumForwardAngles;
 				break;
 			case MEDIUM_BACK:
 				angles = ArmConstants.kMediumBackAngles;
-				angles[0] = 87;
-				angles[1] = 280;
 				break;
 			case LOW:
 				angles = ArmConstants.kLowAngles;
@@ -65,27 +71,23 @@ public class ArmScoreCommand extends CommandBase {
 				angles = ArmConstants.kHighIntermediateAngles;
 				break;
 			case HOLD:
-				angles = new double[2]; 
+				angles = new double[2];
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
 				break;
 			default:
-				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0/0);
+				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
 		}
 		// System.out.println(angles[0]);
 		// System.out.println(angles[1]);
-
 		ArmSubsystem.get().setAngles(angles[0], angles[1]);
-
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-
 		ArmSubsystem.get().setAngles(angles[0], angles[1]);
-	
 	}
 
 	// Called once the command ends or is interrupted.
@@ -96,7 +98,7 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		if(m_armPosition == ArmPosition.HOLD){
+		if (m_armPosition == ArmPosition.HOLD) {
 			return true;
 		}
 		// Calculate the arm position
