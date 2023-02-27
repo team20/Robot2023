@@ -14,6 +14,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.util.ForwardKinematicsTool;
 import frc.robot.util.InverseKinematicsTool;
 
@@ -215,6 +216,10 @@ public class ArmSubsystem extends SubsystemBase {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(getLowerArmAngle(), getUpperArmAngle());
 		SmartDashboard.putNumber("Forward X", coordinates[0]);
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
+		// If the arm is about to reach over the height limit, turn the LEDs red
+		if (coordinates[1] >= ArmConstants.kMaxHeight - 1) {
+			ArduinoSubsystem.get().setCode(StatusCode.RED_COLOR);
+		}
 		// Take the calculated arm position from the forward kinematics code, and
 		// calculate the lower and upper arm angles to make sure everything works
 		double[] armPosition = InverseKinematicsTool.calculateArmAngles(coordinates[0], coordinates[1]);
