@@ -38,14 +38,17 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	 * Constructs an {@code AutoAlignCommand}.
 	 * 
 	 * @param targetID
-	 *            the ID of the target
+	 *                                the ID of the target
 	 * @param aligner
-	 *            the {@code AutoAlginer} to use
+	 *                                the {@code AutoAlginer} to use
 	 * @param poseEstimationSubsystem
-	 *            the {@code PoseEstimationSubsystem} to use
+	 *                                the {@code PoseEstimationSubsystem} to use
 	 * @param timeThreshold
-	 *            the time threshold (in seconds) that specifies how long the robot needs to be close to the target for
-	 *            the comletion of the {@code AutoAlignCommand} (e.g., 0.1)
+	 *                                the time threshold (in seconds) that specifies
+	 *                                how long the robot needs to be close to the
+	 *                                target for
+	 *                                the comletion of the {@code AutoAlignCommand}
+	 *                                (e.g., 0.1)
 	 */
 	public AutoAlignCommand(String targetID, AutoAligner aligner, PoseEstimationSubsystem poseEstimationSubsystem,
 			double timeThreshold) {
@@ -73,9 +76,12 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 		Pose poseEstimated = m_poseEstimationSubsystem.poseEstimated();
 		if (poseEstimated != null) {
 			double[] velocities = m_aligner.wheelVelocities(poseEstimated, m_targetID);
-			if (velocities != null)
+			if (velocities != null) {
+				// TODO: comment out after testing
+				System.out.println(
+						String.format("auto alignement: wheel velocities (%.3f, %.3f)", velocities[0], velocities[1]));
 				DriveSubsystem.get().tankDrive(velocities[0], velocities[1]);
-			else
+			} else
 				DriveSubsystem.get().tankDrive(0, 0);
 		} else
 			DriveSubsystem.get().tankDrive(0, 0);
@@ -91,9 +97,11 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	}
 
 	/**
-	 * Determines whether or not this {@code AutoAlignCommand} meets the criteria for completion.
+	 * Determines whether or not this {@code AutoAlignCommand} meets the criteria
+	 * for completion.
 	 * 
-	 * @return {@code true} if this {@code AutoAlignCommand} meets the criteria for completion; {@code false} otherwise
+	 * @return {@code true} if this {@code AutoAlignCommand} meets the criteria for
+	 *         completion; {@code false} otherwise
 	 */
 	@Override
 	public boolean isFinishing() {

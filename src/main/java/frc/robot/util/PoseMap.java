@@ -7,7 +7,6 @@ import java.util.Iterator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wpi.first.wpilibj.Filesystem;
 import hlib.drive.Pose;
 
 /**
@@ -46,9 +45,5 @@ public class PoseMap extends HashMap<String, Pose> {
 		}
 		System.out.println(size() + " poses read from \"" + fileName + "\".");
 	}
-
-    public static void main(String[] args) {
-        System.out.println(new PoseMap(Filesystem.getDeployDirectory() + File.separator + "poses.json"));
-    }
 
 }

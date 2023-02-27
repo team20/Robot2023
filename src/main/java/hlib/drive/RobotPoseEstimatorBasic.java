@@ -89,7 +89,9 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 		double rightDisplacement = rightEncoderPosition - this.rightEncoderPosition;
 		this.leftEncoderPosition = leftEncoderPosition;
 		this.rightEncoderPosition = rightEncoderPosition;
-		update(this.poseEstimated, leftDisplacement, rightDisplacement);
+		// update(this.poseEstimated, leftDisplacement, rightDisplacement); // forward: encoder (+)
+		update(this.poseEstimated, -leftDisplacement, -rightDisplacement); // forward: encoder (-)
+		// update(this.poseEstimated, rightDisplacement, leftDisplacement); // forward: encoder (+), left/right swapped
 	}
 
 	/**

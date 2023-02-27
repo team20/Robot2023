@@ -81,8 +81,8 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 	 *            the current {@code Pose} of the {@code Robot}
 	 * @param targetPoseID
 	 *            the ID of the target
-	 * @return the wheel velocities for a {@code Robot} to move toward the specified target; {@code null} if no movement is
-	 *         necessary (i.e., the {@code Robot} is close enough to the target)
+	 * @return the wheel velocities for a {@code Robot} to move toward the specified target; {@code null} if no movement
+	 *         is necessary (i.e., the {@code Robot} is close enough to the target)
 	 */
 	@Override
 	public double[] wheelVelocities(Pose currentPose, String targetPoseID) {
@@ -100,8 +100,8 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 	 *            the current {@code Pose} of the {@code Robot}
 	 * @param targetPose
 	 *            the {@code Pose} of the target
-	 * @return the wheel velocities for a {@code Robot} to move toward the specified target; {@code null} if no movement is
-	 *         necessary (i.e., the {@code Robot} is close enough to the target)
+	 * @return the wheel velocities for a {@code Robot} to move toward the specified target; {@code null} if no movement
+	 *         is necessary (i.e., the {@code Robot} is close enough to the target)
 	 */
 	@Override
 	public double[] wheelVelocities(Pose currentPose, Pose targetPose) {
@@ -158,7 +158,8 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 		double scale = 1.0 / maxStride;
 		if (scale * magnitude > speedLimit)
 			scale = speedLimit / magnitude;
-		return new double[] { scale * displacements[0], scale * displacements[1] };
+		return new double[] { scale * displacements[0], scale * displacements[1] }; // forward: wheel velocity (+)
+		// return new double[] { -scale * displacements[1], -scale * displacements[0] }; // forward: wheel velocity (-), left/right swapped
 	}
 
 }
