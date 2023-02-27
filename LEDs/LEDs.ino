@@ -39,6 +39,7 @@ int DHpin = 8;                                //idk, I copied this blindly, I do
 byte dat[5];                                  //same as above
 uint32_t teamColor = strip.Color(0,255,0);    //color of team, default to green, can be set by master/robot to alliance color
 uint32_t allianceColor; 
+uint32_t redColor = strip.Color(255,0,0);
 uint32_t MovingGreenRedGradient(int c, int i) {  //pixel depends on ratio of red and green
   return (strip.Color(255 * ((i + c) % LED_COUNT) / LED_COUNT, 0, 255 * (LED_COUNT - (i + c) % LED_COUNT) / LED_COUNT % 255));
 }
@@ -132,6 +133,10 @@ void loop() {
     case 12:  //moving green and blue gradient
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingGreenBlueGradient(colorIndex, i)); }
       delay(25);
+      break;
+    case 13:
+      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, redColor); } 
+      delay(50);
       break;
     default:  //display team/alliance color
       for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, teamColor); } 
