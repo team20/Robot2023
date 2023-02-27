@@ -15,21 +15,30 @@ public final class Constants {
 
 	public static final class ArmConstants {
 		// Preset angles for arm
-		/** The lower and upper arm angles for the arm to be in the high position */
-		public static final double[] kHighAngles = { 52, 153 };
-		public static final double[] kHighIntermediateAngles = { (90 + (kHighAngles[0]))/2, kHighAngles[1] };
-
 		/**
-		 * The lower and upper arm angles for the arm to be flipped over in the medium
-		 * position
+		 * The lower and upper arm angles for the arm to reach the high node while
+		 * forwards
+		 */
+		public static final double[] kHighAngles = { 52, 153 };
+		/**
+		 * The lower and upper arm angles for the arm to be in an intermediate position
+		 * needed to prevent the arm from colliding with the grid when reaching for the
+		 * high node
+		 */
+		public static final double[] kHighIntermediateAngles = { (90 + (kHighAngles[0])) / 2, kHighAngles[1] };
+		/**
+		 * The lower and upper arm angles for the arm to reach the high node while
+		 * backwards
 		 */
 		public static final double[] kHighBackAngles = { 109, 236 };
-
-		public static final double[] kMediumBackAngles = { 87, 280 };
-
 		/**
-		 * The lower and upper arm angles for the arm to be forwards in the medium
-		 * position
+		 * The lower and upper arm angles for the arm to reach the medium node while
+		 * backwards
+		 */
+		public static final double[] kMediumBackAngles = { 87, 280 };
+		/**
+		 * The lower and upper arm angles for the arm to reach the medium node while
+		 * forwards. They also happen to be the angles needed to reach the shelf.
 		 */
 		public static final double[] kMediumForwardAngles = { 84, 102 };
 		/** The lower and upper arm angles for the arm to be in the low position */
@@ -37,8 +46,9 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 90, 33 };
 		/**
-		 * The lower and upper arm angles for the arm to be in the intermediate position
-		 * needed to prevent the arm from going over the height limit
+		 * The lower and upper arm angles for the arm to be in an intermediate position
+		 * needed to prevent the arm from going over the height limit when transitioning
+		 * between forward and backward positions
 		 */
 		public static final double[] kIntermediateAngles = { 50, 220 };
 

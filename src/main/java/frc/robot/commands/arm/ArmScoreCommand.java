@@ -21,11 +21,8 @@ public class ArmScoreCommand extends CommandBase {
 		LOW,
 		POCKET,
 		INTERMEDIATE,
-		/**
-		 * To ensure the arm doesn't hit the grid when moving to the high node, the arm
-		 * moves to this position first before going to the high position
-		 */
 		HIGH_INTERMEDIATE,
+		/** Exists to forcibly finish this command */
 		HOLD
 	}
 
@@ -98,6 +95,7 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
+		// If the arm position is HOLD, finish the command
 		if (m_armPosition == ArmPosition.HOLD) {
 			return true;
 		}
