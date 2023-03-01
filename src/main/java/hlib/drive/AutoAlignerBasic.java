@@ -113,10 +113,10 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 				return wheelVelocitiesRotation(convergenceRate * angleToTurn);
 		} else { // the robot is not close enough to the target
 			double angleToTurn = Pose.normalize(currentPose.angleTo(targetPose) - currentPose.directionalAngle());
-			if (Math.abs(angleToTurn) < angleThreshold)
+			if (Math.abs(angleToTurn) < angleThreshold) // the robot is aligned toward the target
 				return wheelVelocitiesForward(convergenceRate * currentPose.distance(targetPose));
 			else
-				return wheelVelocitiesRotation(convergenceRate * angleToTurn);
+				return wheelVelocitiesRotation(convergenceRate * angleToTurn, true);
 		}
 	}
 
@@ -128,7 +128,20 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 	 * @return the wheel velocities for the {@code Robot} to turn by the specified angle (in radians)
 	 */
 	protected double[] wheelVelocitiesRotation(double angle) {
-		return wheelVelocities(wheelDisplacements(angle));
+		return wheelVelocitiesRotation(angle, false);
+	}
+
+	/**
+	 * Returns the wheel velocities for the {@code Robot} to turn by the specified angle (in radians).
+	 * 
+	 * @param angle
+	 *            an angle (in radians)
+	 * @param forwardOnly
+	 *            a boolean value indicating whether or not only forward movement is allowed
+	 * @return the wheel velocities for the {@code Robot} to turn by the specified angle (in radians)
+	 */
+	protected double[] wheelVelocitiesRotation(double angle, boolean forwardOnly) {
+		return wheelVelocities(wheelDisplacements(angle, forwardOnly));
 	}
 
 	/**
@@ -139,8 +152,7 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 	 * @return the wheel velocities for the {@code Robot} to move forward/backward by the specified displacement
 	 */
 	protected double[] wheelVelocitiesForward(double displacement) {
-		double movement = Math.min(this.speedLimit, displacement);
-		return wheelVelocities(new double[] { movement, movement });
+		return wheelVelocities(new double[] { displacement, displacement });
 	}
 
 	/**
@@ -159,7 +171,8 @@ public class AutoAlignerBasic extends RobotPoseCalculatorBasic implements AutoAl
 		if (scale * magnitude > speedLimit)
 			scale = speedLimit / magnitude;
 		return new double[] { scale * displacements[0], scale * displacements[1] }; // forward: wheel velocity (+)
-		// return new double[] { -scale * displacements[1], -scale * displacements[0] }; // forward: wheel velocity (-), left/right swapped
+		// return new double[] { -scale * displacements[1], -scale * displacements[0] }; // forward: wheel velocity (-),
+		// left/right swapped
 	}
 
 }

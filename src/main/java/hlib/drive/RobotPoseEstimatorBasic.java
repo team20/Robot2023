@@ -36,9 +36,14 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 	PoseErrorTracker errorTracker = new PoseErrorTracker();
 
 	/**
-	 * The number of {@code Pose}s that have been given to this {@code RobotPoseEstimatorBasic}.
+	 * The number of occasions where the {@code Pose} of the robot was detected.
 	 */
 	int posesDetected = 0;
+
+	/**
+	 * The number of occasions where the {@code Pose} of the robot was not detected.
+	 */
+	int poseDetectionFailures = 0;
 
 	/**
 	 * The number of {@code Pose} outliers that have been detected by this {@code RobotPoseEstimatorBasic}.
@@ -106,7 +111,10 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 	 */
 	@Override
 	public final synchronized boolean update(Pose poseDetected) {
-		posesDetected++;
+		if (poseDetected != null)
+			posesDetected++;
+		else
+			poseDetectionFailures++;
 		if (isOutlier(poseDetected))
 			return false;
 		setPoseEstimated(poseDetected);
@@ -114,18 +122,32 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 	}
 
 	/**
-	 * Returns the rate (the number of {@code Pose}s per second) at which this {@code RobotPoseEstimator} have been
-	 * receiving the robot {@code Pose}.
+	 * Returns the rate (the number of poses per second) at which the {@code Pose} of the robot has been detected.
 	 * 
-	 * @return the rate (the number of {@code Pose}s per second) at which this {@code RobotPoseEstimator} have been
-	 *         receiving the robot {@code Pose}
+	 * @return the rate (the number of poses per second) at which the {@code Pose} of the robot has been detected
 	 */
 	@Override
 	public double poseDetectionRate() {
-		if (posesDetected == 0)
-			return 0;
+		double time = 0.001 * (System.currentTimeMillis() - startTime);
+		if (time > 0)
+			return posesDetected / time;
 		else
-			return (System.currentTimeMillis() - startTime) * 0.001 / posesDetected;
+			return 0;
+	}
+
+	/**
+	 * Returns the rate (the number of failures per second) at which the {@code Pose} of the robot has not been
+	 * detected.
+	 * 
+	 * @return the rate (the number of failures per second) at which the {@code Pose} of the robot has not been detected
+	 */
+	@Override
+	public double poseDetectionFailureRate() {
+		double time = 0.001 * (System.currentTimeMillis() - startTime);
+		if (time > 0)
+			return poseDetectionFailures / time;
+		else
+			return 0;
 	}
 
 	/**
@@ -197,6 +219,16 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 			errorTracker.update(poseDetected, this.poseEstimated);
 			this.poseEstimated = poseDetected;
 		}
+	}
+
+	/**
+	 * Returns the number of detected {@code Pose}s that have been given to this {@code RobotPoseEstimatorBasic}.
+	 * 
+	 * @return the number of detected {@code Pose}s that have been given to this {@code RobotPoseEstimatorBasic}
+	 */
+	@Override
+	public int posesDetected() {
+		return this.posesDetected;
 	}
 
 }

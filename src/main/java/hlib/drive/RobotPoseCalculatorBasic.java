@@ -67,12 +67,20 @@ public class RobotPoseCalculatorBasic implements RobotPoseCalculator {
 	 * 
 	 * @param angle
 	 *            an angle (in radians)
+	 * @param forwardOnly
+	 *            a boolean value indicating whether or not only forward movement is allowed
 	 * @return the displacements of the left and right wheels of a {@code Robot} when it rotates by the specified angle
 	 */
 	@Override
-	public double[] wheelDisplacements(double angle) {
+	public double[] wheelDisplacements(double angle, boolean forwardOnly) {
 		angle = Pose.normalize(angle);
 		double rightDisplacement = angle * this.robotWidth / 2;
+		if (forwardOnly) {
+			if (rightDisplacement > 0) // forward
+				return new double[] { 0, 2 * rightDisplacement };
+			else
+				return new double[] { -2 * rightDisplacement, 0 };
+		}
 		return new double[] { -rightDisplacement, rightDisplacement };
 	}
 

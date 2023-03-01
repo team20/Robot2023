@@ -52,12 +52,25 @@ public interface RobotPoseEstimator {
 	public Pose largestPoseInconsistency();
 
 	/**
-	 * Returns the rate (the number of {@code Pose}s per second) at which this {@code RobotPoseEstimator} have been
-	 * receiving the robot {@code Pose}.
+	 * Returns the rate (the number of poses per second) at which the {@code Pose} of the robot has been detected.
 	 * 
-	 * @return the rate (the number of {@code Pose}s per second) at which this {@code RobotPoseEstimator} have been
-	 *         receiving the robot {@code Pose}
+	 * @return the rate (the number of poses per second) at which the {@code Pose} of the robot has been detected
 	 */
 	double poseDetectionRate();
+
+	/**
+	 * Returns the rate (the number of failures per second) at which the {@code Pose} of the robot has not been
+	 * detected.
+	 * 
+	 * @return the rate (the number of failures per second) at which the {@code Pose} of the robot has not been detected
+	 */
+	double poseDetectionFailureRate();
+
+	/**
+	 * Returns the number of detected {@code Pose}s that have been given to this {@code RobotPoseEstimator}.
+	 * 
+	 * @return the number of detected {@code Pose}s that have been given to this {@code RobotPoseEstimator}
+	 */
+	public int posesDetected();
 
 }

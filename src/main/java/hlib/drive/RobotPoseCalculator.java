@@ -39,8 +39,10 @@ public interface RobotPoseCalculator {
 	 * 
 	 * @param angle
 	 *            an angle (in radians)
+	 * @param forwardOnly
+	 *            a boolean value indicating whether or not only forward movement is allowed
 	 * @return the displacements of the left and right wheels of a {@code Robot} when it rotates by the specified angle
 	 */
-	public double[] wheelDisplacements(double angle);
+	public double[] wheelDisplacements(double angle, boolean forwardOnly);
 
 }
