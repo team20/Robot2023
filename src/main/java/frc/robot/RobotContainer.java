@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.LEDs.LEDCommand;
@@ -78,25 +79,30 @@ public class RobotContainer {
 		m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftX),
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
-		// // Move the arm to the high node
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
+		// Triangle + Left Trigger not pressed -> Move the arm to the high node
+		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kTriangle)
+				&& !m_operatorController.getRawButton(ControllerConstants.Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
-					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)), 
-					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
-		// Flip the arm over to the medium node
-
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
-
-		 new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
-		 		.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
-
-		// Move the arm to the medium node
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+						new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)),
+						new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
+		// Triangle + Left Trigger pressed -> Flip the arm over to the high node
+		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kTriangle)
+				&& m_operatorController.getRawButton(ControllerConstants.Button.kLeftTrigger))
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
+		// Square + Left Trigger not pressed -> Move the arm to the medium node
+		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kSquare)
+				&& !m_operatorController.getRawButton(ControllerConstants.Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-		// Move the arm to the low position
+		// Square + Left Trigger pressed -> Flip the arm over to the medium node
+		new Trigger(() -> m_operatorController.getRawButton(ControllerConstants.Button.kSquare)
+				&& m_operatorController.getRawButton(ControllerConstants.Button.kLeftTrigger))
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		// X -> Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
+		// Used to cancel an ArmScoreCommand
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
+				.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
 
 		// -------------LED signaling-------------
 		// // Signal for a cube
