@@ -39,7 +39,6 @@ public class ArmScoreCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		// System.out.println(m_armPosition);
 		// Depending on the ArmPosition selected, set the angles to the corresponding
 		// angle set
 		switch (m_armPosition) {
@@ -76,8 +75,6 @@ public class ArmScoreCommand extends CommandBase {
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
 		}
-		// System.out.println(angles[0]);
-		// System.out.println(angles[1]);
 		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 

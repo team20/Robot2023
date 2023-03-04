@@ -97,7 +97,6 @@ public final class Constants {
 		 * The base of the robot is 10.5 inches, leaving 67.5 inches left for the arm
 		 */
 		public static final double kMaxHeight = 80;
-		// TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
@@ -108,15 +107,12 @@ public final class Constants {
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		// TODO encoder offsets
 		public static final double kUpperEncoderZeroOffset = 356.282;
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;
 		// TODO evaluate current limits
 		public static final int kSmartCurrentLimit = 55;
-		public static final int kPeakCurrentLimit = 30;
-		public static final int kPeakCurrentDurationMillis = 100;
 		/**
 		 * When the 2nd lower arm motor is following the 1st lower arm motor, this
 		 * controls if the 2nd lower arm motor should spin in the opposite direction of
@@ -138,7 +134,6 @@ public final class Constants {
 		public static final double kUpperArmFF = 0.0;
 		/** Controls the direction of the upper arm motor */
 		public static final boolean kUpperInvert = false;
-		// TODO set this back to one?
 		public static final double kMinOutputLower = -1;
 		public static final double kMaxOutputLower = 1;
 		public static final double kMinOutputUpper = -1;
@@ -192,8 +187,6 @@ public final class Constants {
 	}
 
 	public static final class DriveConstants {
-
-		// TODO recheck inversions
 		public static final int kFrontLeftID = 2;
 		public static final boolean kFrontLeftInvert = false;
 		public static final int kBackLeftID = 4;
@@ -217,11 +210,6 @@ public final class Constants {
 		public static final double kFF = 0;
 		public static final double kMaxOutput = 1;
 		public static final double kMinOutput = -1;
-
-		// TODO do we need slot id
-		public static final int kSlotID = 0;
-
-		// TODO do we use this
 		public static final double kFineTurningSpeed = .3;
 
 		// navX stuff
@@ -234,37 +222,13 @@ public final class Constants {
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
-
-		// TODO unused constants
-		public static final double ksVolts = 0.196;
-		public static final double kvVoltSecondsPerMeter = 2.15;
-		public static final double kaVoltSecondsSquaredPerMeter = .53;
-
 		// Horizontal distance between the wheels
 		public static final double kTrackwidthMeters = Units.inchesToMeters(20.5);
-
-		// TODO remove unused
-		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-				kTrackwidthMeters);
-
-		// TODO see which ones of these are used and which are not
-		public static final double kMaxSpeedMetersPerSecond = 1;
-		public static final double kMaxAccelerationMetersPerSecondSquared = .5;
-		public static final double kMaxRotSpeedMetersPerSecond = 1;
 		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
 		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
-		public static final double kQuickStopThreshold = .2;
-		public static final double kQuickStopAlpha = .1;
-		public static final double kBackupDistance = Units.feetToMeters(2);
 		public static final double kRampRate = .5;// 1?
 		public static final double kSpeedLimitFactor = 1.0;
-		public static final boolean kLeftSensorPhase = true; // TODO these are totally arbitrary right now and need to
-																// // be checked
-		public static final boolean kRightSensorPhase = false;
-		public static final boolean kEnableVoltageComp = true;
-		public static final double kVoltageComp = 12;
-		public static final double kEncoderCounts = 42;
 		/**
 		 * Converts native encoder units(revolutions) to meters
 		 * <p>

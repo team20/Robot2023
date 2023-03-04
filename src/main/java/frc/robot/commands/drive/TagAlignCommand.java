@@ -53,7 +53,6 @@ public class TagAlignCommand extends CommandBase {
 	 * Line up to apriltag directly
 	 */
 	public TagAlignCommand() {
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -62,7 +61,6 @@ public class TagAlignCommand extends CommandBase {
 	 * zOffset = offset perpendicular to the tag plane
 	 */
 	public TagAlignCommand(double xOffset, double zOffset) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		m_xOffset = xOffset;
 		m_zOffset = zOffset;
 		addRequirements(DriveSubsystem.get());
@@ -72,7 +70,6 @@ public class TagAlignCommand extends CommandBase {
 	 * Use offsets based on the tag and what position we want to go to
 	 */
 	public TagAlignCommand(TagNumber tagId, Position pos, double zOffset) {
-		// Use addRequirements() here to declare subsystem dependencies.
 		switch (pos) { // switch for position based on parameter
 			case LeftPosition:
 				m_xOffset = tagId.yOffsetLeft;

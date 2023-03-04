@@ -35,7 +35,6 @@ public class TurnProfiledCommand extends CommandBase {
    * small angle, such as 10, then we can assume a linear function of p between the two
   */
   public TurnProfiledCommand(double targetAngle) {
-    // Use addRequirements() here to declare subsystem dependencies.
     m_targetAngle = targetAngle;
     addRequirements(DriveSubsystem.get());
   }

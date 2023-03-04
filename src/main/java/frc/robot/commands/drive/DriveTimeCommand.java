@@ -19,7 +19,6 @@ public class DriveTimeCommand extends CommandBase {
     addRequirements(DriveSubsystem.get());
     m_speed = speed;
     m_time = time;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

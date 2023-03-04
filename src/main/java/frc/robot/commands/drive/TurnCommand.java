@@ -13,7 +13,6 @@ public class TurnCommand extends CommandBase {
 
 	/** Creates a new TurnCommand. */
   public TurnCommand(double targetAngle) {
-    // Use addRequirements() here to declare subsystem dependencies.
     m_targetAngle = targetAngle;
     addRequirements(DriveSubsystem.get());
   }

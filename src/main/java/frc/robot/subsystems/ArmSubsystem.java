@@ -187,9 +187,6 @@ public class ArmSubsystem extends SubsystemBase {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
 		// Simple bounds checking without accounting for wraparound
-		// System.out.println(targetAngle);
-		// System.out.println(currentAngle);
-
 		if (Math.abs(currentAngle-targetAngle) < ArmConstants.kAllowedDegreesError) {
 			return true;
 			/*

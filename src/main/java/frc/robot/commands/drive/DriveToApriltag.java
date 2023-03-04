@@ -15,7 +15,6 @@ import frc.robot.subsystems.DriveSubsystem;
  * @author Jeong Hyon Hwang
  */
 
-//TODO rename this
 public class DriveToApriltag extends CommandBase {
 	
 	private double m_speed;
@@ -23,7 +22,6 @@ public class DriveToApriltag extends CommandBase {
 	public DriveToApriltag(double speed) {
 		
 		m_speed = speed;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -53,7 +51,7 @@ public class DriveToApriltag extends CommandBase {
 	 */
 	@Override
 	public void end(boolean interrupted) {
-		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	/**

@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-
 	private static DriveSubsystem s_subsystem;
 
 	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, MotorType.kBrushless);
@@ -93,9 +92,6 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderPositionConversionFactor);
 		m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderVelocityConversionFactor);
 
-		// TODO remove this
-		// m_backRight.setControlFramePeriodMs(10);
-
 		m_leftPIDController.setP(DriveConstants.kP);
 		m_leftPIDController.setI(DriveConstants.kI);
 		m_leftPIDController.setIZone(DriveConstants.kIz);
@@ -113,14 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightPIDController.setFeedbackDevice(m_rightEncoder);
 
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
-
-		// TODO remove this
-		// this is what they did in 2020 with the navX:
-		// Rotation2d.fromDegrees(getHeading()));
 		resetEncoders();
-		// TODO remove this
-		// from 2020: resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-
 	}
 
 	public static DriveSubsystem get() {
@@ -128,7 +117,6 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
-		// TODO give this a better name
 		SmartDashboard.putNumber("Heading", getHeading());
 		SmartDashboard.putNumber("L RPM: ", getLeftEncoderVelocity());
 		SmartDashboard.putNumber("R RPM: ", getRightEncoderVelocity());
@@ -137,9 +125,6 @@ public class DriveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());
 
 		SmartDashboard.putNumber("Curr Encoder Position", DriveSubsystem.get().getAverageEncoderDistance());
-		// TODO remove these comments
-		// System.out.println("the angle is: " + getHeading());
-		// SmartDashboard.putNumber("average encoder", getAverageEncoderDistance());
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 				getRightEncoderPosition());
 		// wasDisabled exists so the motors aren't constantly set to brake or coast mode
@@ -201,23 +186,6 @@ public class DriveSubsystem extends SubsystemBase {
 		return m_odometry.getPoseMeters();
 	}
 
-	// TODO remove this - unused
-	/**
-	 * @return Wheel speeds of the robot
-	 */
-	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-		return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
-	}
-
-	// TODO remove these
-	// public double getLeftMotorSpeeds() {
-	// return m_frontLeft.get();
-	// }
-
-	// public double getRightMotorSpeeds() {
-	// return m_frontRight.get();
-	// }
-
 	/**
 	 * @return The heading of the gyro (degrees)
 	 */
@@ -275,32 +243,11 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param rightSpeed Right motors percent output
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		// TODO remove prints
-		// System.out.println("Left speed: " + leftSpeed);
-		// System.out.println("Right speed:" + rightSpeed);
 		// TODO only set front? back should follow
 		m_frontLeft.set(leftSpeed);
 		m_backLeft.set(leftSpeed);
 		m_frontRight.set(rightSpeed);
 		m_backRight.set(rightSpeed);
-	}
-
-	// TODO remove this method
-	public void tankDriveVelocity(DifferentialDriveWheelSpeeds wheelSpeeds) {
-
-		double leftNativeVelocity = wheelSpeeds.leftMetersPerSecond
-				* (1 / DriveConstants.kEncoderVelocityConversionFactor);
-		double rightNativeVelocity = wheelSpeeds.rightMetersPerSecond
-				* (1 / DriveConstants.kEncoderVelocityConversionFactor);
-
-		m_leftPIDController.setReference(leftNativeVelocity, CANSparkMax.ControlType.kVelocity);
-		m_rightPIDController.setReference(rightNativeVelocity, CANSparkMax.ControlType.kVelocity);
-
-		// same as above except implementing a feed forward as well
-		// m_leftPIDController.setReference(leftNativeVelocity,
-		// CANSparkMax.ControlType.kVelocity,
-		// DriveConstants.kSlotID,
-		// DriveConstants.kFeedForward.calculate(wheelSpeeds.leftMetersPerSecond));
 	}
 
 	/**

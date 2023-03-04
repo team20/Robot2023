@@ -109,7 +109,6 @@ public class AprilTagSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("LimelightPitchT", m_pitchT);
 		SmartDashboard.putNumber("LimelightYawT", m_yawT);
 		SmartDashboard.putNumber("LimelightRollT", m_rollT);
-		// This method will be called once per scheduler run
 	}
 
 	/**

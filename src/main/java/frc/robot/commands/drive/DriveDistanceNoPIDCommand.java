@@ -49,7 +49,6 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 		m_maxStride = maxStride;
 		m_convergenceRatio = convergenceRatio;
 		m_maxSpeed = maxSpeed;
-		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -85,7 +84,7 @@ public class DriveDistanceNoPIDCommand extends CommandBase {
 	 */
 	@Override
 	public void end(boolean interrupted) {
-		DriveSubsystem.get().tankDrive(0, 0); // TODO set speeds
+		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
 	/**
