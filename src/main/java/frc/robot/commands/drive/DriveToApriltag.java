@@ -10,7 +10,7 @@ import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
- * A {@code DriveDistanceCommand2} can move the robot by a certain distance.
+ * A {@code DriveToApriltag} can move the robot by a certain distance.
  * 
  * @author Jeong Hyon Hwang
  */
@@ -28,7 +28,7 @@ public class DriveToApriltag extends CommandBase {
 	}
 
 	/**
-	 * Is called when this {@code DriveDistanceCommand2} is initially scheduled.
+	 * Is called when this {@code DriveToApriltag} is initially scheduled.
 	 */
 	@Override
 	public void initialize() {
@@ -37,7 +37,7 @@ public class DriveToApriltag extends CommandBase {
 
 	/**
 	 * Is called every time the scheduler runs while this
-	 * {@code DriveDistanceCommand2} is scheduled.
+	 * {@code DriveToApriltag} is scheduled.
 	 */
 	@Override
 	public void execute() {
@@ -49,7 +49,7 @@ public class DriveToApriltag extends CommandBase {
 	}
 
 	/**
-	 * Is called once this {@code DriveDistanceCommand2} ends or is interrupted.
+	 * Is called once this {@code DriveToApriltag} ends or is interrupted.
 	 */
 	@Override
 	public void end(boolean interrupted) {
@@ -57,9 +57,9 @@ public class DriveToApriltag extends CommandBase {
 	}
 
 	/**
-	 * Determines whether or not this {@code DriveDistanceCommand2} is completed.
+	 * Determines whether or not this {@code DriveToApriltag} is completed.
 	 * 
-	 * @return {@code true} if this {@code DriveDistanceCommand2} is completed;
+	 * @return {@code true} if this {@code DriveToApriltag} is completed;
 	 *         {@code false} otherwise
 	 */
 	@Override

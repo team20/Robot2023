@@ -33,6 +33,9 @@ public class ManualMotorCommand extends CommandBase {
 	 * Creates a new ManualMotorCommand.
 	 */
 	public ManualMotorCommand(Supplier<Double> lowerArmInput, Supplier<Double> upperArmInput) {
+		// When the operator and the robot(front side) are facing each other, left on
+		// the joystick should move the lower arm back, and right should move the lower
+		// arm forward. Up and down should move the upper arm accordingly.
 		m_lowerArmInput = lowerArmInput;
 		m_upperArmInput = upperArmInput;
 		addRequirements(ArmSubsystem.get());
@@ -50,7 +53,7 @@ public class ManualMotorCommand extends CommandBase {
 				* ArmConstants.kArmMotorSpeedSensitivity;
 		upperArmMotorSpeed = -MathUtil.applyDeadband(m_upperArmInput.get(), ControllerConstants.kDeadzone)
 				* ArmConstants.kArmMotorSpeedSensitivity;
-		
+
 		ArmSubsystem.get().setLowerArmMotorSpeed(lowerArmMotorSpeed);
 		ArmSubsystem.get().setUpperArmMotorSpeed(upperArmMotorSpeed);
 	}

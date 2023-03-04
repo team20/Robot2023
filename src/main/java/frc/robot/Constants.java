@@ -61,15 +61,17 @@ public final class Constants {
 
 		// TODO check arm speed multipliers
 		/**
-		 * A joystick input multiplier to control how fast the arm moves relative to how
-		 * much the joystick is being moved. Used for moving the arm position(x and y
-		 * coordinates)
+		 * Controls how fast the arm moves when the joysticks are moved.
+		 * <p>
+		 * This affects the speed of the arm's horizontal and vertical movement.
 		 */
 		public static final double kCartesianSpeedSensitivity = 1.5;
 		/**
-		 * A joystick input multiplier to control how fast the arm motors spin relative
-		 * to how much the joystick is being moved. Used for spinning the arm motors
-		 * manually
+		 * When using the ManualMotorCommand, this controls the speed of the arm motors
+		 * when the joysticks are moved.
+		 * <p>
+		 * This only affects how fast the arm's motors spin when using the
+		 * ManualMotorCommand.
 		 */
 		public static final double kArmMotorSpeedSensitivity = 0.4;
 
@@ -115,6 +117,11 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 55;
 		public static final int kPeakCurrentLimit = 30;
 		public static final int kPeakCurrentDurationMillis = 100;
+		/**
+		 * When the 2nd lower arm motor is following the 1st lower arm motor, this
+		 * controls if the 2nd lower arm motor should spin in the opposite direction of
+		 * the 1st motor
+		 */
 		public static boolean kLowerArmMotor2Oppose = true;
 		// TODO PIDS
 		public static final double kLowerArmP = 0.06000;
@@ -122,12 +129,14 @@ public final class Constants {
 		public static final double kLowerArmD = 0;
 		public static final double kLowerArmIz = 5;
 		public static final double kLowerArmFF = 0.0;
+		/** Controls the direction of the lower arm motor */
 		public static final boolean kLowerInvert = true;
 		public static final double kUpperArmP = 0.1;//0.25
 		public static final double kUpperArmI = 0.000;
 		public static final double kUpperArmD = 0;
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
+		/** Controls the direction of the upper arm motor */
 		public static final boolean kUpperInvert = false;
 		// TODO set this back to one?
 		public static final double kMinOutputLower = -1;
@@ -154,9 +163,13 @@ public final class Constants {
 		}
 
 		public static final class Button {
+			/** Left middle button */
 			public static final int kSquare = 1;
+			/** Bottom button */
 			public static final int kX = 2;
+			/** Right middle button */
 			public static final int kCircle = 3;
+			/** Top button */
 			public static final int kTriangle = 4;
 			public static final int kLeftBumper = 5;
 			public static final int kRightBumper = 6;

@@ -39,7 +39,7 @@ public class CommandComposer {
 	 * group changes depending on where the arm is moving to and where the arm is
 	 * 
 	 * @param armPosition The position the arm should move to
-	 * @return A command or command group to has all the necessary steps to move the
+	 * @return A command or command group that has all the necessary steps to move the
 	 *         arm to the desired position
 	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
