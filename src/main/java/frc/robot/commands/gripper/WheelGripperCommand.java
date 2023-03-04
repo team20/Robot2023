@@ -1,9 +1,7 @@
 package frc.robot.commands.gripper;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
 
 //TODO revisit this command

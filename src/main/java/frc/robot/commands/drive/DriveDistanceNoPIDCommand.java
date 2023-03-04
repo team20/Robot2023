@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drive;
 
-import frc.robot.subsystems.AprilTagSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
