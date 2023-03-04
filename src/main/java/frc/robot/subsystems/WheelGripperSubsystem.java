@@ -16,9 +16,9 @@ import frc.robot.Constants.GripperConstants;
 public class WheelGripperSubsystem extends SubsystemBase {
 	private static WheelGripperSubsystem s_subsystem;
 
-	private CANSparkMax m_gripperScrew = new CANSparkMax(GripperConstants.kGripperID, MotorType.kBrushless);
-	private final RelativeEncoder m_gripperScrewEncoder = m_gripperScrew.getEncoder();
-	// private SparkMaxLimitSwitch m_openLimitSwitch;
+	private CANSparkMax m_gripperMotor = new CANSparkMax(GripperConstants.kGripperID, MotorType.kBrushless);
+	private final RelativeEncoder m_gripperEncoder = m_gripperMotor.getEncoder();
+	private SparkMaxLimitSwitch m_forwardLimitSwitch;
 
 	/** Creates a new GripperSubsystem. */
 	public WheelGripperSubsystem() {
@@ -31,13 +31,13 @@ public class WheelGripperSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-		// m_openLimitSwitch = m_gripperScrew.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		// m_openLimitSwitch.enableLimitSwitch(getOpenLimitSwitch());
-		m_gripperScrew.restoreFactoryDefaults();
-		m_gripperScrew.setInverted(GripperConstants.kInvert);
-		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_gripperScrew.enableVoltageCompensation(12);
-		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
+		m_forwardLimitSwitch = m_gripperMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_forwardLimitSwitch.enableLimitSwitch(false);
+		m_gripperMotor.restoreFactoryDefaults();
+		m_gripperMotor.setInverted(GripperConstants.kInvert);
+		m_gripperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_gripperMotor.enableVoltageCompensation(12);
+		m_gripperMotor.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
 
 	}
 
@@ -47,15 +47,15 @@ public class WheelGripperSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Gripper output", m_gripperScrew.getOutputCurrent());
+		SmartDashboard.putNumber("Gripper output", m_gripperMotor.getOutputCurrent());
 	}
 
 	public void setGripperMotor(double speed) {
 		SmartDashboard.putNumber("target gripper speed", speed);
-		m_gripperScrew.set(speed);
+		m_gripperMotor.set(speed);
 	}
 
-	// public boolean getOpenLimitSwitch() {
-	// 	return m_openLimitSwitch.isPressed();
-	// }
+	public boolean getLimitSwitch() {
+		return m_forwardLimitSwitch.isPressed();
+	}
 }

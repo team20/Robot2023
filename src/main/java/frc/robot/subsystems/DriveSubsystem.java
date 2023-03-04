@@ -151,8 +151,10 @@ public class DriveSubsystem extends SubsystemBase {
 			wasDisabled = false;
 			// If the robot is disabled, put the motors in coast mode
 		} else if (!isEnabledFast() && !wasDisabled) {
-			m_frontLeft.setIdleMode(IdleMode.kCoast);
-			m_frontRight.setIdleMode(IdleMode.kCoast);
+			// m_frontLeft.setIdleMode(IdleMode.kCoast);
+			// m_frontRight.setIdleMode(IdleMode.kCoast);
+			m_backLeft.setIdleMode(IdleMode.kBrake);
+			m_backRight.setIdleMode(IdleMode.kBrake);
 			wasDisabled = true;
 		}
 	}

@@ -35,6 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private double m_targetLowerArmAngle = 0;
 	/** Stores the angle we want the upper arm to be at */
 	private double m_targetUpperArmAngle = 0;
+	private boolean m_temporarilyDisabled;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -212,9 +213,11 @@ public class ArmSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
+		// SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOut());
+		// SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
-		// Log the lower and upper arm angle as measured by the encoders
+		//Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
 		// Calculate the arm position using the encoder angles
@@ -227,6 +230,15 @@ public class ArmSubsystem extends SubsystemBase {
 		if (armPosition != null) {
 			SmartDashboard.putNumber("IK Lower Arm Angle", armPosition[0]);
 			SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
+		}
+
+		if(getUpperArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getUpperArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound){
+			// setLowerArmMotorSpeed(0);
+			// setUpperArmMotorSpeed(0);
+			// m_temporarilyDisabled = true;
+		}else if(m_temporarilyDisabled && getUpperArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getUpperArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
+			// setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
+			// m_temporarilyDisabled = false;
 		}
 	}
 }

@@ -1,10 +1,9 @@
 package frc.robot.commands.gripper;
 
-import java.time.Duration;
-import java.time.Instant;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
 
 //TODO revisit this command
@@ -14,13 +13,14 @@ public class WheelGripperCommand extends CommandBase {
 	public enum WheelGripperPosition {
 		INTAKE,
 		OUTTAKE,
-        STOP
+        STOP,
+		INTAKE_CUBE_W_SENSOR
 	}
 
-	private WheelGripperPosition m_gripperPosition;
+	private WheelGripperPosition m_operation;
 
 	public WheelGripperCommand(WheelGripperPosition gripperPosition) {
-		m_gripperPosition = gripperPosition;
+		m_operation = gripperPosition;
 		addRequirements(WheelGripperSubsystem.get());
 	}
 
@@ -30,7 +30,7 @@ public class WheelGripperCommand extends CommandBase {
 
 	@Override
 	public void execute() {
-		switch (m_gripperPosition) {
+		switch (m_operation) {
 			case INTAKE:
                 WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower);
 				break;
@@ -39,6 +39,10 @@ public class WheelGripperCommand extends CommandBase {
 				break;
             case STOP:
                 WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kHoldPower);
+				break;
+			case INTAKE_CUBE_W_SENSOR:
+                WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kMovePower);
+				break;
 			default:
 				break;
 		}
@@ -46,11 +50,16 @@ public class WheelGripperCommand extends CommandBase {
 
 	@Override
 	public void end(boolean interrupted) {
-		
+		if(m_operation == WheelGripperPosition.INTAKE_CUBE_W_SENSOR){
+			WheelGripperSubsystem.get().setGripperMotor(0);
+		}
 	}
 
 	@Override
 	public boolean isFinished() {
+		if(m_operation == WheelGripperPosition.INTAKE_CUBE_W_SENSOR){
+			return WheelGripperSubsystem.get().getLimitSwitch();
+		}
         return true;
 	}
 }

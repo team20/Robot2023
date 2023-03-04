@@ -43,9 +43,9 @@ public class DriveToApriltag extends CommandBase {
 	public void execute() {
 		double angle = AprilTagSubsystem.get().getTX();
 
-		double turn = angle / (27*1.25);
+		double turn = angle / (30*2*2);
 
-		DriveSubsystem.get().arcadeDrive(m_speed, -turn*m_speed);
+		DriveSubsystem.get().arcadeDrive(m_speed, -turn);
 	}
 
 	/**

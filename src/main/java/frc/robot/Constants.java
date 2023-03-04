@@ -44,19 +44,19 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 90, 40 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 90, 33 };
+		public static final double[] kPocketAngles = { 106, 22 };
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from going over the height limit when transitioning
 		 * between forward and backward positions
 		 */
-		public static final double[] kIntermediateAngles = { 50, 220 };
+		public static final double[] kIntermediateAngles = { 50, 270 };
 
 		// TODO remeasure arm lengths
 		/** Length of lower arm length in inches */
 		public static final double kLowerArmLength = 33;
 		/** Length of upper arm length in inches */
-		public static final double kUpperArmLength = 43.5;
+		public static final double kUpperArmLength = 41.5;
 
 
 		// TODO check arm speed multipliers
@@ -134,6 +134,8 @@ public final class Constants {
 		public static final double kMaxOutputLower = 1;
 		public static final double kMinOutputUpper = -1;
 		public static final double kMaxOutputUpper = 1;
+        public static final double kLowerArmInvalidLowerBound = 40;
+        public static final double kLowerArmInvalidUpperBound = 120;
 	}
 
 	public static final class ControllerConstants {

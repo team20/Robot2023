@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ControllerConstants.Axis;
+import frc.robot.Constants.ControllerConstants.Button;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ArmScoreCommand;
@@ -67,7 +69,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE),
+				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
 						(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.onTrue(new WheelGripperCommand(WheelGripperPosition.STOP));
@@ -86,8 +88,9 @@ public class RobotContainer {
 		// Flip the arm over to the medium node
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
+      
 		 new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
 		 		.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
 
@@ -97,6 +100,13 @@ public class RobotContainer {
 		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
+
+    // Move the arm to the medium node over the back
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+  // Move the arm to the medium node over the back
+  new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+  .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
 
 		// -------------LED signaling-------------
 		// // Signal for a cube
@@ -130,6 +140,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return new TagAlignCommand(0,0.75);
+		return new DriveToApriltag(0.25);
 	}
 }
