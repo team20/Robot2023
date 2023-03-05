@@ -41,7 +41,7 @@ public final class Constants {
 		 */
 		public static final double[] kMediumForwardAngles = { 84, 102 };
 		/** The lower and upper arm angles for the arm to be in the low position */
-		public static final double[] kLowAngles = { 90, 40 };
+		public static final double[] kLowAngles = { 87, 38 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 		/**
