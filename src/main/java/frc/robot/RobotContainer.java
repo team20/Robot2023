@@ -89,7 +89,11 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
-    // Move the arm to the medium node over the back
+    // Move the arm to the substation position
+	new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
+
+				// Move the arm to the medium node over the back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
     .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
   // Move the arm to the medium node over the back

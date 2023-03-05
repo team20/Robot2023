@@ -195,7 +195,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param currentAngle The current angle
 	 * @return Whether or not the current angle is close enough to the target angle
 	 */
-	private boolean checkAngle(double targetAngle, double currentAngle) {
+	public boolean checkAngle(double targetAngle, double currentAngle) {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
 		// Simple bounds checking without accounting for wraparound

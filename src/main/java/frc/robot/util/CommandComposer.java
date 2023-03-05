@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.drive.BalancePIDCommand;
@@ -39,7 +40,17 @@ public class CommandComposer {
 	 *         arm to the desired position
 	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
-		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+		if (ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[0], ArmSubsystem.get().getLowerArmAngle()) && 
+		ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[1], ArmSubsystem.get().getUpperArmAngle())) {
+			return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.POCKET_INTERMEDIATE),
+			generateArmScoreCommand(armPosition));
+		} else {
+			return generateArmScoreCommand(armPosition);
+		}
+	}
+
+	public static Command generateArmScoreCommand(ArmPosition armPosition) {
+			double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
 		boolean isArmForwards = coordinates[0] > 0;
 		// If the arm is forwards, and we are only moving the arm between the forward
