@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.drive.BalancePIDCommand;
@@ -30,6 +31,21 @@ import frc.robot.subsystems.ArmSubsystem;
  * Command to execute and with what arguments
  */
 public class CommandComposer {
+	public static Command createArmScoreCommand(ArmPosition armPosition) {
+		/**
+		 * If the arm is in the pocket, move the arm to a special intermediate position
+		 * to move it out of the pocket first, if it's not, don't move it to that
+		 * intermediate position
+		 */
+		if (ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[0], ArmSubsystem.get().getLowerArmAngle())
+				&& ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[1],
+						ArmSubsystem.get().getUpperArmAngle())) {
+			return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.POCKET_INTERMEDIATE),
+					generateArmScoreCommand(armPosition));
+		} else {
+			return generateArmScoreCommand(armPosition);
+		}
+	}
 	/**
 	 * Creates a command or command group to move the arm. The command or command
 	 * group changes depending on where the arm is moving to and where the arm is
@@ -38,7 +54,7 @@ public class CommandComposer {
 	 * @return A command or command group that has all the necessary steps to move the
 	 *         arm to the desired position
 	 */
-	public static Command createArmScoreCommand(ArmPosition armPosition) {
+	public static Command generateArmScoreCommand(ArmPosition armPosition) {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
 		boolean isArmForwards = coordinates[0] > 0;
@@ -67,6 +83,7 @@ public class CommandComposer {
 		// Probably unreachable
 		return null;
 	}
+
 
 	// Drive out of community
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.p
