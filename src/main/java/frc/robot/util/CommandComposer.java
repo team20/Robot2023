@@ -31,6 +31,14 @@ import frc.robot.subsystems.ArmSubsystem;
  * Command to execute and with what arguments
  */
 public class CommandComposer {
+	/**
+	 * Creates a command or command group to move the arm. The command or command
+	 * group changes depending on where the arm is moving to and where the arm is
+	 * 
+	 * @param armPosition The position the arm should move to
+	 * @return A command or command group that has all the necessary steps to move
+	 *         the arm to the desired position
+	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
 		/**
 		 * If the arm is in the pocket, move the arm to a special intermediate position
@@ -46,15 +54,19 @@ public class CommandComposer {
 			return generateArmScoreCommand(armPosition);
 		}
 	}
+
 	/**
 	 * Creates a command or command group to move the arm. The command or command
-	 * group changes depending on where the arm is moving to and where the arm is
+	 * group changes depending on where the arm is moving to and where the arm is.
+	 * The difference between this and createArmScoreCommand, is that this has the
+	 * main logic, and createArmScoreCommand is a wrapper that checks if the arm is
+	 * in the pocket and needs to go to an intermediate position first.
 	 * 
 	 * @param armPosition The position the arm should move to
-	 * @return A command or command group that has all the necessary steps to move the
-	 *         arm to the desired position
+	 * @return A command or command group that has most of the necessary steps to
+	 *         move the arm to the desired position
 	 */
-	public static Command generateArmScoreCommand(ArmPosition armPosition) {
+	private static Command generateArmScoreCommand(ArmPosition armPosition) {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
 		boolean isArmForwards = coordinates[0] > 0;
