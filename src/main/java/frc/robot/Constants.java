@@ -46,12 +46,6 @@ public final class Constants {
 		public static final double[] kPocketAngles = { 106, 22 };
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
-		 * so when the arm moves from the pocket position to any other position, the gripper
-		 * doesn't hit the frame while doing so.
-		 */
-		public static final double[] kPocketIntermediateAngles = { kPocketAngles[0] + 15, 22 };
-		/**
-		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from going over the height limit when transitioning
 		 * between forward and backward positions
 		 */

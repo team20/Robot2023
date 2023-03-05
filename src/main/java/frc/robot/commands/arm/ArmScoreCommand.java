@@ -20,7 +20,6 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
-		POCKET_INTERMEDIATE,
 		INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		/** Exists to forcibly finish this command */
@@ -60,9 +59,6 @@ public class ArmScoreCommand extends CommandBase {
 				break;
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
-				break;
-			case POCKET_INTERMEDIATE:
-				angles = ArmConstants.kPocketIntermediateAngles;
 				break;
 			case INTERMEDIATE:
 				angles = ArmConstants.kIntermediateAngles;
