@@ -13,13 +13,16 @@ int ledState = 0;
 
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1:
-#define LED_PIN 5
+#define LOWER_LED_PIN 6
+#define UPPER_LED_PIN 5
 
 // How many NeoPixels are attached to the Arduino?
-#define LED_COUNT 18
+#define LOWER_LED_COUNT 33
+#define UPPER_LED_COUNT 31
 
 // Declare our NeoPixel strip object:
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_BRG + NEO_KHZ800); 
+Adafruit_NeoPixel lowerLEDs(LOWER_LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel upperLEDs(UPPER_LED_COUNT, UPPER_LED_COUNT, NEO_GRB + NEO_KHZ800);
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
 // Argument 3 = Pixel type flags, add together as needed, refer to Adafruit_NeoPixel.h
@@ -30,27 +33,59 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_BRG + NEO_KHZ800);
 //   NEO_BRG     Pixels are wired for BRG bitstream (whatever LED Strip 2023 uses)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)  
+//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 int colorIndex = 0;  //frame variable, chnages from loop
 int pattern = -1;    //pattern led strips are on, read in from master/robot
 long startTime = -1;
-const long endTime = 30000;                   //timer variables for endgame
-int DHpin = 8;                                //idk, I copied this blindly, I don't think this does anything
-byte dat[5];                                  //same as above
-uint32_t teamColor = strip.Color(0,255,0);    //color of team, default to green, can be set by master/robot to alliance color
-uint32_t allianceColor; 
-uint32_t MovingGreenRedGradient(int c, int i) {  //pixel depends on ratio of red and green
-  return (strip.Color(255 * ((i + c) % LED_COUNT) / LED_COUNT, 0, 255 * (LED_COUNT - (i + c) % LED_COUNT) / LED_COUNT % 255));
+const long endTime = 30000;                       //timer variables for endgame
+int DHpin = 8;                                    //idk, I copied this blindly, I don't think this does anything
+byte dat[5];                                      //same as above
+uint32_t teamColor = lowerLEDs.Color(0, 255, 0);  //color of team, default to green, can be set by master/robot to alliance color
+/// @brief
+/// @param c Color index
+/// @param i The LED number
+/// @param ledCount The number of LEDs in the strip
+/// @return The color for an LED in the strip
+uint32_t MovingGreenRedGradient(int c, int i, int ledCount) {  //pixel depends on ratio of red and green (for lowerLEDs)
+  return (lowerLEDs.Color(
+    /* The amount of red is based on the LED number and color index.
+      It starts off as not very red, and as the LED number increases,
+      and as the color index advances, the more red the LED gets,
+      until it gets to the "end" and it loops over to not very red
+      */
+    255 * ((i + c) % ledCount) / ledCount,
+    0,
+    // This works like red, but in reverse, so instead of an LED starting off
+    // not very green, and increasing the amount of color, the LED starts very
+    // green, and the amount of green decreases, until it loops over to very green
+    255 * (ledCount - (i + c) % ledCount) / ledCount % 255));
 }
-uint32_t MovingGreenBlueGradient(int c, int i) {  //pixel depends on ratio of green and blue
-  return (strip.Color(0, 255 * ((i + c) % LED_COUNT) / LED_COUNT, 255 * (LED_COUNT - (i + c) % LED_COUNT) / LED_COUNT % 255));
+/// @brief
+/// @param c Color index
+/// @param i The LED number
+/// @param ledCount The number of LEDs in the strip
+/// @return The color for an LED in the strip
+uint32_t MovingGreenBlueGradient(int c, int i, int ledCount) {  //pixel depends on ratio of green and blue
+  return (lowerLEDs.Color(
+    0,
+    /* The amount of green is based on the LED number and color index.
+      It starts off as not very green, and as the LED number increases,
+      and as the color index advances, the more green the LED gets,
+      until it gets to the "end" and it loops over to not very green
+      */
+    255 * ((i + c) % ledCount) / ledCount,
+    // This works like green, but in reverse, so instead of an LED starting off
+    // not very blue, and increasing the amount of color, the LED starts very
+    // blue, and the amount of blue decreases, until it loops over to very blue
+    255 * (ledCount - (i + c) % ledCount) / ledCount % 255));
 }
-uint32_t TheaterLights(int c, int i, uint32_t color1, uint32_t color2) {  //pixel on color 1 or 2 depending on frame
-  if (i % 2 == c % 2) { return (color1); }
-  return (color2);
-}
-uint32_t BlinkingLights(int c, int i, uint32_t color3, uint32_t color4) {
-  if (c % 2 == 0) { return (color3); }
+/// @brief Makes an LED strip alternate colors
+/// @param i The LED number
+/// @param color3 The color of an even numbered LED
+/// @param color4 The color of an odd numbered LED
+/// @return The color of the LED
+uint32_t BlinkingLights(int i, uint32_t color3, uint32_t color4) {
+  if (i % 2 == 0) { return (color3); }
   return (color4);
 }
 
@@ -63,22 +98,7 @@ uint32_t HSV2RGB(uint32_t h, double s, double v) {  //converts HSV colors to RGB
   uint8_t r = (uint8_t)(((abs(180 - h) > 120) * c + (abs(180 - h) > 60) * (x - c) + m) * 255);  //red
   uint8_t g = (uint8_t)(((abs(120 - h) < 60) * c + (abs(120 - h) < 120) * (x - c) + m) * 255);  //green
   uint8_t b = (uint8_t)(((abs(240 - h) < 60) * c + (abs(240 - h) < 120) * (x - c) + m) * 255);  //blue
-  return (strip.Color(r, g, b));                                                                //convert to uint32_t
-}
-uint32_t RainbowColor(int c, int i) {  //solid rainbow, change with c
-  return (HSV2RGB((c * 18) % 360, 1, 1));
-  //return(strip.Color(0,255,0));
-}
-uint32_t SeizureRainbowColor(int c, int i) {  //Rainbow but blinking
-  if (c % 2 == 0) return (RainbowColor(c / 2, i));
-  return (strip.Color(0, 0, 0));
-}
-uint32_t MovingRainbow(int c, int i) {  //Moving rainbow
-  return (RainbowColor(c + i, i));
-}
-uint32_t Timer(int c, int i, uint32_t color) {  //user timer proportion to light up specific pixel
-  if (c % 2 == 0 && 2 > (i + c) % int(LED_COUNT * (1 - (millis() - startTime) / endTime)) && i * endTime > LED_COUNT * (millis() - startTime)) { return (color); }
-  return (strip.Color(0, 0, 0));
+  return (lowerLEDs.Color(r, g, b));                                                            //convert to uint32_t
 }
 // setup() function -- runs once at startup --------------------------------
 void setup() {
@@ -88,10 +108,15 @@ void setup() {
   clock_prescale_set(clock_div_1);
 #endif
   // END of Trinket-specific code.
-  strip.begin();            // INITIALIZE NeoPixel strip object (REQUIRED)
-  strip.show();             // Turn OFF all pixels ASAP
-  strip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
-  Wire.begin(0x18);         //begin I2C
+  lowerLEDs.begin();             // INITIALIZE NeoPixel strip object (REQUIRED)
+  lowerLEDs.show();              // Turn OFF all pixels ASAP
+  lowerLEDs.setBrightness(255);  // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  upperLEDs.begin();
+  upperLEDs.show();
+  upperLEDs.setBrightness(255);
+
+  Wire.begin(0x18);  //begin I2C
   Serial.begin(9600);
   // Call receiveEvent when data comes in over I2C
   Wire.onReceive(receiveEvent);
@@ -111,34 +136,65 @@ void loop() {
     Wire.endTransmission();                                                    // Stop transmitting
   }
   switch (pattern) {  // sets up lights to patterns
-  // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
-  // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
+                      // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
+                      // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
     case 8:           // reset code
       startTime = -1;
       colorIndex = 0;
       pattern = -1;
-    case 9: // blinking yellow
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(245, 149, 24), strip.Color(0, 0, 0))); }
+    case 9:  // blinking yellow
+      for (int i = 0; i < LOWER_LED_COUNT; i++) {
+        lowerLEDs.setPixelColor(i, BlinkingLights(colorIndex, lowerLEDs.Color(245, 149, 24), lowerLEDs.Color(0, 0, 0)));
+      }
       delay(150);
-      break;    
-    case 10: // blinking purple
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, BlinkingLights(colorIndex, i, strip.Color(230,0,255), strip.Color(0, 0, 0))); }
+      for (int i = 0; i < UPPER_LED_COUNT; i++) {
+        upperLEDs.setPixelColor(i, BlinkingLights(colorIndex, upperLEDs.Color(245, 149, 24), upperLEDs.Color(0, 0, 0)));
+      }
+      delay(150);
+      break;
+    case 10:  // blinking purple
+      for (int i = 0; i < LOWER_LED_COUNT; i++) {
+        lowerLEDs.setPixelColor(i, BlinkingLights(colorIndex, lowerLEDs.Color(230, 0, 255), lowerLEDs.Color(0, 0, 0)));
+      }
+      delay(150);
+      for (int i = 0; i < UPPER_LED_COUNT; i++) {
+        upperLEDs.setPixelColor(i, BlinkingLights(colorIndex, lowerLEDs.Color(230, 0, 255), lowerLEDs.Color(0, 0, 0)));
+      }
       delay(150);
       break;
     case 11:  //moving green and red gradient
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingGreenRedGradient(colorIndex, i)); }
+      for (int i = 0; i < LOWER_LED_COUNT; i++) {
+        lowerLEDs.setPixelColor(i, MovingGreenRedGradient(colorIndex, i, LOWER_LED_COUNT));
+      }
+      delay(25);
+      for (int i = 0; i < UPPER_LED_COUNT; i++) {
+        upperLEDs.setPixelColor(i, MovingGreenRedGradient(colorIndex, i, UPPER_LED_COUNT));
+      }
       delay(25);
       break;
     case 12:  //moving green and blue gradient
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, MovingGreenBlueGradient(colorIndex, i)); }
+      for (int i = 0; i < LOWER_LED_COUNT; i++) {
+        lowerLEDs.setPixelColor(i, MovingGreenBlueGradient(colorIndex, i, LOWER_LED_COUNT));
+      }
+      delay(25);
+      for (int i = 0; i < UPPER_LED_COUNT; i++) {
+        upperLEDs.setPixelColor(i, MovingGreenBlueGradient(colorIndex, i, UPPER_LED_COUNT));
+      }
       delay(25);
       break;
     default:  //display team/alliance color
-      for (int i = 0; i < LED_COUNT; i++) { strip.setPixelColor(i, teamColor); } 
+      for (int i = 0; i < LOWER_LED_COUNT; i++) {
+        lowerLEDs.setPixelColor(i, teamColor);
+      }
+      delay(50);
+      for (int i = 0; i < UPPER_LED_COUNT; i++) {
+        upperLEDs.setPixelColor(i, teamColor);
+      }
       delay(50);
       break;
   }
-  strip.show();  //show
+  lowerLEDs.show();  //show
+  upperLEDs.show();
   colorIndex++;  //next frame
 }
 void receiveEvent(int howMany) {
@@ -147,10 +203,10 @@ void receiveEvent(int howMany) {
   //first code must be non-zero multiple of 10
   if (pattern == 8 && Wire.available()) {  //for code 90 reset, check if new alliance color being set
     x = Wire.read();                       //read in alliance code
-    if (x == 11) {                          //red alliance
-      teamColor = strip.Color(255, 0, 0);
+    if (x == 11) {                         //red alliance
+      teamColor = lowerLEDs.Color(255, 0, 0);
     } else if (x == 12) {  //blue alliance
-      teamColor = strip.Color(0, 255, 0);
+      teamColor = lowerLEDs.Color(0, 0, 255);
     }
   }
 }
