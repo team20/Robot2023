@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +57,11 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		forwardSwitch.enableLimitSwitch(false);
+		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		reverseSwitch.enableLimitSwitch(false);
+
 		m_lowerArmEncoder.setPositionConversionFactor(360);
 		m_lowerArmEncoder.setZeroOffset(ArmConstants.kLowerEncoderZeroOffset);
 		m_lowerArmEncoder.setInverted(true);
@@ -77,6 +83,12 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+
+		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		forwardSwitch2.enableLimitSwitch(false);
+		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		reverseSwitch2.enableLimitSwitch(false);
+
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted
 		m_lowerArmMotor2.follow(m_lowerArmMotor, ArmConstants.kLowerArmMotor2Oppose);

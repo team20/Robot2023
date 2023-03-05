@@ -31,9 +31,10 @@ public class WheelGripperSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
+
+		m_gripperMotor.restoreFactoryDefaults();
 		m_forwardLimitSwitch = m_gripperMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
 		m_forwardLimitSwitch.enableLimitSwitch(false);
-		m_gripperMotor.restoreFactoryDefaults();
 		m_gripperMotor.setInverted(GripperConstants.kInvert);
 		m_gripperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_gripperMotor.enableVoltageCompensation(12);

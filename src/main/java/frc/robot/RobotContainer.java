@@ -58,7 +58,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE),
 						(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.onTrue(new WheelGripperCommand(WheelGripperPosition.STOP));
@@ -75,7 +75,6 @@ public class RobotContainer {
 					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)), 
 					new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
 		// Flip the arm over to the medium node
-
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
