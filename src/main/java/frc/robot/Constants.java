@@ -45,7 +45,7 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 
-		public static final double[] kSubstationAngles = { 107, 85 };
+		public static final double[] kSubstationAngles = { 84, 110 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -274,7 +274,7 @@ public final class Constants {
 		public static final int kSmartCurrentLimit = 15;// TODO evaluate current limit (37 for gripper, 15 for wheel)
 		public static final double kCloseTime = 3000; // TODO: change as needed
 		public static final double kMovePower = 0.7; // TODO check (0.2 for gripper, 0.4 for wheel gripper)
-		public static final double kHoldPower = 0.12; // TODO: change as needed (0.1 for gripper, 0.03 for wheel)
+		public static final double kHoldPower = 0.08; // TODO: change as needed (0.1 for gripper, 0.03 for wheel)
 	}
 
 	public static final class LimelightConstants { 
