@@ -216,8 +216,9 @@ public class ArmSubsystem extends SubsystemBase {
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(getLowerArmAngle(), getUpperArmAngle());
 		SmartDashboard.putNumber("Forward X", coordinates[0]);
 		SmartDashboard.putNumber("Forward Y", coordinates[1]);
-		// If the arm is about to reach over the height limit, turn the LEDs red
-		if (coordinates[1] >= ArmConstants.kMaxHeight - 1) {
+		// If the arm is about to reach over the height limit or overextend itself,
+		// turn the LEDs red
+		if (coordinates[1] >= ArmConstants.kMaxHeight - 1 || coordinates[0] >= ArmConstants.kArmReachDistance - 1) {
 			ArduinoSubsystem.get().setCode(StatusCode.RED_COLOR);
 		}
 		// Take the calculated arm position from the forward kinematics code, and
