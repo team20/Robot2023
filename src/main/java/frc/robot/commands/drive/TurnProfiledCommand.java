@@ -15,8 +15,8 @@ public class TurnProfiledCommand extends CommandBase {
    * lowerBoundError = the error value that matches to the highest value of p(small angle)
    * 
    */
-  private double m_upperBoundP = 0.08;
-  private double m_lowerBoundP = 0.02;
+  private double m_upperBoundP = 0.035;
+  private double m_lowerBoundP = 0.006;
   private double m_lowerBoundError = 10;
   private PIDController m_turnController = new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD);
 
@@ -41,12 +41,13 @@ public class TurnProfiledCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    DriveSubsystem.get().zeroHeading();
     m_turnController.setSetpoint(m_targetAngle);
 
     m_turnController.enableContinuousInput(-180, 180);
     m_turnController.setTolerance(DriveConstants.kTurnTolerance);
-    double currError = m_turnController.getPositionError();
-    double p = this.getProportionalValue(currError);
+    double currError = Math.abs(m_turnController.getPositionError());
+    double p = this.getProportionalValue(currError*currError);
     m_turnController.setP(p);
     //m_turnController.setIntegratorRange(-0.05, 0.05);
   }
@@ -87,8 +88,8 @@ public class TurnProfiledCommand extends CommandBase {
     //otherwise, we figure out the slope and y-intercept for our linear p-function
     //we have our lowest p at 180 deg error
     //and our highest p at the error set by lower bound error
-    double slope = (m_lowerBoundP - m_upperBoundP) / (180 - m_lowerBoundError);
-    double yIntercept = m_upperBoundP - (slope*m_lowerBoundError);
+    double slope = (m_lowerBoundP - m_upperBoundP) / (32400 - m_lowerBoundError);
+    double yIntercept = m_upperBoundP - (slope*m_lowerBoundError*m_lowerBoundError);
     //return the p-value calculated from our function
     return slope*error+yIntercept;
   }

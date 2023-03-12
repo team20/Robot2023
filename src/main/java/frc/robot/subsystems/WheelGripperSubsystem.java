@@ -33,7 +33,7 @@ public class WheelGripperSubsystem extends SubsystemBase {
 		s_subsystem = this;
 
 		m_gripperMotor.restoreFactoryDefaults();
-		m_forwardLimitSwitch = m_gripperMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+		m_forwardLimitSwitch = m_gripperMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		m_forwardLimitSwitch.enableLimitSwitch(false);
 		m_gripperMotor.setInverted(GripperConstants.kInvert);
 		m_gripperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -49,6 +49,7 @@ public class WheelGripperSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Gripper output", m_gripperMotor.getOutputCurrent());
+		SmartDashboard.putBoolean("Gripper cube sensor", getLimitSwitch());
 	}
 
 	public void setGripperMotor(double speed) {

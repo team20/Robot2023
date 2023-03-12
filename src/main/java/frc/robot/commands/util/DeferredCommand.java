@@ -31,6 +31,7 @@ public class DeferredCommand extends CommandBase {
 	 */
 	public DeferredCommand(Supplier<Command> commandSupplier) {
 		m_commandSupplier = commandSupplier;
+
 	}
 
 	// Called when the command is initially scheduled.
@@ -38,24 +39,13 @@ public class DeferredCommand extends CommandBase {
 	public void initialize() {
 		// Obtain the command
 		m_command = m_commandSupplier.get();
-		m_command.initialize();
+		m_command.schedule();
 	}
 
-	// Called every time the scheduler runs while the command is scheduled.
-	@Override
-	public void execute() {
-		m_command.execute();
-	}
-
-	// Called once the command ends or is interrupted.
-	@Override
-	public void end(boolean interrupted) {
-		m_command.end(interrupted);
-	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return m_command.isFinished();
+		return true;
 	}
 }

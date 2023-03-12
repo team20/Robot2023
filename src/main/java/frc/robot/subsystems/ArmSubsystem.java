@@ -57,10 +57,10 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
-		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		forwardSwitch.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		reverseSwitch.enableLimitSwitch(false);
+		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		forwardSwitch.enableLimitSwitch(true);
+		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		reverseSwitch.enableLimitSwitch(true);
 
 		m_lowerArmEncoder.setPositionConversionFactor(360);
 		m_lowerArmEncoder.setZeroOffset(ArmConstants.kLowerEncoderZeroOffset);
@@ -102,7 +102,7 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmEncoder.setPositionConversionFactor(360);
 		m_upperArmEncoder.setZeroOffset(ArmConstants.kUpperEncoderZeroOffset);
 		m_upperArmEncoder.setInverted(true);
-
+		
 		m_upperArmController.setP(ArmConstants.kUpperArmP);
 		m_upperArmController.setI(ArmConstants.kUpperArmI);
 		m_upperArmController.setIZone(ArmConstants.kUpperArmIz);
@@ -241,13 +241,13 @@ public class ArmSubsystem extends SubsystemBase {
 			SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
 		}
 
-		if(getUpperArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getUpperArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound){
-			// setLowerArmMotorSpeed(0);
-			// setUpperArmMotorSpeed(0);
-			// m_temporarilyDisabled = true;
-		}else if(m_temporarilyDisabled && getUpperArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getUpperArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
-			// setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
-			// m_temporarilyDisabled = false;
+		if(!m_temporarilyDisabled && getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound){
+			setLowerArmMotorSpeed(0);
+			setUpperArmMotorSpeed(0);
+			m_temporarilyDisabled = true;
+		}else if(m_temporarilyDisabled && getLowerArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getLowerArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
+			setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
+			m_temporarilyDisabled = false;
 		}
 	}
 }

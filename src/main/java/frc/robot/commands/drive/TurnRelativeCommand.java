@@ -34,7 +34,7 @@ public class TurnRelativeCommand extends CommandBase {
     double turnSpeed = m_turnController.calculate(currAngle);
 
     //if turn speed is less than 0.1 make it 0.1 in the right direction
-    turnSpeed = Math.abs(turnSpeed) < 0.1 ? Math.signum(turnSpeed)*0.1 : turnSpeed;
+    turnSpeed = Math.abs(turnSpeed) < 0.15 ? Math.signum(turnSpeed)*0.15 : turnSpeed;
 
     turnSpeed = MathUtil.clamp(turnSpeed, -0.5, 0.5);
     SmartDashboard.putNumber("Heading", currAngle);

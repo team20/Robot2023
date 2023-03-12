@@ -6,6 +6,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
@@ -115,18 +116,24 @@ public class CommandComposer {
 	public static Command getScoreThenLeaveCommand() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new ParallelCommandGroup(
-				getEnsurePreloadCommand(),
-				new TurnRelativeCommand(-5)),
-				new DriveDistanceCommand(4.8), // maybe second parameter for how far this is?
-				getPickupPieceCommand(),
+				//getEnsurePreloadCommand(),
+				new TurnRelativeCommand(-4	)),
+				new ParallelRaceGroup(
+					new DriveDistanceCommand(5.2),
+					getPickupPieceCommand()
+				), 
+				new ParallelCommandGroup(
+						getEnsurePreloadCommand(),
+						new DriveTimeCommand(-0.25, 250)
+				),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
-						new TurnRelativeCommand(-1.5),
-						new DriveDistanceCommand(-4.8)
+						new TurnRelativeCommand(0.5),
+						new DriveDistanceCommand(-5)
 					),
 					new SequentialCommandGroup(
 						new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.HIGH_BACK)
+						new ArmScoreCommand(ArmPosition.HIGH_BACK).withTimeout(1.5)
 					)
 				),
 				getOuttakePieceCommand()
@@ -164,10 +171,62 @@ public class CommandComposer {
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
 	public static Command getOverTheFulcrumAuto() { // start lined up with middle node of coopertition zone
 		return new SequentialCommandGroup(
-				getPlacePieceCommand(null), // TODO: position
-				new DriveDistanceCommand(-7),
-				new DriveDistanceCommand(3),
-				new BalancePIDCommand());
+				getEnsurePreloadCommand(),
+				new ParallelCommandGroup(
+					new ArmScoreCommand(ArmPosition.HIGH),
+					new SequentialCommandGroup(
+						new WaitCommand(0.65),
+						new DriveDistanceCommand(0.6)
+					)
+				),
+				new ParallelCommandGroup(
+					new SequentialCommandGroup(
+						getOuttakePieceCommand(),
+						new ArmScoreCommand(ArmPosition.POCKET)
+					),
+					new SequentialCommandGroup(
+						new DriveDistanceCommand(-0.2),
+						new DriveTimeCommand(-0.7, 500),
+						new DriveTimeCommand(-0.25, 2300),
+						new DriveTimeCommand(0.7, 500),
+						new BalancePIDCommand()
+
+					)
+				)//,
+				// new BalancePIDCommand()
+		);
+	}
+	// Score, Over Charging Station -> Out of community, backup to balance
+	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
+	public static Command getOverTheFulcrumScoreAuto() { // start lined up with middle node of coopertition zone
+		return new SequentialCommandGroup(
+				getEnsurePreloadCommand(),
+				new ParallelCommandGroup(
+					new SequentialCommandGroup(
+						new ArmScoreCommand(ArmPosition.INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.HIGH_BACK)
+					),
+					new SequentialCommandGroup(
+						new WaitCommand(0.65),
+						new DriveDistanceCommand(-0.6)
+					)
+				),
+				new ParallelCommandGroup(
+					new SequentialCommandGroup(
+						getOuttakePieceCommand(),
+						new ArmScoreCommand(ArmPosition.POCKET)
+					),
+					new SequentialCommandGroup(
+						new DriveDistanceCommand(0.2),
+						new DriveTimeCommand(0.7, 500),
+						new DriveTimeCommand(0.25, 2300)//,
+						// new DriveTimeCommand(0.7, 500),
+						// new BalancePIDCommand()
+
+					)
+				)//,
+				// new BalancePIDCommand()
+		);
 	}
 
 	// Score, Leave Community, Intake, and then Score again
@@ -207,18 +266,15 @@ public class CommandComposer {
 	public static Command getPickupPieceCommand() {
 		return new SequentialCommandGroup(
 				new SequentialCommandGroup(
-						new ArmScoreCommand(ArmPosition.POCKET),
-						new WheelGripperCommand(WheelGripperPosition.INTAKE),
-						new WaitCommand(0.35),
-						new WheelGripperCommand(WheelGripperPosition.STOP)));
+						new ArmScoreCommand(ArmPosition.POCKET_INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.LOW),
+						new ArmScoreCommand(ArmPosition.HOLD),
+						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR)));
 	}
 
 	// Pick up game piece
 	public static Command getEnsurePreloadCommand() {
-		return new SequentialCommandGroup(
-						new WheelGripperCommand(WheelGripperPosition.INTAKE),
-						new WaitCommand(0.35),
-						new WheelGripperCommand(WheelGripperPosition.STOP));
+		return new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR).withTimeout(0.5); // TODO fix
 	}
 	// Place game piece taking in position
 	public static Command getPlacePieceCommand(ArmPosition position) {
@@ -236,4 +292,6 @@ public class CommandComposer {
 				new WaitCommand(0.5),
 				new WheelGripperCommand(WheelGripperPosition.STOP));
 	}
+
+
 }

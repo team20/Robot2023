@@ -82,14 +82,14 @@ public final class Constants {
 		 * This only affects how fast the arm's motors spin when using the
 		 * ManualMotorCommand.
 		 */
-		public static final double kArmMotorSpeedSensitivity = 0.4;
+		public static final double kArmMotorSpeedSensitivity = 1;
 
 		// TODO Check allowable error, and max angle and height values
 		/**
 		 * Allowable difference in degrees between the target arm angle and the current
 		 * arm angle
 		 */
-		public static final double kAllowedDegreesError = 4;
+		public static final double kAllowedDegreesError = 3;
 		/** Smallest angle the lower arm can go */
 		public static final double kLowerArmMinAngle = 45;
 		/** Maximum angle the lower arm can go */
@@ -227,7 +227,7 @@ public final class Constants {
 		public static final boolean kGyroReversed = true;
 
 		// TODO CHANGE ADJUST PIDS
-		public static final double kTurnP = 0.004; // was 0.005
+		public static final double kTurnP = 0.006; // was 0.005
 		public static final double kTurnI = 0; // was 0.003
 		public static final double kTurnD = 0; // 0.0
 		public static final double kTurnTolerance = 0.5;
@@ -261,7 +261,7 @@ public final class Constants {
 				* DriveConstants.kWheelDiameterMeters / 60;
 		// TODO PIDS
 		public static final double kBalanceP = 0.0085;
-		public static final double kBalanceI = 0.0001;
+		public static final double kBalanceI = 0.000;
 		public static final double kBalanceD = 0.001;
 
 

@@ -22,6 +22,7 @@ public class BalancePIDCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		m_controller.setSetpoint(0);
+		m_controller.setTolerance(0.5);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.

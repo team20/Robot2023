@@ -20,6 +20,7 @@ public class TurnCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    DriveSubsystem.get().zeroHeading();
     m_turnController.setSetpoint(m_targetAngle);
     m_turnController.enableContinuousInput(-180, 180);
     m_turnController.setTolerance(DriveConstants.kTurnTolerance);
@@ -33,7 +34,7 @@ public class TurnCommand extends CommandBase {
     double turnSpeed = m_turnController.calculate(currAngle);
 
     //if turn speed is less than 0.1 make it 0.1 in the right direction
-    turnSpeed = Math.abs(turnSpeed) < 0.1 ? Math.signum(turnSpeed)*0.1 : turnSpeed;
+    turnSpeed = Math.abs(turnSpeed) < 0.15 ? Math.signum(turnSpeed)*0.15 : turnSpeed;
 
     SmartDashboard.putNumber("Heading", currAngle);
     DriveSubsystem.get().tankDrive(-turnSpeed, turnSpeed);
