@@ -41,49 +41,38 @@ public class CommandComposer {
 	 * 
 	 * @param armPosition The position the arm should move to
 	 * @return A command or command group that has all the necessary steps to move
-	 *         the
-	 *         arm to the desired position
+	 *         the arm to the desired position
 	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
-		if (ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[0], ArmSubsystem.get().getLowerArmAngle()) && 
-		ArmSubsystem.get().checkAngle(ArmConstants.kPocketAngles[1], ArmSubsystem.get().getUpperArmAngle())) {
-			return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.POCKET_INTERMEDIATE),
-			generateArmScoreCommand(armPosition));
-		} else {
-			return generateArmScoreCommand(armPosition);
-		}
-	}
-
-	public static Command generateArmScoreCommand(ArmPosition armPosition) {
-			double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
 		boolean isArmForwards = coordinates[0] > 0;
-		// If the arm is forwards, and we are only moving the arm between the forward
-		// positions(not flipping over,) just return the command as normal
-		if (isArmForwards && armPosition != ArmPosition.MEDIUM_BACK && armPosition != ArmPosition.HIGH_BACK) {
-			return new ArmScoreCommand(armPosition);
-			// If the arm is backwards, and we want to move the arm forwards, go to the
-			// intermediate position first
-		} else if (!isArmForwards && armPosition != ArmPosition.MEDIUM_BACK && armPosition != ArmPosition.HIGH_BACK) {
-			return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-					new ArmScoreCommand(armPosition));
-			// If we want to move the arm to flip back,
-		} else if (armPosition == ArmPosition.MEDIUM_BACK || armPosition == ArmPosition.HIGH_BACK) {
-			// If the arm is forwards, go to the intermediate position first, then make the
-			// arm flip back
-			if (isArmForwards) {
-				return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.INTERMEDIATE),
-						new ArmScoreCommand(armPosition));
-				// Otherwise, the arm is backwards, and we can just go directly to the backwards
-				// medium position
-			} else {
+		// If the arm is forwards, check if the arm is going to flip over, and move to
+		// an intermediate position if necessary
+		if (isArmForwards) {
+			// If we are moving to another forwards position, just move to the position
+			if (armPosition != ArmPosition.MEDIUM_BACK && armPosition != ArmPosition.HIGH_BACK) {
 				return new ArmScoreCommand(armPosition);
+				// If we are moving to a backwards position, we need to move to an intermediate
+				// position first
+			} else {
+				return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
+						new ArmScoreCommand(armPosition));
+			}
+			// If the arm is backwards, check if the arm is going to flip over, and move to
+			// an intermediate position if necessary
+		} else {
+			// If we are moving to another backwards position, just move to the position
+			if (armPosition == ArmPosition.MEDIUM_BACK || armPosition == ArmPosition.HIGH_BACK) {
+				return new ArmScoreCommand(armPosition);
+				// If we are moving to a forwards position, we need to move to an intermediate
+				// position first
+			} else {
+				return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.TO_FORWARD_INTERMEDIATE),
+						new ArmScoreCommand(armPosition));
 			}
 		}
-		// Probably unreachable
-		return null;
 	}
-
 	// Drive out of community
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.p
 	public static Command getOutOfCommunityAuto(double driveDistance) { // start as close to line as possible, just
@@ -118,7 +107,38 @@ public class CommandComposer {
 				new BalancePIDCommand());
 	}
 
-	public static Command getScoreThenLeaveCommand() { // Start right to the right of Charge station
+	public static Command getScoreThenLeaveCommand(){
+		return new SequentialCommandGroup(
+			getEnsurePreloadCommand(),
+			new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
+			new ArmScoreCommand(ArmPosition.HIGH_BACK),
+			getOuttakePieceCommand(),
+			new ArmScoreCommand(ArmPosition.TO_FORWARD_INTERMEDIATE),
+			new ArmScoreCommand(ArmPosition.POCKET),
+			new DriveDistanceCommand(4)
+
+		);
+
+	}
+	public static Command getJustLeaveCommand(){
+		return new SequentialCommandGroup(
+			new DriveDistanceCommand(4)
+
+		);
+
+	}
+	public static Command getOverTheFulcrumNoScoreAuto(){
+		return new SequentialCommandGroup(
+			new DriveDistanceCommand(-0.2),
+			new DriveTimeCommand(-0.6, 500),
+			new DriveTimeCommand(-0.25, 2500),
+			new DriveTimeCommand(0.6, 750),
+			new BalancePIDCommand()
+
+		);
+
+	}
+	public static Command getLeaveThenScoreCommand() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new ParallelCommandGroup(
 				//getEnsurePreloadCommand(),
@@ -137,7 +157,7 @@ public class CommandComposer {
 						new DriveDistanceCommand(-5)
 					),
 					new SequentialCommandGroup(
-						new ArmScoreCommand(ArmPosition.INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.HIGH_BACK).withTimeout(1.5)
 					)
 				),
@@ -154,8 +174,9 @@ public class CommandComposer {
 				new ParallelCommandGroup(
 						new ArmScoreCommand(ArmPosition.HIGH),
 						new SequentialCommandGroup(
-								new WaitCommand(0.65),
-								new DriveDistanceCommand(0.6))),
+								new WaitCommand(1),
+								new DriveDistanceCommand(0.8),
+								new DriveTimeCommand(.25, 250))),
 				new ParallelCommandGroup(
 						new SequentialCommandGroup(
 								getOuttakePieceCommand(),
@@ -165,19 +186,39 @@ public class CommandComposer {
 								new DriveTimeCommand(-0.7, 500))),
 				new BalancePIDCommand());
 	}
-
+	public static Command getScoreOTBThenBalanceAuto() { // Start lined up on center of Charge Station pushed up against
+														// nodes
+		return new SequentialCommandGroup(
+				getEnsurePreloadCommand(),
+				new SequentialCommandGroup(
+					new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
+					new ArmScoreCommand(ArmPosition.MEDIUM_BACK)
+				),
+				new SequentialCommandGroup(
+								getOuttakePieceCommand(),
+								new ArmScoreCommand(ArmPosition.TO_FORWARD_INTERMEDIATE),
+								new ArmScoreCommand(ArmPosition.POCKET)),
+						
+						new SequentialCommandGroup(
+								new DriveDistanceCommand(0.2),
+								new DriveTimeCommand(0.6, 500),
+								new DriveTimeCommand(0.25, 2300),
+								new DriveTimeCommand(-0.6, 500),
+								new BalancePIDCommand()
+						)
+		);
+	}
 	// Score, Over Charging Station -> Out of community, backup to balance
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
 	public static Command getOverTheFulcrumAuto() { // start lined up with middle node of coopertition zone
 		return new SequentialCommandGroup(
-				getEnsurePreloadCommand(),
-				new ParallelCommandGroup(
+			getEnsurePreloadCommand(),
+			new ParallelCommandGroup(
 					new ArmScoreCommand(ArmPosition.HIGH),
 					new SequentialCommandGroup(
-						new WaitCommand(0.65),
-						new DriveDistanceCommand(0.6)
-					)
-				),
+							new WaitCommand(1),
+							new DriveDistanceCommand(0.8),
+							new DriveTimeCommand(.25, 250))),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
 						getOuttakePieceCommand(),
@@ -185,9 +226,9 @@ public class CommandComposer {
 					),
 					new SequentialCommandGroup(
 						new DriveDistanceCommand(-0.2),
-						new DriveTimeCommand(-0.7, 500),
-						new DriveTimeCommand(-0.25, 2300),
-						new DriveTimeCommand(0.7, 500),
+						new DriveTimeCommand(-0.6, 500),
+						new DriveTimeCommand(-0.25, 2500),
+						new DriveTimeCommand(0.6, 750),
 						new BalancePIDCommand()
 
 					)
@@ -202,7 +243,7 @@ public class CommandComposer {
 				getEnsurePreloadCommand(),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
-						new ArmScoreCommand(ArmPosition.INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.HIGH_BACK)
 					),
 					new SequentialCommandGroup(
@@ -310,9 +351,9 @@ public class CommandComposer {
 
 		return new SequentialCommandGroup(
 				// new DriveDistanceCommand(-1.5).withTimeout(3)
-				new TurnCommand(Math.toDegrees(turnAngle1)),
-				new DriveDistanceCommand(distanceToTarget).withTimeout(3),
-				new TurnCommand(Math.toDegrees(turnAngle2)));
+				new TurnRelativeCommand(Math.toDegrees(turnAngle1)),
+				new DriveDistanceCommand(-distanceToTarget).withTimeout(3),
+				new TurnRelativeCommand(Math.toDegrees(turnAngle2)));
 
 	}
 

@@ -18,7 +18,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * forwards
 		 */
-		public static final double[] kHighAngles = { 52, 153 };
+		public static final double[] kHighAngles = { 50, 165 };
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from colliding with the grid when reaching for the
@@ -34,7 +34,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
 		 */
-		public static final double[] kMediumBackAngles = { 87, 280 };
+		public static final double[] kMediumBackAngles = { 94, 281 };
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
@@ -61,6 +61,18 @@ public final class Constants {
 		 */
 		public static final double[] kIntermediateAngles = { 50, 270 };
 
+		/**
+		 * The lower and upper arm angles for the arm to be in an intermediate position
+		 * needed to prevent the arm from going over the height limit when transitioning
+		 * from a forward position to a backward position
+		 */
+		public static final double[] kToBackIntermediateAngles = { 50, 270 };
+		/**
+		 * The lower and upper arm angles for the arm to be in an intermediate position
+		 * needed to prevent the arm from going over the height limit when transitioning
+		 * from a backward position to a forward position
+		 */
+		public static final double[] kToFwdIntermediateAngles = { 130, 90 };
 		// TODO remeasure arm lengths
 		/** Length of lower arm length in inches */
 		public static final double kLowerArmLength = 33;

@@ -20,12 +20,12 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
-		INTERMEDIATE,
+		TO_BACK_INTERMEDIATE,
+		TO_FORWARD_INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		POCKET_INTERMEDIATE,
-		SUBSTATION,
-		/** Exists to forcibly finish this command */
-		HOLD
+		HOLD,
+		SUBSTATION
 	}
 
 	/** Stores the position we want the arm to move to */
@@ -62,22 +62,25 @@ public class ArmScoreCommand extends CommandBase {
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
 				break;
-			case INTERMEDIATE:
-				angles = ArmConstants.kIntermediateAngles;
-				break;
-			case HIGH_INTERMEDIATE:
-				angles = ArmConstants.kHighIntermediateAngles;
-				break;
 			case POCKET_INTERMEDIATE:
 				angles = ArmConstants.kPocketIntermediateAngles;
 				break;
-			case SUBSTATION:
-				angles = ArmConstants.kSubstationAngles;
+			case TO_BACK_INTERMEDIATE:
+				angles = ArmConstants.kToBackIntermediateAngles;
+				break;
+			case TO_FORWARD_INTERMEDIATE:
+				angles = ArmConstants.kToFwdIntermediateAngles;
+				break;
+			case HIGH_INTERMEDIATE:
+				angles = ArmConstants.kHighIntermediateAngles;
 				break;
 			case HOLD:
 				angles = new double[2];
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
+				break;
+			case SUBSTATION:
+				angles = ArmConstants.kSubstationAngles;
 				break;
 			default:
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
@@ -95,7 +98,6 @@ public class ArmScoreCommand extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-
 	}
 
 	// Returns true when the command should end.

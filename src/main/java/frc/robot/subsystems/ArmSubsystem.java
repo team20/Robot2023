@@ -58,9 +58,9 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		forwardSwitch.enableLimitSwitch(true);
+		forwardSwitch.enableLimitSwitch(false);
 		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		reverseSwitch.enableLimitSwitch(true);
+		reverseSwitch.enableLimitSwitch(false);
 
 		m_lowerArmEncoder.setPositionConversionFactor(360);
 		m_lowerArmEncoder.setZeroOffset(ArmConstants.kLowerEncoderZeroOffset);
