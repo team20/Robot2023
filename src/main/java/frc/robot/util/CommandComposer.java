@@ -4,6 +4,7 @@
 
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -20,6 +21,8 @@ import frc.robot.commands.drive.TurnCommand;
 import frc.robot.commands.drive.TurnRelativeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
+import frc.robot.commands.util.DeferredCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
@@ -37,7 +40,8 @@ public class CommandComposer {
 	 * group changes depending on where the arm is moving to and where the arm is
 	 * 
 	 * @param armPosition The position the arm should move to
-	 * @return A command or command group that has all the necessary steps to move the
+	 * @return A command or command group that has all the necessary steps to move
+	 *         the
 	 *         arm to the desired position
 	 */
 	public static Command createArmScoreCommand(ArmPosition armPosition) {
@@ -113,6 +117,7 @@ public class CommandComposer {
 				new DriveDistanceCommand(driveDistance + 0.5), // 0.5 should get on chargerstation, idk
 				new BalancePIDCommand());
 	}
+
 	public static Command getScoreThenLeaveCommand() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new ParallelCommandGroup(
@@ -137,7 +142,7 @@ public class CommandComposer {
 					)
 				),
 				getOuttakePieceCommand()
-				/*new BalancePIDCommand()*/);
+		/* new BalancePIDCommand() */);
 	}
 
 	// Score Preloaded and Engage
@@ -147,24 +152,18 @@ public class CommandComposer {
 		return new SequentialCommandGroup(
 				getEnsurePreloadCommand(),
 				new ParallelCommandGroup(
-					new ArmScoreCommand(ArmPosition.HIGH),
-					new SequentialCommandGroup(
-						new WaitCommand(0.65),
-						new DriveDistanceCommand(0.6)
-					)
-				),
+						new ArmScoreCommand(ArmPosition.HIGH),
+						new SequentialCommandGroup(
+								new WaitCommand(0.65),
+								new DriveDistanceCommand(0.6))),
 				new ParallelCommandGroup(
-					new SequentialCommandGroup(
-						getOuttakePieceCommand(),
-						new ArmScoreCommand(ArmPosition.LOW)
-					),
-					new SequentialCommandGroup(
-						new DriveDistanceCommand(-0.2),
-						new DriveTimeCommand(-0.7, 500)
-					)
-				),
-				new BalancePIDCommand()
-		);
+						new SequentialCommandGroup(
+								getOuttakePieceCommand(),
+								new ArmScoreCommand(ArmPosition.LOW)),
+						new SequentialCommandGroup(
+								new DriveDistanceCommand(-0.2),
+								new DriveTimeCommand(-0.7, 500))),
+				new BalancePIDCommand());
 	}
 
 	// Score, Over Charging Station -> Out of community, backup to balance
@@ -276,6 +275,7 @@ public class CommandComposer {
 	public static Command getEnsurePreloadCommand() {
 		return new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR).withTimeout(0.5); // TODO fix
 	}
+
 	// Place game piece taking in position
 	public static Command getPlacePieceCommand(ArmPosition position) {
 		return new SequentialCommandGroup(
@@ -293,5 +293,30 @@ public class CommandComposer {
 				new WheelGripperCommand(WheelGripperPosition.STOP));
 	}
 
+	public static Command getALittleCloser() {
+		double limelightz = Math.abs(AprilTagSubsystem.get().m_z);
+		double limelightYaw = Math.toRadians(-AprilTagSubsystem.get().m_yaw);
+		double limelightx = AprilTagSubsystem.get().m_x;
 
+		double targetz = limelightz / 2;
+		double distanceToTarget = Math.sqrt(Math.pow(limelightx, 2) + Math.pow(targetz, 2));
+		double angleToTarget = Math.atan2(targetz, limelightx);
+		double turnAngle1 = Math.PI / 2 - (angleToTarget + limelightYaw);
+		double turnAngle2 = -1 * (turnAngle1 + limelightYaw);
+		SmartDashboard.putNumber("distanceToTarget", distanceToTarget);
+		SmartDashboard.putNumber("angleToTarget", Math.toDegrees(angleToTarget));
+		SmartDashboard.putNumber("turnAngle1", Math.toDegrees(turnAngle1));
+		SmartDashboard.putNumber("turnAngle2", Math.toDegrees(turnAngle2));
+
+		return new SequentialCommandGroup(
+				// new DriveDistanceCommand(-1.5).withTimeout(3)
+				new TurnCommand(Math.toDegrees(turnAngle1)),
+				new DriveDistanceCommand(distanceToTarget).withTimeout(3),
+				new TurnCommand(Math.toDegrees(turnAngle2)));
+
+	}
+
+	public static Command getAnvitaAuto() {
+		return new DeferredCommand(() -> getALittleCloser());
+	}
 }
