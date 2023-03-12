@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Button;
 import frc.robot.Constants.DriveConstants;
@@ -101,6 +102,14 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
 				.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
 
+    // Move the arm to the substation position
+	new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
+
+				// Move the arm to the medium node over the back
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+
 		// Move the arm to the substation position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
@@ -108,13 +117,13 @@ public class RobotContainer {
 
 		// -------------LED signaling-------------
 		// // Signal for a cube
-		// new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
-		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
-		// // Signal for a cone
-		// new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
-		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
-		// new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
-		// 		.onTrue(new LEDCommand(StatusCode.DEFAULT));
+		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
+				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// Signal for a cone
+		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
+				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
+				.onTrue(new LEDCommand(StatusCode.DEFAULT));
 		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 		// 		.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
