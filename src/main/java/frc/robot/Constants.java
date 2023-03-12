@@ -80,6 +80,16 @@ public final class Constants {
 		 * The base of the robot is 10.5 inches, leaving 67.5 inches left for the arm
 		 */
 		public static final double kMaxHeight = 67.5;
+		/**
+		 * Maximum length the arm can reach.
+		 * <p>
+		 * The start of the arm is located 15 inches away from the frame perimeter.
+		 * <p>
+		 * The maximum extension length is 48 inches from the frame perimeter, so the
+		 * arm can reach out a total of 63 inches from where it starts before it
+		 * overextends
+		 */
+		public static final double kArmReachDistance = 63;
 		// TODO adjust offsets
 		/**
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
