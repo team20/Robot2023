@@ -127,17 +127,13 @@ public class DriveSubsystem extends SubsystemBase {
 		// Without it, the code would continuously set the motors in brake or coast mode
 		// If the robot is enabled, put the motors in brake mode
 		if (isEnabledFast() && wasDisabled) {
-			m_frontLeft.setIdleMode(IdleMode.kBrake);
-			m_frontRight.setIdleMode(IdleMode.kBrake);
-			m_backLeft.setIdleMode(IdleMode.kCoast);
-			m_backRight.setIdleMode(IdleMode.kCoast);
+			setFrontBrake();
+			setBackCoast();
 			wasDisabled = false;
 			// If the robot is disabled, put the motors in coast mode
 		} else if (!isEnabledFast() && !wasDisabled) {
-			m_frontLeft.setIdleMode(IdleMode.kCoast);
-			m_frontRight.setIdleMode(IdleMode.kCoast);
-			// m_backLeft.setIdleMode(IdleMode.kBrake);
-			// m_backRight.setIdleMode(IdleMode.kBrake);
+			setFrontCoast();
+			//setBackBrake();
 			wasDisabled = true;
 		}
 	}
@@ -259,5 +255,23 @@ public class DriveSubsystem extends SubsystemBase {
 		DriverStationJNI.getControlWord(m_controlWord);
 
 		return m_controlWord.getEnabled();
+	}
+
+	public void setBackBrake(){
+		
+		m_backLeft.setIdleMode(IdleMode.kBrake);
+		m_backRight.setIdleMode(IdleMode.kBrake);
+	}
+	public void setBackCoast(){
+		m_backLeft.setIdleMode(IdleMode.kCoast);
+		m_backRight.setIdleMode(IdleMode.kCoast);
+	}
+	public void setFrontCoast(){
+		m_frontLeft.setIdleMode(IdleMode.kCoast);
+		m_frontRight.setIdleMode(IdleMode.kCoast);
+	}
+	public void setFrontBrake(){
+		m_frontLeft.setIdleMode(IdleMode.kBrake);
+		m_frontRight.setIdleMode(IdleMode.kBrake);
 	}
 }

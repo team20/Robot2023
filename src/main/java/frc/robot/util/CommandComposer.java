@@ -22,6 +22,7 @@ import frc.robot.commands.drive.TurnRelativeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
+import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -140,25 +141,33 @@ public class CommandComposer {
 	}
 	public static Command getLeaveThenScoreCommand() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
+			new SequentialCommandGroup(
+				new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
+				new ArmScoreCommand(ArmPosition.HIGH_BACK).withTimeout(1.5)
+			),
+			getOuttakePieceCommand(),
+			new ArmScoreCommand(ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				new ParallelCommandGroup(
 				//getEnsurePreloadCommand(),
-				new TurnRelativeCommand(-4	)),
+				new TurnRelativeCommand(-0.75)),
 				new ParallelRaceGroup(
 					new DriveDistanceCommand(5.2),
 					getPickupPieceCommand()
 				), 
 				new ParallelCommandGroup(
-						getEnsurePreloadCommand(),
-						new DriveTimeCommand(-0.25, 250)
+					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR).withTimeout(1),
+					new DriveTimeCommand(-0.25, 250)
 				),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
 						new TurnRelativeCommand(0.5),
-						new DriveDistanceCommand(-5)
+						new DriveDistanceCommand(-3.5),
+						getAnvitaAuto(),
+						new DriveTimeCommand(-0.15,1000)
 					),
 					new SequentialCommandGroup(
 						new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.HIGH_BACK).withTimeout(1.5)
+						new ArmScoreCommand(ArmPosition.MEDIUM_BACK).withTimeout(1.5)
 					)
 				),
 				getOuttakePieceCommand()
@@ -175,8 +184,7 @@ public class CommandComposer {
 						new ArmScoreCommand(ArmPosition.HIGH),
 						new SequentialCommandGroup(
 								new WaitCommand(1),
-								new DriveDistanceCommand(0.8),
-								new DriveTimeCommand(.25, 250))),
+								new DriveTimeCommand(.25, 1250))),
 				new ParallelCommandGroup(
 						new SequentialCommandGroup(
 								getOuttakePieceCommand(),
@@ -217,8 +225,7 @@ public class CommandComposer {
 					new ArmScoreCommand(ArmPosition.HIGH),
 					new SequentialCommandGroup(
 							new WaitCommand(1),
-							new DriveDistanceCommand(0.8),
-							new DriveTimeCommand(.25, 250))),
+							new DriveTimeCommand(.25, 1250))),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
 						getOuttakePieceCommand(),
@@ -358,6 +365,6 @@ public class CommandComposer {
 	}
 
 	public static Command getAnvitaAuto() {
-		return new DeferredCommand(() -> getALittleCloser());
+		return new DeferredCommandAuto(() -> getALittleCloser());
 	}
 }

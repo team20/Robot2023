@@ -19,10 +19,12 @@ import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
+import frc.robot.commands.drive.DriveBrakeModeCommand;
 import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
+import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -54,7 +56,7 @@ public class RobotContainer {
 		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
 		m_autoChooser.addOption("Score then leave", CommandComposer.getScoreThenLeaveCommand());
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
-		// m_autoChooser.addOption("Score two", CommandComposer.getTwoScoreAuto());
+		m_autoChooser.addOption("Score two", CommandComposer.getLeaveThenScoreCommand());
 		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
@@ -78,7 +80,7 @@ public class RobotContainer {
 		// Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
-						new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)),
+						new DeferredCommandAuto(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)),
 						new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
 
 		// Move the arm to the medium node over the back
@@ -128,6 +130,8 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
 
+
+		new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle).whileTrue(new DriveBrakeModeCommand());
 		// Driving
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),

@@ -80,14 +80,14 @@ public class ArmSubsystem extends SubsystemBase {
 		// Initialize 2nd lower arm motor
 		m_lowerArmMotor2.restoreFactoryDefaults();
 		m_lowerArmMotor2.setInverted(ArmConstants.kLowerInvert);
-		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		forwardSwitch2.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-		reverseSwitch2.enableLimitSwitch(false);
+		// SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		// forwardSwitch2.enableLimitSwitch(false);
+		// SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		// reverseSwitch2.enableLimitSwitch(false);
 
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted
@@ -224,7 +224,8 @@ public class ArmSubsystem extends SubsystemBase {
 	public void periodic() {
 		// SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOut());
 		// SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
-		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getAppliedOutput());
+		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOutputCurrent());
+		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmMotor2.getOutputCurrent());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
 		//Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
