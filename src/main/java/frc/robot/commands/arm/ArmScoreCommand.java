@@ -20,13 +20,14 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
+		SUBSTATION,
 		TO_BACK_INTERMEDIATE,
 		TO_FORWARD_INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		POCKET_INTERMEDIATE,
 		SETTLE_POSITION,
-		HOLD,
-		SUBSTATION
+		/** Exists to forcibly finish this command */
+		HOLD
 	}
 
 	/** Stores the position we want the arm to move to */
@@ -63,8 +64,8 @@ public class ArmScoreCommand extends CommandBase {
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
 				break;
-			case POCKET_INTERMEDIATE:
-				angles = ArmConstants.kPocketIntermediateAngles;
+			case SUBSTATION:
+				angles = ArmConstants.kSubstationAngles;
 				break;
 			case TO_BACK_INTERMEDIATE:
 				angles = ArmConstants.kToBackIntermediateAngles;
@@ -74,6 +75,9 @@ public class ArmScoreCommand extends CommandBase {
 				break;
 			case HIGH_INTERMEDIATE:
 				angles = ArmConstants.kHighIntermediateAngles;
+				break;
+			case POCKET_INTERMEDIATE:
+				angles = ArmConstants.kPocketIntermediateAngles;
 				break;
 			case HOLD:
 				angles = new double[2];
