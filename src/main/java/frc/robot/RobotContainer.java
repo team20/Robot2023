@@ -18,6 +18,7 @@ import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ManualMotorCommand;
+import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
 import frc.robot.commands.drive.DriveToApriltag;
@@ -27,10 +28,10 @@ import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
@@ -56,7 +57,8 @@ public class RobotContainer {
 		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
 		m_autoChooser.addOption("Score then leave", CommandComposer.getScoreThenLeaveCommand());
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
-		m_autoChooser.addOption("Score two", CommandComposer.getLeaveThenScoreCommand());
+		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
+		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
 		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
@@ -65,56 +67,68 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
-				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-						(new LEDCommand(StatusCode.DEFAULT))));
+			.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
+			.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR)));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+						.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+						.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE),
+								(new LEDCommand(StatusCode.DEFAULT))));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.onTrue(new WheelGripperCommand(WheelGripperPosition.STOP));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightTrigger)
 				.onTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kOptions)
+				.onTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
 
 		// -------------Arm Controls-------------
 		m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
-				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftX),
+				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
 
-		// Move the arm to the high node
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
+		// Triangle + Left Trigger not pressed -> Move the arm to the high node
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
+				.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
-						new DeferredCommandAuto(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE)),
-						new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH))));
+						new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
+						new ArmScoreCommand(ArmPosition.SETTLE_POSITION),
+						new ArmScoreCommand(ArmPosition.HIGH)));
 
-		// Move the arm to the medium node over the back
+		// Triangle + Left Trigger pressed -> Move the arm to the high node over the
+		// back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
 
-		// Move the arm to the medium node
+		// Square + Left Trigger not pressed -> Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
-		// Move the arm to the medium node over the back
+		// Square + Left Trigger pressed -> Move the arm to the medium node over the
+		// back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
-		// Move the arm to the low position
+		// X pressed -> Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
-		// Move the arm to the pocket
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
+		// Circle + Left Trigger not pressed -> Move the arm to the pocket
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
+				.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
+		// Circle + Left Trigger pressed -> Move the arm to the substation position
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
+				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
+
+		// Used to cancel an ArmScoreCommand
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
 				.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
 
-    // Move the arm to the substation position
-	new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
-    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
-
-
 		// -------------LED signaling-------------
-		// // Signal for a cube
+		// Signal for a cube
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 		// Signal for a cone
@@ -129,7 +143,8 @@ public class RobotContainer {
 		// Opening gripper/dropping game piece
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
-
+		new JoystickButton(m_driverController, ControllerConstants.Button.kCircle)
+				.whileTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
 
 		new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle).whileTrue(new DriveBrakeModeCommand());
 		// Driving
@@ -140,9 +155,9 @@ public class RobotContainer {
 
 		// Fine Turning
 		new JoystickButton(m_driverController, ControllerConstants.Button.kRightBumper)
-			.whileTrue(new DefaultDriveCommand(()->0.0, ()->0.0, ()->DriveConstants.kFineTurningSpeed));
+				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> 0.0, () -> DriveConstants.kFineTurningSpeed));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kLeftBumper)
-			.whileTrue(new DefaultDriveCommand(()->0.0, ()->DriveConstants.kFineTurningSpeed, ()->0.0));
+				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> DriveConstants.kFineTurningSpeed, () -> 0.0));
 	}
 
 	// TODO get auto command from auto chooser

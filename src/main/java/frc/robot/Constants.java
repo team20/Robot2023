@@ -77,7 +77,7 @@ public final class Constants {
 		/** Length of lower arm length in inches */
 		public static final double kLowerArmLength = 33;
 		/** Length of upper arm length in inches */
-		public static final double kUpperArmLength = 41.5;
+		public static final double kUpperArmLength = 42;
 
 
 		// TODO check arm speed multipliers
@@ -272,7 +272,7 @@ public final class Constants {
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters / 60;
 		// TODO PIDS
-		public static final double kBalanceP = 0.0085;
+		public static final double kBalanceP = 0.0065;
 		public static final double kBalanceI = 0.000;
 		public static final double kBalanceD = 0.001;
 

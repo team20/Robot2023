@@ -2,7 +2,9 @@ package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GripperConstants;
+import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 
 //TODO revisit this command
 public class WheelGripperCommand extends CommandBase {
@@ -11,6 +13,7 @@ public class WheelGripperCommand extends CommandBase {
 	public enum WheelGripperPosition {
 		INTAKE,
 		OUTTAKE,
+		SLOW_OUTTAKE,
         STOP,
 		INTAKE_CUBE_W_SENSOR
 	}
@@ -35,6 +38,9 @@ public class WheelGripperCommand extends CommandBase {
 			case OUTTAKE:
                 WheelGripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower);
 				break;
+			case SLOW_OUTTAKE:
+                WheelGripperSubsystem.get().setGripperMotor(GripperConstants.kMovePower/4);
+				break;
             case STOP:
                 WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kHoldPower);
 				break;
@@ -49,7 +55,8 @@ public class WheelGripperCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		if(m_operation == WheelGripperPosition.INTAKE_CUBE_W_SENSOR){
-			WheelGripperSubsystem.get().setGripperMotor(0);
+			WheelGripperSubsystem.get().setGripperMotor(-GripperConstants.kHoldPower);
+			ArduinoSubsystem.get().setCode(StatusCode.DEFAULT);
 		}
 	}
 

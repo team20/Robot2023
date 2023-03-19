@@ -37,6 +37,7 @@ public class ArmSubsystem extends SubsystemBase {
 	/** Stores the angle we want the upper arm to be at */
 	private double m_targetUpperArmAngle = 0;
 	private boolean m_temporarilyDisabled;
+	private boolean m_manualArmRan;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -128,15 +129,20 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @param speed The percent output to run the motor at
 	 */
 	public void setLowerArmMotorSpeed(double speed) {
+		m_manualArmRan = true;
 		m_lowerArmMotor.set(speed);
 	}
 
+	public boolean getManualArmRan(){
+		return m_manualArmRan;
+	}
 	/**
 	 * Sets the percent output for the upper arm motor
 	 * 
 	 * @param speed The percent output to run the motor at
 	 */
 	public void setUpperArmMotorSpeed(double speed) {
+		m_manualArmRan = true;
 		m_upperArmMotor.set(speed);
 	}
 
@@ -169,6 +175,7 @@ public class ArmSubsystem extends SubsystemBase {
 		// degrees relative to the lower arm
 		if ((lower <= ArmConstants.kLowerArmMaxAngle && lower >= ArmConstants.kLowerArmMinAngle)
 				&& (upper <= ArmConstants.kUpperArmMaxAngle && upper >= ArmConstants.kUpperArmMinAngle)) {
+			m_manualArmRan = false;
 			m_targetLowerArmAngle = lower;
 			m_lowerArmController.setReference(lower, ControlType.kPosition);
 
@@ -242,13 +249,23 @@ public class ArmSubsystem extends SubsystemBase {
 			SmartDashboard.putNumber("IK Upper Arm Angle", armPosition[1]);
 		}
 
-		if(!m_temporarilyDisabled && getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound){
+		// If the y-coordinate of the upper arm is about to exceed the height, stop the
+		// motors by setting their target angles to their current angles
+		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
+			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
+		}
+		if(!m_temporarilyDisabled && (getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound)){
 			setLowerArmMotorSpeed(0);
 			setUpperArmMotorSpeed(0);
 			m_temporarilyDisabled = true;
 		}else if(m_temporarilyDisabled && getLowerArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getLowerArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
 			setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
 			m_temporarilyDisabled = false;
+		}
+
+		if(isNearTargetAngle()){
+			setLowerArmMotorSpeed(0);
+			setUpperArmMotorSpeed(0);
 		}
 	}
 }
