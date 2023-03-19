@@ -28,10 +28,10 @@ import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
@@ -85,50 +85,45 @@ public class RobotContainer {
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_operatorController.getRawAxis(ControllerConstants.Axis.kRightY)));
 
-		// Triangle + Left Trigger not pressed -> Move the arm to the high node
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
-				.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
+		// Move the arm to the high node
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
 						new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
 						new ArmScoreCommand(ArmPosition.SETTLE_POSITION),
 						new ArmScoreCommand(ArmPosition.HIGH)));
 
-		// Triangle + Left Trigger pressed -> Move the arm to the high node over the
-		// back
+		// Move the arm to the medium node over the back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
 
-		// Square + Left Trigger not pressed -> Move the arm to the medium node
+		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
-		// Square + Left Trigger pressed -> Move the arm to the medium node over the
-		// back
+		// Move the arm to the medium node over the back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
-		// X pressed -> Move the arm to the low position
+		// Move the arm to the low position
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
-		// Circle + Left Trigger not pressed -> Move the arm to the pocket
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle)
-				.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
+		// Move the arm to the pocket
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kCircle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
-		// Circle + Left Trigger pressed -> Move the arm to the substation position
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)
-				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
-
-		// Used to cancel an ArmScoreCommand
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
 				.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
 
+    // Move the arm to the substation position
+	new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
+    .onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
+
+
 		// -------------LED signaling-------------
-		// Signal for a cube
+		// // Signal for a cube
 		new POVButton(m_operatorController, ControllerConstants.DPad.kLeft)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 		// Signal for a cone
@@ -155,9 +150,9 @@ public class RobotContainer {
 
 		// Fine Turning
 		new JoystickButton(m_driverController, ControllerConstants.Button.kRightBumper)
-				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> 0.0, () -> DriveConstants.kFineTurningSpeed));
+			.whileTrue(new DefaultDriveCommand(()->0.0, ()->0.0, ()->DriveConstants.kFineTurningSpeed));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kLeftBumper)
-				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> DriveConstants.kFineTurningSpeed, () -> 0.0));
+			.whileTrue(new DefaultDriveCommand(()->0.0, ()->DriveConstants.kFineTurningSpeed, ()->0.0));
 	}
 
 	// TODO get auto command from auto chooser
