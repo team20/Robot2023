@@ -121,6 +121,8 @@ public class DriveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());
 
 		SmartDashboard.putNumber("Curr Encoder Position", DriveSubsystem.get().getAverageEncoderDistance());
+		SmartDashboard.putString("Wheel Encoder Positions", String.format("(%.3f, %.3f)", 
+				DriveSubsystem.get().getLeftEncoderPosition(), DriveSubsystem.get().getRightEncoderPosition()));
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 				getRightEncoderPosition());
 		// wasDisabled exists so the motors aren't constantly set to brake or coast mode
