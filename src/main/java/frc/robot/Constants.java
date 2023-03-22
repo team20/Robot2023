@@ -34,7 +34,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
 		 */
-		public static final double[] kMediumBackAngles = { 94, 281 };
+		public static final double[] kMediumBackAngles = { 94.5, 279 }; //95, 281
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
@@ -148,9 +148,9 @@ public final class Constants {
 		public static final double kLowerArmFF = 0.0;
 		/** Controls the direction of the lower arm motor */
 		public static final boolean kLowerInvert = true;
-		public static final double kUpperArmP = 0.1;//0.25
+		public static final double kUpperArmP = 0.04;//0.1 -> 0.05 -> 0.07 -> 0.065 -> 0.06 -> 0.03
 		public static final double kUpperArmI = 0.000;
-		public static final double kUpperArmD = 0;
+		public static final double kUpperArmD = 0.030; //0 -> 0.0225 -> 0.025
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
 		/** Controls the direction of the upper arm motor */

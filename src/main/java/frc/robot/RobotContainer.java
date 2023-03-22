@@ -89,7 +89,6 @@ public class RobotContainer {
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
 						new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.SETTLE_POSITION),
 						new ArmScoreCommand(ArmPosition.HIGH)));
 
 		// Move the arm to the medium node over the back
@@ -157,6 +156,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return m_autoChooser.getSelected();
+		return new ArmScoreCommand(ArmPosition.LOW);
 	}
 }

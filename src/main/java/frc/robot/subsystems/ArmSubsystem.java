@@ -285,9 +285,9 @@ public class ArmSubsystem extends SubsystemBase {
 			m_temporarilyDisabled = false;
 		}
 
-		if(isNearTargetAngle()){
-			setLowerArmMotorSpeed(0);
-			setUpperArmMotorSpeed(0);
-		}
+		// if(isNearTargetAngle()){
+		// 	setLowerArmMotorSpeed(0);
+		// 	setUpperArmMotorSpeed(0);
+		// }
 	}
 }
