@@ -12,6 +12,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxLimitSwitch;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -38,6 +40,12 @@ public class ArmSubsystem extends SubsystemBase {
 	private double m_targetUpperArmAngle = 0;
 	private boolean m_temporarilyDisabled;
 	private boolean m_manualArmRan;
+
+	private MedianFilter m_upperMotorMedianFilter = new MedianFilter(1000);
+	private LinearFilter m_upperMotorAverageFilter = LinearFilter.movingAverage(1000);
+	private double m_averageCurrentUpper;
+	private double m_medianCurrentUpper;
+	private double m_maxCurrent;
 
 	/**
 	 * Instantiate a new instance of the {@link ArmSubsystem} class.
@@ -229,11 +237,25 @@ public class ArmSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
+
+		if(m_upperArmMotor.getAppliedOutput() > 0){
+			double current = m_upperArmMotor.getOutputCurrent();
+			m_medianCurrentUpper = m_upperMotorMedianFilter.calculate(current);
+			m_averageCurrentUpper = m_upperMotorAverageFilter.calculate(current);
+			if(current > m_maxCurrent){
+				m_maxCurrent = current;
+			}
+		}
+
 		// SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOut());
 		// SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOutputCurrent());
 		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmMotor2.getOutputCurrent());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
+		SmartDashboard.putNumber("Upper Arm Motor Median Current", m_medianCurrentUpper);
+		SmartDashboard.putNumber("Upper Arm Motor Average Current", m_averageCurrentUpper);
+		SmartDashboard.putNumber("Upper Arm Motor Max Current", m_maxCurrent);
+
 		//Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
@@ -255,11 +277,11 @@ public class ArmSubsystem extends SubsystemBase {
 			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
 		}
 		if(!m_temporarilyDisabled && (getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound)){
-			setLowerArmMotorSpeed(0);
-			setUpperArmMotorSpeed(0);
+			// setLowerArmMotorSpeed(0);
+			// setUpperArmMotorSpeed(0);
 			m_temporarilyDisabled = true;
 		}else if(m_temporarilyDisabled && getLowerArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getLowerArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
-			setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
+			//setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
 			m_temporarilyDisabled = false;
 		}
 

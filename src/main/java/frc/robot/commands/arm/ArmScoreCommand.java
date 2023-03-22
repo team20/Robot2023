@@ -86,9 +86,6 @@ public class ArmScoreCommand extends CommandBase {
 				break;
 			case SETTLE_POSITION:
 				break;
-			case SUBSTATION:
-				angles = ArmConstants.kSubstationAngles;
-				break;
 			default:
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
