@@ -33,6 +33,10 @@ public abstract class TimeThresholdedCommand extends CommandBase {
 		m_timeThreshold = timeThreshold;
 	}
 
+    public void initialize(double timeThreshold) {
+		m_timeThreshold = timeThreshold;
+    }
+
 	/**
 	 * Determines whether or not this {@code TimeThresholdedCommand} is completed.
 	 * 
@@ -57,4 +61,5 @@ public abstract class TimeThresholdedCommand extends CommandBase {
 	 *         otherwise
 	 */
 	public abstract boolean isFinishing();
+
 }

@@ -1,7 +1,7 @@
 package hlib.drive;
 
 /**
- * An {@code AutoAligner} can help a {@code Robot} to align to a {@code Pose}.
+ * An {@code AutoAligner} can help a {@code Robot} to align to a {@code Target}.
  * 
  * @author Jeong-Hyon Hwang (jhhbrown@gmail.com)
  * @author Andrew Hwang (u.andrew.h@gmail.com)
@@ -9,27 +9,27 @@ package hlib.drive;
 public interface AutoAligner {
 
 	/**
-	 * Returns the wheel velocities for a {@code Robot} to move toward the specified target.
+	 * Returns the wheel velocities (positive: forward) for a {@code Robot} to move toward the specified {@code Target}.
 	 * 
 	 * @param currentPose
 	 *            the current {@code Pose} of the {@code Robot}
-	 * @param targetPoseID
-	 *            the ID of the target
-	 * @return the wheel velocities for a {@code Robot} to toward the specified target; {@code null} if no movement is
-	 *         necessary (i.e., the {@code Robot} is close enough to the target)
+	 * @param target
+	 *            a {@code Target}
+	 * @return the wheel velocities (positive: forward) for a {@code Robot} to toward the specified {@code Target};
+	 *         {@code null} if no movement is necessary (i.e., the {@code Robot} is close enough to the {@code Target})
 	 */
-	double[] wheelVelocities(Pose currentPose, String targetPoseID);
+	public double[] wheelVelocities(Pose currentPose, Target target);
 
 	/**
-	 * Returns the wheel velocities for a {@code Robot} to move toward the specified target.
+	 * Determines whether or not the specified {@code Pose} is sufficiently aligned to the specified {@code Target}.
 	 * 
-	 * @param currentPose
-	 *            the current {@code Pose} of the {@code Robot}
-	 * @param targetPose
-	 *            the {@code Pose} of the target
-	 * @return the wheel velocities for a {@code Robot} to toward the specified target; {@code null} if no movement is
-	 *         necessary (i.e., the {@code Robot} is close enough to the target)
+	 * @param pose
+	 *            a {@code Pose}
+	 * @param target
+	 *            a {@code Target}
+	 * @return {@code true} if the specified {@code Pose} is sufficiently aligned to the specified {@code Target};
+	 *         {@code false} otherwise
 	 */
-	public double[] wheelVelocities(Pose currentPose, Pose targetPose);
+	boolean isAligned(Pose pose, Target target);
 
 }

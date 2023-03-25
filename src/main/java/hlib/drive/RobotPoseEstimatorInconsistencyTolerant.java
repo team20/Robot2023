@@ -42,7 +42,7 @@ public class RobotPoseEstimatorInconsistencyTolerant extends RobotPoseEstimatorB
 	 * @param poseDetected
 	 *            the {@code Pose} from the LimeLight
 	 * @return {@code true} if either the x- or the y-coordinate value of the {@code Pose} is different by more than the
-	 *         threshold compared to the {@code Pose) that has been estimated; {@code false} otherwise (i.e., the
+	 *         threshold compared to the {@code Pose} that has been estimated; {@code false} otherwise (i.e., the
 	 *         specified {@code Pose} is not an outlier)
 	 */
 	protected boolean isOutlier(Pose poseDetected) {

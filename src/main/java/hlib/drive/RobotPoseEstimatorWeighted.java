@@ -41,7 +41,12 @@ public class RobotPoseEstimatorWeighted extends RobotPoseEstimatorInconsistencyT
 	 */
 	@Override
 	public void setPoseEstimated(Pose poseDetected) {
-		super.setPoseEstimated(weightedSum(poseDetected, weight, this.poseEstimated, 1 - weight));
+		if (poseDetected != null) {
+			errorTracker.update(poseDetected, this.poseEstimated);
+			this.poseEstimated = weightedSum(poseDetected, weight, this.poseEstimated, 1 - weight);
+			if (this.poseEstimated.isInvalid())
+				reset();
+		}
 	}
 
 	/**

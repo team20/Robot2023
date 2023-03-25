@@ -19,11 +19,23 @@ public interface RobotPoseEstimator {
 	 * Updates this {@code RobotPoseEstimator} based on the wheel encoders of the {@code Robot}.
 	 * 
 	 * @param leftEncoderPosition
-	 *            the left wheel encoder position of the {@code Robot}
+	 *            the left wheel encoder position of the {@code Robot} (positive change: forward)
 	 * @param rightEncoderPosition
-	 *            the right wheel encoder position of the {@code Robot}
+	 *            the right wheel encoder position of the {@code Robot} (positive change: forward)
 	 */
 	public void update(double leftEncoderPosition, double rightEncoderPosition);
+
+	/**
+	 * Updates this {@code RobotPoseEstimator} based on the wheel encoders of the {@code Robot}.
+	 * 
+	 * @param leftEncoderPosition
+	 *            the left wheel encoder position of the {@code Robot} (positive change: forward)
+	 * @param rightEncoderPosition
+	 *            the right wheel encoder position of the {@code Robot} (positive change: forward)
+	 * @param directionalAngle
+	 *            the directional angle of the {@code Robot}
+	 */
+	public void update(double leftEncoderPosition, double rightEncoderPosition, Double directionalAngle);
 
 	/**
 	 * Updates this {@code RobotPoseEstimator} based on the specified {@code Pose}.

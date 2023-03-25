@@ -76,7 +76,7 @@ public class RobotPoseCalculatorBasic implements RobotPoseCalculator {
 		angle = Pose.normalize(angle);
 		double rightDisplacement = angle * this.robotWidth / 2;
 		if (forwardOnly) {
-			if (rightDisplacement > 0) // forward
+			if (rightDisplacement > 0)
 				return new double[] { 0, 2 * rightDisplacement };
 			else
 				return new double[] { -2 * rightDisplacement, 0 };

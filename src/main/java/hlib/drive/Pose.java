@@ -116,4 +116,13 @@ public class Pose extends Position {
 			return angle;
 	}
 
+	/**
+	 * Determines whether or not this {@code Pose} has an invalid value (e.g., NaN).
+	 * 
+	 * @return {@code true} if this {@code Pose} has an invalid value (e.g., NaN); {@code false} otherwise
+	 */
+	public boolean isInvalid() {
+		return x == Double.NaN || y == Double.NaN || directionalAngle == Double.NaN;
+	}
+
 }

@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * 
  * @author Jonathan Waters
  */
-public class DeferredCommand extends CommandBase {
+public class DeferredCommandAuto extends CommandBase {
 	private final Supplier<Command> m_commandSupplier;
 	private Command m_command;
 
@@ -30,7 +30,7 @@ public class DeferredCommand extends CommandBase {
 	 *                        This method should have logic to change the command
 	 *                        returned based on some selected condition(s)
 	 */
-	public DeferredCommand(Supplier<Command> commandSupplier) {
+	public DeferredCommandAuto(Supplier<Command> commandSupplier) {
 		m_commandSupplier = commandSupplier;
 	}
 
@@ -39,24 +39,19 @@ public class DeferredCommand extends CommandBase {
 	public void initialize() {
 		// Obtain the command
 		m_command = m_commandSupplier.get();
-		m_command.schedule();
+		m_command.initialize();
 	}
 
 
 	@Override public void end(boolean interrupted){
-		if(interrupted){
-			m_command.cancel();
-		}
-		m_command = null;
+		m_command.end(false);
 	}
-	@Override 
-	public void execute(){
-
+	@Override public void execute(){
+		m_command.execute();
 	}
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		//return true;
-		return !m_command.isScheduled();
+		return m_command.isFinished();
 	}
 }

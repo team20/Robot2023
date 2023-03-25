@@ -8,7 +8,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 
-public class ArmScoreCommand extends CommandBase {
+public class ArmScoreAutoCommand extends CommandBase {
 	/** Stores the angles we want the arm to move to */
 	double[] angles;
 
@@ -35,7 +35,7 @@ public class ArmScoreCommand extends CommandBase {
 	private boolean ranBefore;
 
 	/** Creates a new ArmScoreCommand. */
-	public ArmScoreCommand(ArmPosition armPosition) {
+	public ArmScoreAutoCommand(ArmPosition armPosition) {
 		m_armPosition = armPosition;
 		addRequirements(ArmSubsystem.get());
 	}
@@ -84,23 +84,17 @@ public class ArmScoreCommand extends CommandBase {
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
 				break;
-			case SETTLE_POSITION:
-				break;
 			default:
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
 		}
-		if(m_armPosition != ArmPosition.SETTLE_POSITION){
-			ArmSubsystem.get().setAngles(angles[0], angles[1]);
-		}
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(m_armPosition != ArmPosition.SETTLE_POSITION){
-			ArmSubsystem.get().setAngles(angles[0], angles[1]);
-		}
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -111,20 +105,22 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		if(m_armPosition == ArmPosition.SETTLE_POSITION){
-			// If the lower and upper arm is close enough to the target angle, finish the
-			// command
-			boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
-			ranBefore = true;
-			return ret;
-		}
-
 		// If the arm position is HOLD, finish the command
 		if (m_armPosition == ArmPosition.HOLD) {
 			return true;
 		}
+		// Calculate the arm position
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
+		// If the y-coordinate of the upper arm is about to exceed the height, stop the
+		// motors by setting their target angles to their current angles
+		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
+			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
+			return true;
+		}
+		// If the lower and upper arm is close enough to the target angle, finish the
 		// command
-		boolean ret = ranBefore;
+		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
 		ranBefore = true;
 		return ret;
 	}

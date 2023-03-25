@@ -10,9 +10,10 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PoseEstimationSubsystem;
 import hlib.drive.AutoAligner;
 import hlib.drive.Pose;
+import hlib.drive.Target;
 
 /**
- * A {@code AutoAlignCommand} can move the robot by a certain distance.
+ * An {@code AutoAlignCommand} can move the robot to a certain {@code Target}.
  * 
  * @author Jeong-Hyon Hwang (jhhbrown@gmail.com)
  * @author Andrew Hwang (u.andrew.h@gmail.com)
@@ -20,9 +21,9 @@ import hlib.drive.Pose;
 public class AutoAlignCommand extends TimeThresholdedCommand {
 
 	/**
-	 * The ID of the target.
+	 * The {@code Target}.
 	 */
-	String m_targetID;
+	Target m_target;
 
 	/**
 	 * The {@code AutoAligner} used by this {@code AutoAlignCommand}.
@@ -32,31 +33,28 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	/**
 	 * The {@code PoseEstimationSubsystem} used by this {@code AutoAlignCommand}.
 	 */
-	PoseEstimationSubsystem m_poseEstimationSubsystem;
+	PoseEstimationSubsystem m_poseEstimator;
+
+	/**
+	 * The time when this {@code AutoAlignCommand} is initialized.
+	 */
+	long m_startTime;
 
 	/**
 	 * Constructs an {@code AutoAlignCommand}.
 	 * 
-	 * @param targetID
-	 *                                the ID of the target
+	 * @param target
+	 *                      the {@code Target}
 	 * @param aligner
-	 *                                the {@code AutoAlginer} to use
-	 * @param poseEstimationSubsystem
-	 *                                the {@code PoseEstimationSubsystem} to use
-	 * @param timeThreshold
-	 *                                the time threshold (in seconds) that specifies
-	 *                                how long the robot needs to be close to the
-	 *                                target for
-	 *                                the comletion of the {@code AutoAlignCommand}
-	 *                                (e.g., 0.1)
+	 *                      the {@code AutoAlginer} to use
+	 * @param poseEstimator
+	 *                      the {@code PoseEstimationSubsystem} to use
 	 */
-	public AutoAlignCommand(String targetID, AutoAligner aligner, PoseEstimationSubsystem poseEstimationSubsystem,
-			double timeThreshold) {
-		super(timeThreshold);
-		m_targetID = targetID;
+	public AutoAlignCommand(Target target, AutoAligner aligner, PoseEstimationSubsystem poseEstimator) {
+		super(0);
+		m_target = target;
 		m_aligner = aligner;
-		m_poseEstimationSubsystem = poseEstimationSubsystem;
-		// Use addRequirements() here to declare subsystem dependencies.
+		m_poseEstimator = poseEstimator;
 		addRequirements(DriveSubsystem.get());
 	}
 
@@ -65,7 +63,9 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	 */
 	@Override
 	public void initialize() {
-		SmartDashboard.putString("Target ID", m_targetID);
+		SmartDashboard.putString("Target", "" + m_target);
+		m_startTime = System.currentTimeMillis();
+		super.initialize(m_target.timeThreshold());
 	}
 
 	/**
@@ -73,18 +73,16 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	 */
 	@Override
 	public void execute() {
-		Pose poseEstimated = m_poseEstimationSubsystem.poseEstimated();
-		if (poseEstimated != null) {
-			double[] velocities = m_aligner.wheelVelocities(poseEstimated, m_targetID);
-			if (velocities != null) {
-				// TODO: comment out after testing
-				System.out.println(
-						String.format("auto alignement: wheel velocities (%.3f, %.3f)", velocities[0], velocities[1]));
-				DriveSubsystem.get().tankDrive(velocities[0], velocities[1]);
-			} else
-				DriveSubsystem.get().tankDrive(0, 0);
-		} else
-			DriveSubsystem.get().tankDrive(0, 0);
+		double[] velocities = new double[] { 0.0, 0.0 };
+		Pose poseEstimated = m_poseEstimator.poseEstimated();
+		if (poseEstimated != null) // know the current pose
+			velocities = m_aligner.wheelVelocities(poseEstimated, m_target);
+		SmartDashboard.putString("Wheel Velocities",
+				String.format("(%.3f, %.3f)", velocities[0], velocities[1]));
+		DriveSubsystem.get().tankDrive(velocities[0], velocities[1]); // normal case - positive: forward
+		// robot.tankDrive(-velocities[0], -velocities[1]); // negative: forward
+		// robot.tankDrive(velocities[1], velocities[0]); // positive: forward, left/right swapped
+		// robot.tankDrive(-velocities[1], -velocities[0]); // negative: forward, left/right swapped
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	 */
 	@Override
 	public void end(boolean interrupted) {
-		SmartDashboard.putString("Target ID", "");
+		SmartDashboard.putString("Target", "");
 		DriveSubsystem.get().tankDrive(0, 0);
 	}
 
@@ -105,7 +103,8 @@ public class AutoAlignCommand extends TimeThresholdedCommand {
 	 */
 	@Override
 	public boolean isFinishing() {
-		Pose poseEstimated = m_poseEstimationSubsystem.poseEstimated();
-		return poseEstimated != null && m_aligner.wheelVelocities(poseEstimated, m_targetID) == null;
+		Pose poseEstimated = m_poseEstimator.poseEstimated();
+		return poseEstimated != null && m_aligner.isAligned(poseEstimated, m_target);
 	}
+
 }

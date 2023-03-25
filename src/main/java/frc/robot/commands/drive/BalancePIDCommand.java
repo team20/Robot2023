@@ -22,13 +22,14 @@ public class BalancePIDCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		m_controller.setSetpoint(0);
+		m_controller.setTolerance(0.5);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
 		double setpoint = m_controller.calculate(DriveSubsystem.get().getPitch());
-		DriveSubsystem.get().tankDrive(setpoint, setpoint);
+		DriveSubsystem.get().tankDrive(-setpoint, -setpoint);
 	}
 
 	// Called once the command ends or is interrupted.
