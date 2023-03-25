@@ -220,7 +220,7 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 	 */
 	protected void update(Pose pose, double leftDisplacement, double rightDisplacement, Double angularDisplacement) {
 		Pose p = nextPose(pose, leftDisplacement, rightDisplacement);
-		this.poseEstimated = angularDisplacement == null ? p
+		this.poseEstimated = (p == null || angularDisplacement == null) ? p
 				: new Pose(p.x(), p.y(), angularDisplacement + pose.directionalAngle());
 	}
 
