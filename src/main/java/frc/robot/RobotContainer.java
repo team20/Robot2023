@@ -53,7 +53,8 @@ public class RobotContainer {
 		// m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
 		// m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
 		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
-		m_autoChooser.addOption("Over Charge Station", CommandComposer.getOverTheFulcrumAuto());
+		m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
+		m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
 		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
 		m_autoChooser.addOption("Score then leave", CommandComposer.getScoreThenLeaveCommand());
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
@@ -156,6 +157,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return new ArmScoreCommand(ArmPosition.LOW);
+		return m_autoChooser.getSelected();
 	}
 }

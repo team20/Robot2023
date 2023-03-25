@@ -200,6 +200,10 @@ public class ArmSubsystem extends SubsystemBase {
 				checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
 	}
 
+	public boolean isNearTargetAngleIntermediate(){
+		return checkAngle(m_targetLowerArmAngle, getLowerArmAngle()) &&
+			checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
+	}
 	/**
 	 * Takes a target angle and current angle, and checks if the current angle is
 	 * close enough to the target angle. The number of degrees the current angle can
@@ -233,6 +237,32 @@ public class ArmSubsystem extends SubsystemBase {
 		}
 		return false;
 	}
+
+	/*This is checkAngle but with a higher degree of error */
+	public boolean checkAngleIntermediate(double targetAngle, double currentAngle) {
+		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesErrorIntermediate;
+		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesErrorIntermediate;
+		// Simple bounds checking without accounting for wraparound
+		if (Math.abs(currentAngle-targetAngle) < ArmConstants.kAllowedDegreesErrorIntermediate) {
+			return true;
+			/*
+			 * If there's wraparound, there's two parts of the accepted range: The part that
+			 * hasn't wrapped around, and the part that has. e.g., targetAngle = 1,
+			 * currentAngle = 358:
+			 * The wrapped range is 357-5 degrees. wrappedLowerAngleBound covers 357-360,
+			 * wrappedUpperAngleBound covers 0-5, so all angles are covered.
+			 */
+		} else if (lowerAngleBound < 0 || upperAngleBound > 360) {
+			// System.out.println(0/0);
+			double wrappedLowerAngleBound = MathUtil.inputModulus(lowerAngleBound, 0, 360);
+			double wrappedUpperAngleBound = MathUtil.inputModulus(upperAngleBound, 0, 360);
+			if (currentAngle > wrappedLowerAngleBound || currentAngle < wrappedUpperAngleBound) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	// This method will be called once per scheduler run
 	@Override

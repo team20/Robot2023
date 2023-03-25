@@ -103,6 +103,7 @@ public final class Constants {
 		 */
 		public static final double kAllowedDegreesError = 3;
 		/** Smallest angle the lower arm can go */
+		public static final double kAllowedDegreesErrorIntermediate = 15;
 		public static final double kLowerArmMinAngle = 45;
 		/** Maximum angle the lower arm can go */
 		public static final double kLowerArmMaxAngle = 135;

@@ -20,12 +20,10 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
-		SUBSTATION,
-		TO_BACK_INTERMEDIATE,
-		TO_FORWARD_INTERMEDIATE,
+		INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		POCKET_INTERMEDIATE,
-		SETTLE_POSITION,
+		SUBSTATION,
 		/** Exists to forcibly finish this command */
 		HOLD
 	}
@@ -48,59 +46,61 @@ public class ArmScoreCommand extends CommandBase {
 		switch (m_armPosition) {
 			case HIGH:
 				angles = ArmConstants.kHighAngles;
+				System.out.println("Setting High");
 				break;
 			case HIGH_BACK:
 				angles = ArmConstants.kHighBackAngles;
+				System.out.println("Setting High Back");
 				break;
 			case MEDIUM_FORWARD:
 				angles = ArmConstants.kMediumForwardAngles;
+				System.out.println("Setting Medium");
 				break;
 			case MEDIUM_BACK:
 				angles = ArmConstants.kMediumBackAngles;
+				System.out.println("Setting Medium Back");
 				break;
 			case LOW:
 				angles = ArmConstants.kLowAngles;
+				System.out.println("Setting Low");
 				break;
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
+				System.out.println("Setting Pocket");
 				break;
-			case SUBSTATION:
-				angles = ArmConstants.kSubstationAngles;
-				break;
-			case TO_BACK_INTERMEDIATE:
-				angles = ArmConstants.kToBackIntermediateAngles;
-				break;
-			case TO_FORWARD_INTERMEDIATE:
-				angles = ArmConstants.kToFwdIntermediateAngles;
+			case INTERMEDIATE:
+				angles = ArmConstants.kIntermediateAngles;
+				System.out.println("Setting Intermidiate");
 				break;
 			case HIGH_INTERMEDIATE:
 				angles = ArmConstants.kHighIntermediateAngles;
+				System.out.println("Setting High Intermediate");
 				break;
 			case POCKET_INTERMEDIATE:
 				angles = ArmConstants.kPocketIntermediateAngles;
+				System.out.println("Setting Pocket Intermediate");
+				break;
+			case SUBSTATION:
+				angles = ArmConstants.kSubstationAngles;
+				System.out.println("Setting Substation");
 				break;
 			case HOLD:
 				angles = new double[2];
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
-				break;
-			case SETTLE_POSITION:
+				System.out.println("Setting Hold");
 				break;
 			default:
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
 		}
-		if(m_armPosition != ArmPosition.SETTLE_POSITION){
-			ArmSubsystem.get().setAngles(angles[0], angles[1]);
-		}
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(m_armPosition != ArmPosition.SETTLE_POSITION){
-			ArmSubsystem.get().setAngles(angles[0], angles[1]);
-		}
+		ArmSubsystem.get().setAngles(angles[0], angles[1]);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -111,20 +111,22 @@ public class ArmScoreCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		if(m_armPosition == ArmPosition.SETTLE_POSITION){
-			// If the lower and upper arm is close enough to the target angle, finish the
-			// command
-			boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
-			ranBefore = true;
-			return ret;
-		}
-
 		// If the arm position is HOLD, finish the command
 		if (m_armPosition == ArmPosition.HOLD) {
 			return true;
 		}
+		// Calculate the arm position
+		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
+				ArmSubsystem.get().getUpperArmAngle());
+		// If the y-coordinate of the upper arm is about to exceed the height, stop the
+		// motors by setting their target angles to their current angles
+		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
+			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
+			return true;
+		}
+		// If the lower and upper arm is close enough to the target angle, finish the
 		// command
-		boolean ret = ranBefore;
+		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
 		ranBefore = true;
 		return ret;
 	}

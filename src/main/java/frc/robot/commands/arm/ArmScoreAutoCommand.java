@@ -120,7 +120,12 @@ public class ArmScoreAutoCommand extends CommandBase {
 		}
 		// If the lower and upper arm is close enough to the target angle, finish the
 		// command
-		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
+		boolean ret;
+		if(m_armPosition == ArmPosition.TO_BACK_INTERMEDIATE || m_armPosition == ArmPosition.TO_FORWARD_INTERMEDIATE){
+			ret = ArmSubsystem.get().isNearTargetAngleIntermediate();
+		}
+		ret = ArmSubsystem.get().isNearTargetAngle();
+		ret = (ret && ranBefore);
 		ranBefore = true;
 		return ret;
 	}

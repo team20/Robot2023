@@ -159,14 +159,14 @@ public class CommandComposer {
 				), 
 				new ParallelCommandGroup(
 					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR).withTimeout(1),
-					new DriveTimeCommand(-0.25, 250)
+					new DriveTimeCommand(-0.5, 125)
 				),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
 						new TurnRelativeCommand(0.5),
 						new DriveDistanceCommand(-3.5),
-						getAnvitaAuto(),
-						new DriveTimeCommand(-0.15,1000)
+						getAnvitaAuto()//,
+						// new DriveTimeCommand(-0.15,1000)
 					),
 					new SequentialCommandGroup(
 						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
