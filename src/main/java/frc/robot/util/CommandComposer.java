@@ -58,8 +58,7 @@ public class CommandComposer {
 				// If we are moving to a backwards position, we need to move to an intermediate
 				// position first
 			} else {
-				return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.TO_BACK_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.SETTLE_POSITION),
+				return new SequentialCommandGroup(new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
 						new ArmScoreCommand(armPosition));
 			}
 			// If the arm is backwards, check if the arm is going to flip over, and move to
@@ -71,8 +70,7 @@ public class CommandComposer {
 				// If we are moving to a forwards position, we need to move to an intermediate
 				// position first
 			} else {
-				return new SequentialCommandGroup(new ArmScoreCommand(ArmPosition.TO_FORWARD_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.SETTLE_POSITION),
+				return new SequentialCommandGroup(new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 						new ArmScoreCommand(armPosition));
 			}
 		}
@@ -144,18 +142,20 @@ public class CommandComposer {
 	}
 	public static Command getTwoScoreRedAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
+			new WheelGripperCommand(WheelGripperPosition.STOP),
 			new SequentialCommandGroup(
 				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
 				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK).withTimeout(1.5)
 			),
 			getOuttakePieceCommand(),
-			new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
+			//new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				new ParallelCommandGroup(
-				//getEnsurePreloadCommand(),
-				new TurnRelativeCommand(-2.25)),
-				new ParallelRaceGroup(
-					new DriveDistanceCommand(5.2),
-					getPickupPieceCommand()
+					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+					//getEnsurePreloadCommand(),
+					new TurnRelativeCommand(-2.25)),
+					new ParallelRaceGroup(
+						new DriveDistanceCommand(5.2),
+						getPickupPieceCommand()
 				), 
 				new ParallelCommandGroup(
 					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR).withTimeout(1),
@@ -285,18 +285,12 @@ public class CommandComposer {
 	}
 	// Score, Over Charging Station -> Out of community, backup to balance
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g1fa8ee801ec_1_8
-	public static Command getOverTheFulcrumScoreAuto() { // start lined up with middle node of coopertition zone
+	public static Command getOverTheFulcrumForwardAuto() { // start lined up with middle node of coopertition zone
 		return new SequentialCommandGroup(
 				getEnsurePreloadCommand(),
-				new ParallelCommandGroup(
-					new SequentialCommandGroup(
-						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
-						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK)
-					),
-					new SequentialCommandGroup(
-						new WaitCommand(0.65),
-						new DriveDistanceCommand(-0.6)
-					)
+				new SequentialCommandGroup(
+					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK)
 				),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
@@ -305,10 +299,10 @@ public class CommandComposer {
 					),
 					new SequentialCommandGroup(
 						new DriveDistanceCommand(0.2),
-						new DriveTimeCommand(0.7, 500),
-						new DriveTimeCommand(0.25, 2300)//,
-						// new DriveTimeCommand(0.7, 500),
-						// new BalancePIDCommand()
+						new DriveTimeCommand(0.55, 500),
+						new DriveTimeCommand(0.25, 3000),
+						new DriveTimeCommand(-0.55, 950),
+						new BalancePIDCommand()
 
 					)
 				)//,
