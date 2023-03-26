@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.arm.ArmScoreAutoCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
@@ -157,13 +158,14 @@ public class CommandComposer {
 							getPickupPieceCommand()
 						),
 						new SequentialCommandGroup(
-						new WaitCommand(0.25),
-						new DriveDistanceCommand(5.2)
+							new WaitCommand(0.25),
+							new DriveDistanceCommand(5.2),
+							new DriveTimeCommand(-0.25, 200)
 						)
 				), 
 				new ParallelCommandGroup(
 					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-					new DriveTimeCommand(-1, 25)
+					new DriveTimeCommand(-1, 30)
 				),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
@@ -269,17 +271,18 @@ public class CommandComposer {
 					),
 					new SequentialCommandGroup(
 							new WaitCommand(1),
-							new DriveTimeCommand(.25, 1250))),
+							new DriveTimeCommand(.1, 1250))),
 				new ParallelCommandGroup(
 					new SequentialCommandGroup(
 						getOuttakePieceCommand(),
+						new WaitCommand(0.3),
 						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
 					),
 					new SequentialCommandGroup(
 						new DriveDistanceCommand(-0.2),
-						new DriveTimeCommand(-0.55, 500),
-						new DriveTimeCommand(-0.25, 3000),
-						new DriveTimeCommand(0.55, 950),
+						new DriveTimeCommand(-DriveConstants.upStationSpeed, 700),
+						new DriveTimeCommand(-0.25, 2000),
+						new DriveTimeCommand(DriveConstants.upStationSpeed, 950),
 						new BalancePIDCommand()
 
 					)
@@ -303,9 +306,9 @@ public class CommandComposer {
 					),
 					new SequentialCommandGroup(
 						new DriveDistanceCommand(0.2),
-						new DriveTimeCommand(0.55, 500),
+						new DriveTimeCommand(DriveConstants.upStationSpeed, 500),
 						new DriveTimeCommand(0.25, 3000),
-						new DriveTimeCommand(-0.55, 950),
+						new DriveTimeCommand(-DriveConstants.upStationSpeed, 950),
 						new BalancePIDCommand()
 
 					)

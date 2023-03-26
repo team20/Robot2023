@@ -93,10 +93,10 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		// SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		// forwardSwitch2.enableLimitSwitch(false);
-		// SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		// reverseSwitch2.enableLimitSwitch(false);
+		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		forwardSwitch2.enableLimitSwitch(false);
+		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		reverseSwitch2.enableLimitSwitch(false);
 
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted

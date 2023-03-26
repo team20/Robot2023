@@ -41,7 +41,7 @@ public final class Constants {
 		 */
 		public static final double[] kMediumForwardAngles = { 84, 102 };
 		/** The lower and upper arm angles for the arm to be in the low position */
-		public static final double[] kLowAngles = { 87, 38 };
+		public static final double[] kLowAngles = { 80, 38 };
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 
@@ -123,7 +123,7 @@ public final class Constants {
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 29.967;
+		public static final double kLowerEncoderZeroOffset = 22.967;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
@@ -272,10 +272,12 @@ public final class Constants {
 		 */
 		public static final double kEncoderVelocityConversionFactor = (1 / DriveConstants.kGearRatio) * Math.PI
 				* DriveConstants.kWheelDiameterMeters / 60;
-		// TODO PIDS
+		// Balance Stuff
 		public static final double kBalanceP = 0.0065;
 		public static final double kBalanceI = 0.000;
 		public static final double kBalanceD = 0.001;
+		public static final double upStationSpeed = 0.55;
+
 
 
 	}
