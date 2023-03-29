@@ -22,6 +22,7 @@ import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
 import frc.robot.commands.drive.DriveToApriltag;
+import frc.robot.commands.drive.TurnRelativeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -147,6 +148,7 @@ public class RobotContainer {
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
 				() -> m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
+		new JoystickButton(m_driverController, ControllerConstants.Button.kSquare).whileTrue(new DeferredCommand(() -> new TurnRelativeCommand(180)));
 
 		// Fine Turning
 		new JoystickButton(m_driverController, ControllerConstants.Button.kRightBumper)
