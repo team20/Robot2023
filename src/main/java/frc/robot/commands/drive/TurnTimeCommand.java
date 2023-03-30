@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnTimeCommand extends CommandBase {
 	Instant m_startTime;
+	private double m_speed;
 	private double m_time;
 	private double m_clockwise;
 
@@ -19,14 +20,20 @@ public class TurnTimeCommand extends CommandBase {
 	 * Creates a new TurnTimeCommand.
 	 * 
 	 * @param clockwise Whether we're going clockwise or counterclockwise
-	 * @param time      Time in seconds to turn
+	 * @param time      Time in milliseconds to turn
 	 */
 	public TurnTimeCommand(boolean clockwise, double time) {
+		m_speed = 0.1;
+		m_clockwise = clockwise ? -1 : 1;
+		m_time = time;
+		addRequirements(DriveSubsystem.get());
+	}
+	public TurnTimeCommand(double speed, boolean clockwise, double time) {
+		m_speed = speed;
 		m_clockwise = clockwise ? 1 : -1;
 		m_time = time;
 		addRequirements(DriveSubsystem.get());
 	}
-
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
@@ -39,7 +46,7 @@ public class TurnTimeCommand extends CommandBase {
 		if (m_startTime == null) {
 			m_startTime = Instant.now();
 		}
-		DriveSubsystem.get().tankDrive(-0.1 * m_clockwise, 0.1 * m_clockwise);
+		DriveSubsystem.get().tankDrive(-m_speed * m_clockwise, m_speed * m_clockwise);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -51,6 +58,6 @@ public class TurnTimeCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return Duration.between(m_startTime, Instant.now()).toSeconds() > m_time;
+		return Duration.between(m_startTime, Instant.now()).toMillis() > m_time;
 	}
 }

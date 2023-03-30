@@ -22,6 +22,7 @@ import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
 import frc.robot.commands.drive.DriveToApriltag;
+import frc.robot.commands.drive.TurnTimeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -60,6 +61,8 @@ public class RobotContainer {
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
 		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
 		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
+		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
+		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
 		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
@@ -138,6 +141,8 @@ public class RobotContainer {
 		// Opening gripper/dropping game piece
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
+		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
+				.whileTrue(new TurnTimeCommand(0.5, false, 500));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kCircle)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
 

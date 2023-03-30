@@ -19,6 +19,7 @@ public final class Constants {
 		 * forwards
 		 */
 		public static final double[] kHighAngles = { 50, 165 };
+		//{46,225}
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from colliding with the grid when reaching for the
@@ -42,6 +43,9 @@ public final class Constants {
 		public static final double[] kMediumForwardAngles = { 84, 102 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 80, 38 };
+
+		public static final double[] kLowAutoAngles = { 80, 39 };
+
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 
@@ -277,6 +281,7 @@ public final class Constants {
 		public static final double kBalanceI = 0.000;
 		public static final double kBalanceD = 0.001;
 		public static final double upStationSpeed = 0.55;
+		public static final double kLimelightTurnP = .05;
 
 
 

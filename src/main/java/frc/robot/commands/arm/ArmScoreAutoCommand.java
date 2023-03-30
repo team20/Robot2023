@@ -19,6 +19,7 @@ public class ArmScoreAutoCommand extends CommandBase {
 		MEDIUM_FORWARD,
 		MEDIUM_BACK,
 		LOW,
+		LOW_AUTO,
 		POCKET,
 		SUBSTATION,
 		TO_BACK_INTERMEDIATE,
@@ -60,6 +61,9 @@ public class ArmScoreAutoCommand extends CommandBase {
 				break;
 			case LOW:
 				angles = ArmConstants.kLowAngles;
+				break;
+			case LOW_AUTO:
+				angles = ArmConstants.kLowAutoAngles;
 				break;
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
