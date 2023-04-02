@@ -141,8 +141,8 @@ public class RobotContainer {
 		// Opening gripper/dropping game piece
 		new JoystickButton(m_driverController, ControllerConstants.Button.kX)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
-		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-				.whileTrue(new TurnTimeCommand(0.5, false, 500));
+		new JoystickButton(m_driverController, ControllerConstants.Button.kSquare)
+				.whileTrue(new TurnTimeCommand(.75, false, 1000));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kCircle)
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
 
@@ -162,6 +162,7 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
+		//return new BalancePIDCommand();
 		return m_autoChooser.getSelected();
 	}
 }

@@ -55,7 +55,7 @@ public class ManualMotorCommand extends CommandBase {
 				* ArmConstants.kArmMotorSpeedSensitivity;
 
 		if(lowerArmMotorSpeed != 0 || upperArmMotorSpeed!=0 || ArmSubsystem.get().getManualArmRan()){
-			ArmSubsystem.get().setLowerArmMotorSpeed(lowerArmMotorSpeed);
+			ArmSubsystem.get().setLowerArmMotorSpeed(-lowerArmMotorSpeed);
 			ArmSubsystem.get().setUpperArmMotorSpeed(upperArmMotorSpeed);
 		}
 	}

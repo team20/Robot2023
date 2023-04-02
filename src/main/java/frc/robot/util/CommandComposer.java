@@ -157,14 +157,16 @@ public class CommandComposer {
 				// new
 				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				// getEnsurePreloadCommand(),
-				new TurnRelativeCommand(-1.5),
+				//new DriveTimeCommand(0.5, 250),
+				new TurnRelativeCommand(-1
+				),
 				new ParallelRaceGroup(
 						new SequentialCommandGroup(
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 								getPickupPieceCommand()),
 						new SequentialCommandGroup(
 								new WaitCommand(0.25),
-								new DriveDistanceCommand(5.2),
+								new DriveDistanceCommand(5.45),
 								new DriveTimeCommand(-0.25, 200))),
 				new ParallelCommandGroup(
 						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
@@ -196,21 +198,23 @@ public class CommandComposer {
 			// new
 			// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 			// getEnsurePreloadCommand(),
-			new TurnRelativeCommand(1.5),
+			//new DriveTimeCommand(0.5, 250),
 			new ParallelRaceGroup(
 					new SequentialCommandGroup(
 							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 							getPickupPieceCommand()),
 					new SequentialCommandGroup(
 							new WaitCommand(0.25),
-							new DriveDistanceCommand(5.2),
+							new DriveDistanceCommand(3.6),
+							new TurnRelativeCommand(3),
+							new DriveDistanceCommand(1.65), // 5.45
 							new DriveTimeCommand(-0.25, 200))),
 			new ParallelCommandGroup(
 					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-					new DriveTimeCommand(-1, 350)),
+					new DriveTimeCommand(-1, 150)),
 			new ParallelCommandGroup(
 					new SequentialCommandGroup(
-							new TurnRelativeCommand(-0.25),
+							new TurnRelativeCommand(-3),
 							new DriveDistanceCommand(-3),
 							getAnvitaAuto()// ,
 					// new DriveTimeCommand(-0.15,1000)
@@ -234,7 +238,7 @@ public class CommandComposer {
 				// new
 				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				// getEnsurePreloadCommand(),
-				new TurnRelativeCommand(-1.5),
+				//new TurnRelativeCommand(-1.5),
 				new ParallelRaceGroup(
 						new SequentialCommandGroup(
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
@@ -273,7 +277,7 @@ public class CommandComposer {
 			// new
 			// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 			// getEnsurePreloadCommand(),
-			new TurnRelativeCommand(1.5),
+			//new TurnRelativeCommand(1.5),
 			new ParallelRaceGroup(
 					new SequentialCommandGroup(
 							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
@@ -464,9 +468,9 @@ public class CommandComposer {
 
 		return new SequentialCommandGroup(
 				// new DriveDistanceCommand(-1.5).withTimeout(3)
-				new TurnCommandLimelight(Math.toDegrees(turnAngle1)),
+				new TurnCommand(Math.toDegrees(turnAngle1)),
 				new DriveDistanceCommand(-distanceToTarget - 0.2).withTimeout(1.5),
-				new TurnCommandLimelight(Math.toDegrees(turnAngle2)));
+				new TurnCommand(Math.toDegrees(turnAngle2)));
 
 	}
 

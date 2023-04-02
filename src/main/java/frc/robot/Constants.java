@@ -49,7 +49,7 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 
-		public static final double[] kSubstationAngles = { 84, 110 };
+		public static final double[] kSubstationAngles = { 84, 108 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -253,7 +253,7 @@ public final class Constants {
 		public static final double kWheelDiameterMeters = Units.inchesToMeters(5.75);
 		public static final double kGearRatio = 9.4;
 		public static final double kTurningMultiplier = .45;
-		public static final double kRampRate = .5;// 1?
+		public static final double kRampRate = .1;// 1?
 		public static final double kSpeedLimitFactor = 1.0;
 		/**
 		 * Converts native encoder units(revolutions) to meters
