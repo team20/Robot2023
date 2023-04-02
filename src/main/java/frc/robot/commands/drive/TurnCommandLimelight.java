@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TurnCommand extends CommandBase {
+public class TurnCommandLimelight extends CommandBase {
   /** Creates a new TurnCommand. */
   private double m_targetAngle;
-  private PIDController m_turnController = new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD);
+  private PIDController m_turnController = new PIDController(DriveConstants.kLimelightTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD);
 
 	/** Creates a new TurnCommand. */
-  public TurnCommand(double targetAngle) {
+  public TurnCommandLimelight(double targetAngle) {
     m_targetAngle = targetAngle;
     addRequirements(DriveSubsystem.get());
   }
@@ -20,9 +20,8 @@ public class TurnCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    DriveSubsystem.get().zeroHeading();
-    m_turnController.setSetpoint(m_targetAngle);
     m_turnController.enableContinuousInput(-180, 180);
+    m_turnController.setSetpoint(DriveSubsystem.get().getHeading() + m_targetAngle);
     m_turnController.setTolerance(DriveConstants.kTurnTolerance);
     //m_turnController.setIntegratorRange(-0.05, 0.05);
   }

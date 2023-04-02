@@ -8,7 +8,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 
-public class ArmScoreCommand extends CommandBase {
+public class ArmScoreAutoCommand extends CommandBase {
 	/** Stores the angles we want the arm to move to */
 	double[] angles;
 
@@ -19,11 +19,14 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_FORWARD,
 		MEDIUM_BACK,
 		LOW,
+		LOW_AUTO,
 		POCKET,
-		INTERMEDIATE,
+		SUBSTATION,
+		TO_BACK_INTERMEDIATE,
+		TO_FORWARD_INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		POCKET_INTERMEDIATE,
-		SUBSTATION,
+		SETTLE_POSITION,
 		/** Exists to forcibly finish this command */
 		HOLD
 	}
@@ -33,7 +36,7 @@ public class ArmScoreCommand extends CommandBase {
 	private boolean ranBefore;
 
 	/** Creates a new ArmScoreCommand. */
-	public ArmScoreCommand(ArmPosition armPosition) {
+	public ArmScoreAutoCommand(ArmPosition armPosition) {
 		m_armPosition = armPosition;
 		addRequirements(ArmSubsystem.get());
 	}
@@ -46,49 +49,44 @@ public class ArmScoreCommand extends CommandBase {
 		switch (m_armPosition) {
 			case HIGH:
 				angles = ArmConstants.kHighAngles;
-				System.out.println("Setting High");
 				break;
 			case HIGH_BACK:
 				angles = ArmConstants.kHighBackAngles;
-				System.out.println("Setting High Back");
 				break;
 			case MEDIUM_FORWARD:
 				angles = ArmConstants.kMediumForwardAngles;
-				System.out.println("Setting Medium");
 				break;
 			case MEDIUM_BACK:
 				angles = ArmConstants.kMediumBackAngles;
-				System.out.println("Setting Medium Back");
 				break;
 			case LOW:
 				angles = ArmConstants.kLowAngles;
-				System.out.println("Setting Low");
+				break;
+			case LOW_AUTO:
+				angles = ArmConstants.kLowAutoAngles;
 				break;
 			case POCKET:
 				angles = ArmConstants.kPocketAngles;
-				System.out.println("Setting Pocket");
-				break;
-			case INTERMEDIATE:
-				angles = ArmConstants.kIntermediateAngles;
-				System.out.println("Setting Intermidiate");
-				break;
-			case HIGH_INTERMEDIATE:
-				angles = ArmConstants.kHighIntermediateAngles;
-				System.out.println("Setting High Intermediate");
-				break;
-			case POCKET_INTERMEDIATE:
-				angles = ArmConstants.kPocketIntermediateAngles;
-				System.out.println("Setting Pocket Intermediate");
 				break;
 			case SUBSTATION:
 				angles = ArmConstants.kSubstationAngles;
-				System.out.println("Setting Substation");
+				break;
+			case TO_BACK_INTERMEDIATE:
+				angles = ArmConstants.kToBackIntermediateAngles;
+				break;
+			case TO_FORWARD_INTERMEDIATE:
+				angles = ArmConstants.kToFwdIntermediateAngles;
+				break;
+			case HIGH_INTERMEDIATE:
+				angles = ArmConstants.kHighIntermediateAngles;
+				break;
+			case POCKET_INTERMEDIATE:
+				angles = ArmConstants.kPocketIntermediateAngles;
 				break;
 			case HOLD:
 				angles = new double[2];
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
-				System.out.println("Setting Hold");
 				break;
 			default:
 				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
@@ -126,7 +124,12 @@ public class ArmScoreCommand extends CommandBase {
 		}
 		// If the lower and upper arm is close enough to the target angle, finish the
 		// command
-		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
+		boolean ret;
+		if(m_armPosition == ArmPosition.TO_BACK_INTERMEDIATE || m_armPosition == ArmPosition.TO_FORWARD_INTERMEDIATE){
+			ret = ArmSubsystem.get().isNearTargetAngleIntermediate();
+		}
+		ret = ArmSubsystem.get().isNearTargetAngle();
+		ret = (ret && ranBefore);
 		ranBefore = true;
 		return ret;
 	}
