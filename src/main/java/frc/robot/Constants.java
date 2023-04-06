@@ -49,7 +49,7 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 };
 
-		public static final double[] kSubstationAngles = { 84, 102 };
+		public static final double[] kSubstationAngles = { 84, 106 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -127,7 +127,7 @@ public final class Constants {
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 109.7; // 22.967
+		public static final double kLowerEncoderZeroOffset = 109.7;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
