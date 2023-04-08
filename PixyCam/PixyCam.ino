@@ -13,7 +13,7 @@ void loop() {
 	// Get the tracked objects
 	pixy.ccc.getBlocks();
 	// Select the largest object and store its data into an int array
-	byte objectData[8];
+	byte objectData[7];
 	objectData[0] = (byte)((pixy.ccc.blocks[0].m_x >> 8) & 0xFF);
 	objectData[1] = (byte)(pixy.ccc.blocks[0].m_x & 0xFF);
 	objectData[2] = (byte)pixy.ccc.blocks[0].m_y;
@@ -21,7 +21,7 @@ void loop() {
 	objectData[4] = (byte)(pixy.ccc.blocks[0].m_width & 0xFF);
 	objectData[5] = (byte)pixy.ccc.blocks[0].m_height;
 	objectData[6] = (byte)pixy.ccc.blocks[0].m_signature;
-	Wire.write(objectData, 8);
+	Wire.write(objectData, 7);
 	Wire.endTransmission();
 	delay(40);
 }
