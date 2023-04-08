@@ -8,7 +8,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.ForwardKinematicsTool;
 
-public class ArmScoreCommand extends CommandBase {
+public class ArmCommand extends CommandBase {
 	/** Stores the angles we want the arm to move to */
 	double[] angles;
 
@@ -20,10 +20,12 @@ public class ArmScoreCommand extends CommandBase {
 		MEDIUM_BACK,
 		LOW,
 		POCKET,
-		INTERMEDIATE,
+		TO_BACK_INTERMEDIATE,
+		TO_FORWARD_INTERMEDIATE,
 		HIGH_INTERMEDIATE,
 		POCKET_INTERMEDIATE,
 		SUBSTATION,
+		SETTLE,
 		/** Exists to forcibly finish this command */
 		HOLD
 	}
@@ -33,7 +35,7 @@ public class ArmScoreCommand extends CommandBase {
 	private boolean ranBefore;
 
 	/** Creates a new ArmScoreCommand. */
-	public ArmScoreCommand(ArmPosition armPosition) {
+	public ArmCommand(ArmPosition armPosition) {
 		m_armPosition = armPosition;
 		addRequirements(ArmSubsystem.get());
 	}
@@ -68,9 +70,13 @@ public class ArmScoreCommand extends CommandBase {
 				angles = ArmConstants.kPocketAngles;
 				System.out.println("Setting Pocket");
 				break;
-			case INTERMEDIATE:
-				angles = ArmConstants.kIntermediateAngles;
-				System.out.println("Setting Intermidiate");
+			case TO_BACK_INTERMEDIATE:
+				angles = ArmConstants.kToBackIntermediateAngles;
+				System.out.println("Setting Back Intermidiate");
+				break;
+			case TO_FORWARD_INTERMEDIATE:
+				angles = ArmConstants.kToFwdIntermediateAngles;
+				System.out.println("Setting Forward Intermidiate");
 				break;
 			case HIGH_INTERMEDIATE:
 				angles = ArmConstants.kHighIntermediateAngles;
@@ -88,10 +94,14 @@ public class ArmScoreCommand extends CommandBase {
 				angles = new double[2];
 				angles[0] = ArmSubsystem.get().getLowerArmAngle();
 				angles[1] = ArmSubsystem.get().getUpperArmAngle();
-				System.out.println("Setting Hold");
+				break;
+			case SETTLE:
+				angles = new double[2];
+				angles[0] = ArmSubsystem.get().getLowerArmSetpoint();
+				angles[1] = ArmSubsystem.get().getUpperArmSetpoint();
 				break;
 			default:
-				System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
+				//System.out.println("IF YOU HIT THIS SOMETHING IS WRONG" + 0 / 0);
 				break;
 		}
 		ArmSubsystem.get().setAngles(angles[0], angles[1]);
@@ -115,6 +125,7 @@ public class ArmScoreCommand extends CommandBase {
 		if (m_armPosition == ArmPosition.HOLD) {
 			return true;
 		}
+
 		// Calculate the arm position
 		double[] coordinates = ForwardKinematicsTool.getArmPosition(ArmSubsystem.get().getLowerArmAngle(),
 				ArmSubsystem.get().getUpperArmAngle());
@@ -124,10 +135,20 @@ public class ArmScoreCommand extends CommandBase {
 			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
 			return true;
 		}
-		// If the lower and upper arm is close enough to the target angle, finish the
-		// command
-		boolean ret = ArmSubsystem.get().isNearTargetAngle() && ranBefore;
-		ranBefore = true;
-		return ret;
+
+		if(m_armPosition == ArmPosition.SETTLE){
+			boolean ret = ArmSubsystem.get().isNearTargetAngle();
+			ret = (ret && ranBefore);
+			ranBefore = true;
+			return ret;
+		}else{
+			// If the lower and upper arm is close enough to the target angle, finish the
+			// command
+			boolean ret = ranBefore;
+			ranBefore = true;
+			return ret;
+		}
+
+		
 	}
 }

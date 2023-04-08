@@ -15,8 +15,8 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Button;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.LEDs.LEDCommand;
-import frc.robot.commands.arm.ArmScoreCommand;
-import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
+import frc.robot.commands.arm.ArmCommand;
+import frc.robot.commands.arm.ArmCommand.ArmPosition;
 import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
@@ -92,8 +92,8 @@ public class RobotContainer {
 		// Move the arm to the high node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle).and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(
-						new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.HIGH)));
+						new ArmCommand(ArmPosition.HIGH_INTERMEDIATE),
+						new ArmCommand(ArmPosition.HIGH)));
 
 		// Move the arm to the medium node over the back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
@@ -118,7 +118,7 @@ public class RobotContainer {
 				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTrackpad)
-				.onTrue(new ArmScoreCommand(ArmPosition.HOLD));
+				.onTrue(new ArmCommand(ArmPosition.HOLD));
 
     // Move the arm to the substation position
 	new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare).and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))

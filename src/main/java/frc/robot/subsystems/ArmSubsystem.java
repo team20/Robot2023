@@ -23,16 +23,16 @@ import frc.robot.util.InverseKinematicsTool;
 public class ArmSubsystem extends SubsystemBase {
 	/** Stores the instance of the ArmSubsystem */
 	private static ArmSubsystem s_subsystem;
-	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotorID, MotorType.kBrushless);
-	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmLeader = new CANSparkMax(ArmConstants.kLowerMotorID, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmFollower = new CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
 	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotorID, MotorType.kBrushless);
 
-	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmMotor
+	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmLeader
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 	private final SparkMaxAbsoluteEncoder m_upperArmEncoder = m_upperArmMotor
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 
-	private final SparkMaxPIDController m_lowerArmController = m_lowerArmMotor.getPIDController();
+	private final SparkMaxPIDController m_lowerArmController = m_lowerArmLeader.getPIDController();
 	private final SparkMaxPIDController m_upperArmController = m_upperArmMotor.getPIDController();
 	/** Stores the angle we want the lower arm to be at */
 	private double m_targetLowerArmAngle = 0;
@@ -61,14 +61,14 @@ public class ArmSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 		// Initialize lower arm
-		m_lowerArmMotor.restoreFactoryDefaults();
-		m_lowerArmMotor.setInverted(ArmConstants.kLowerInvert);
-		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-		m_lowerArmMotor.enableVoltageCompensation(12);
-		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
-		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		m_lowerArmLeader.restoreFactoryDefaults();
+		m_lowerArmLeader.setInverted(ArmConstants.kLowerInvert);
+		m_lowerArmLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		m_lowerArmLeader.enableVoltageCompensation(12);
+		m_lowerArmLeader.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		SparkMaxLimitSwitch forwardSwitch = m_lowerArmLeader.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		forwardSwitch.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch reverseSwitch = m_lowerArmLeader.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		reverseSwitch.enableLimitSwitch(false);
 
 		m_lowerArmEncoder.setPositionConversionFactor(360);
@@ -87,20 +87,20 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmController.setPositionPIDWrappingEnabled(false);
 
 		// Initialize 2nd lower arm motor
-		m_lowerArmMotor2.restoreFactoryDefaults();
-		m_lowerArmMotor2.setInverted(ArmConstants.kLowerInvert);
-		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
-		m_lowerArmMotor2.enableVoltageCompensation(12);
-		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		m_lowerArmFollower.restoreFactoryDefaults();
+		m_lowerArmFollower.setInverted(ArmConstants.kLowerInvert);
+		m_lowerArmFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+		m_lowerArmFollower.enableVoltageCompensation(12);
+		m_lowerArmFollower.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmFollower.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		forwardSwitch2.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmFollower.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		reverseSwitch2.enableLimitSwitch(false);
 
 		// Make the 2nd lower arm motor follow the first one
 		// They point in opposite directions, so the 2nd motor needs to be inverted
-		m_lowerArmMotor2.follow(m_lowerArmMotor, ArmConstants.kLowerArmMotor2Oppose);
+		m_lowerArmFollower.follow(m_lowerArmLeader, ArmConstants.kLowerArmMotor2Oppose);
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
@@ -131,6 +131,7 @@ public class ArmSubsystem extends SubsystemBase {
 		return s_subsystem;
 	}
 
+
 	/**
 	 * Sets the percent output for the lower arm motor
 	 * 
@@ -138,7 +139,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public void setLowerArmMotorSpeed(double speed) {
 		m_manualArmRan = true;
-		m_lowerArmMotor.set(speed);
+		m_lowerArmLeader.set(speed);
 	}
 
 	public boolean getManualArmRan(){
@@ -203,6 +204,14 @@ public class ArmSubsystem extends SubsystemBase {
 	public boolean isNearTargetAngleIntermediate(){
 		return checkAngle(m_targetLowerArmAngle, getLowerArmAngle()) &&
 			checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
+	}
+
+	public double getLowerArmSetpoint(){
+		return m_targetLowerArmAngle;
+	}
+
+	public double getUpperArmSetpoint(){
+		return m_targetUpperArmAngle;
 	}
 	/**
 	 * Takes a target angle and current angle, and checks if the current angle is
@@ -279,8 +288,8 @@ public class ArmSubsystem extends SubsystemBase {
 
 		// SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOut());
 		// SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
-		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOutputCurrent());
-		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmMotor2.getOutputCurrent());
+		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmLeader.getOutputCurrent());
+		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmFollower.getOutputCurrent());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Upper Arm Motor Median Current", m_medianCurrentUpper);
 		SmartDashboard.putNumber("Upper Arm Motor Average Current", m_averageCurrentUpper);
