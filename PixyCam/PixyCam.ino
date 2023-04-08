@@ -25,3 +25,36 @@ void loop() {
 	Wire.endTransmission();
 	delay(40);
 }
+
+
+// #include <Wire.h>
+// #include <Pixy2.h>
+
+// Pixy2 pixy;
+
+// uint8_t delimiter[4] = {'a','b','c','d'};
+
+// // setup() function -- runs once at startup --------------------------------
+// void setup() {
+//   Wire.begin(0x30);         //begin I2C
+// }
+// void loop() {
+
+//   pixy.ccc.getBlocks();
+  
+//   if(pixy.ccc.numBlocks){
+//     for (int i=0; i<pixy.ccc.numBlocks; ++i){
+//       Wire.beginTransmission(0x32);
+//       Wire.write(delimiter, 4);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_signature, 2);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_x, 2);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_y, 2);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_width, 2);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_height, 2);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_index, 1);
+//       Wire.write((uint8_t*) &pixy.ccc.blocks[i].m_age, 1);
+//       Wire.endTransmission();	  
+//     }
+//   }
+//   delay(15); 
+// }
