@@ -30,19 +30,21 @@ import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
+import frc.robot.subsystems.LEDSubsystem.StatusCode;
 import frc.robot.util.CommandComposer;
+import frc.robot.subsystems.PixyCamSubsystem;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private WheelGripperSubsystem m_gripperSubsystem = new WheelGripperSubsystem();
-	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
+	private LEDSubsystem m_LEDSubsystem = new LEDSubsystem();
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
+	private PixyCamSubsystem m_PixyCamSubsystem = new PixyCamSubsystem();
 	/** The PS4 controller the operator uses */
 	private final Joystick m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
 	/** The PS4 controller the driver uses */

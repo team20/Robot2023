@@ -9,7 +9,8 @@ public final class Constants {
 		 * The I2C address of the Arduino as defined by the address passed into
 		 * Wire.begin() in the Arduino code
 		 */
-		public static final int kAddress = 0x18;
+		public static final int kLEDAddress = 0x18;
+		public static final int kPixyCamAddress = 20;
 	}
 
 	public static final class ArmConstants {

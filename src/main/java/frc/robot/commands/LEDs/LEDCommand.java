@@ -5,8 +5,8 @@
 package frc.robot.commands.LEDs;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArduinoSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
+import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LEDSubsystem.StatusCode;
 
 public class LEDCommand extends CommandBase {
 	private StatusCode m_StatusCode;
@@ -14,7 +14,7 @@ public class LEDCommand extends CommandBase {
 	/** Creates a new LEDCommand. */
 	public LEDCommand(StatusCode code) {
 		m_StatusCode = code;
-		addRequirements(ArduinoSubsystem.get());
+		addRequirements(LEDSubsystem.get());
 	}
 
 	// Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class LEDCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		ArduinoSubsystem.get().setCode(m_StatusCode);
+		LEDSubsystem.get().setCode(m_StatusCode);
 	}
 
 	// Called once the command ends or is interrupted.

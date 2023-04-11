@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
 
-public class ArduinoSubsystem extends SubsystemBase {
-	private static ArduinoSubsystem s_subsystem;
+public class LEDSubsystem extends SubsystemBase {
+	private static LEDSubsystem s_subsystem;
 	/**
 	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
 	 * on the MXP port, which runs through the navX
 	 */
-	private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
+	private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
@@ -35,8 +35,8 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 	}
 
-	/** Creates a new ArduinoSubsystem. */
-	public ArduinoSubsystem() {
+	/** Creates a new LEDSubsystem. */
+	public LEDSubsystem() {
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -49,7 +49,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		setCode(StatusCode.DEFAULT);
 	}
 
-	public static ArduinoSubsystem get() {
+	public static LEDSubsystem get() {
 		return s_subsystem;
 	}
 
