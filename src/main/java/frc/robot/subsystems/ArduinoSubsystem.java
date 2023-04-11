@@ -4,10 +4,18 @@
 
 package frc.robot.subsystems;
 
+import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
+import frc.robot.util.PixyCamI2cThread;
+import frc.robot.util.PixyCamObject;
+import frc.robot.util.PixyCamObjectMap;
 
 public class ArduinoSubsystem extends SubsystemBase {
 	private static ArduinoSubsystem s_subsystem;
@@ -15,10 +23,12 @@ public class ArduinoSubsystem extends SubsystemBase {
 	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
 	 * on the MXP port, which runs through the navX
 	 */
-	private I2C i2c = new I2C(Port.kMXP, ArduinoConstants.kAddress);
+	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
+
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
+	private ByteBuffer m_readBuffer;
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
@@ -35,6 +45,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 	}
 
+
+	
+
+	PixyCamObjectMap m_detectedObjects = new PixyCamObjectMap();
+	private Thread m_pixyCamThread;
 	/** Creates a new ArduinoSubsystem. */
 	public ArduinoSubsystem() {
 		// Singleton
@@ -46,6 +61,8 @@ public class ArduinoSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
+
+		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_detectedObjects));
 		setCode(StatusCode.DEFAULT);
 	}
 
@@ -56,7 +73,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		i2c.writeBulk(m_statusCode);
+		m_ledDevice.writeBulk(m_statusCode);
 	}
 
 	public void setCode(StatusCode code) {
