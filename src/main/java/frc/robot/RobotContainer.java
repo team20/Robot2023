@@ -21,7 +21,9 @@ import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
+import frc.robot.commands.drive.DrivePixyCommand;
 import frc.robot.commands.drive.DriveToApriltag;
+import frc.robot.commands.drive.TurnPixyCommand;
 import frc.robot.commands.drive.TurnTimeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
@@ -158,6 +160,8 @@ public class RobotContainer {
 			.whileTrue(new DefaultDriveCommand(()->0.0, ()->0.0, ()->DriveConstants.kFineTurningSpeed));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kLeftBumper)
 			.whileTrue(new DefaultDriveCommand(()->0.0, ()->DriveConstants.kFineTurningSpeed, ()->0.0));
+
+		new TurnPixyCommand(0, 10).andThen(new DrivePixyCommand(50, 10)).andThen(new DrivePixyCommand(100, 10));
 	}
 
 	// TODO get auto command from auto chooser
