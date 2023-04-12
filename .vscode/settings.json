@@ -14,17 +14,10 @@
     "**/.factorypath": true,
     "**/*~": true
   },
-  "java.test.config": [
-    {
-      "name": "WPIlibUnitTests",
-      "workingDirectory": "${workspaceFolder}/build/jni/release",
-      "vmargs": [ "-Djava.library.path=${workspaceFolder}/build/jni/release" ],
-      "env": {
-        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release" ,
-        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
-      }
-    },
-  ],
-  "java.test.defaultConfig": "WPIlibUnitTests",
-  "arduino.path": "C:\\Program Files\\Arduino"
+  "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, ColumnLimit: 0, IndentWidth: 4, TabWidth: 4, UseTab: ForIndentation}",
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": false,
+  "arduino.path": "",
+  "arduino.useArduinoCli": true
 }
