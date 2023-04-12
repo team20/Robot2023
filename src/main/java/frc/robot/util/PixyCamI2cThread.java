@@ -20,9 +20,9 @@ public class PixyCamI2cThread implements Runnable {
 	public void run() {
 		while (true) {
 			// System.out.println("RUNNING THREAD");
-			// 4 chunks * 12 bytes of data per chunk
+			// 4 chunks * 9 bytes of data per chunk
 			System.out.println("ATTEMPTING WRITE");
-			int numBytes = 4 * 12;
+			int numBytes = 4 * 9;
 			byte[] buffer = new byte[numBytes];
 			// m_pixyCamDevice.writeBulk(new byte[1]);
 			boolean status = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
