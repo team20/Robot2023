@@ -60,6 +60,8 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
+		m_pixyCamThread.setDaemon(true);
+		m_pixyCamThread.start();
 		setCode(StatusCode.DEFAULT);
 	}
 
@@ -70,16 +72,6 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		// if(!m_pixyCamThread.isAlive()){
-		try {
-			m_pixyCamThread.join();
-			m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
-			m_pixyCamThread.setDaemon(true);
-			m_pixyCamThread.start();
-		} catch (Exception e) {
-		}
-		// }
-
 		m_ledDevice.writeBulk(m_statusCode);
 	}
 

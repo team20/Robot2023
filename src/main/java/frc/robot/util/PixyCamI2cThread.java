@@ -22,25 +22,25 @@ public class PixyCamI2cThread implements Runnable {
 	}
 
 	public void run() {
-		// while (true) {
-		// System.out.println("RUNNING THREAD");
-		// 4 chunks * 12 bytes of data per chunk
-		System.out.println("ATTEMPTING WRITE");
-		int numBytes = 4 * 12;
+		while (true) {
+			// System.out.println("RUNNING THREAD");
+			// 4 chunks * 12 bytes of data per chunk
+			System.out.println("ATTEMPTING WRITE");
+			int numBytes = 4 * 12;
 		ByteBuffer buffer = ByteBuffer.allocate(numBytes);
-		// m_pixyCamDevice.writeBulk(new byte[1]);
-		boolean s = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
-		if (s) {
-			System.out.println("Unsuccessful");
-		} else {
-			System.out.println("Successful");
-			interpretBuffer(buffer);
+			// m_pixyCamDevice.writeBulk(new byte[1]);
+			boolean s = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
+			if (s) {
+				System.out.println("Unsuccessful");
+			} else {
+				System.out.println("Successful");
+				interpretBuffer(buffer);
+			}
+			try {
+				Thread.sleep(50);
+			} catch (Exception e) {
+			}
 		}
-		try {
-			Thread.sleep(50);
-		} catch (Exception e) {
-		}
-		// }
 	}
 
 	public void interpretBuffer(ByteBuffer buffer) {
