@@ -18,18 +18,6 @@ import frc.robot.util.PixyCamObject;
 import frc.robot.util.PixyCamObjectMap;
 
 public class ArduinoSubsystem extends SubsystemBase {
-	private static ArduinoSubsystem s_subsystem;
-
-	/**
-	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
-	 * on the MXP port, which runs through the navX
-	 */
-	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
-	private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
-	/** The byte that indicates what LED mode we want to use */
-	private byte[] m_statusCode = new byte[1];
-	private ByteBuffer m_readBuffer;
-
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
@@ -45,6 +33,17 @@ public class ArduinoSubsystem extends SubsystemBase {
 			code = c;
 		}
 	}
+
+	private static ArduinoSubsystem s_subsystem;
+	/**
+	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
+	 * on the MXP port, which runs through the navX
+	 */
+	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
+	private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
+	/** The byte that indicates what LED mode we want to use */
+	private byte[] m_statusCode = new byte[1];
+	private ByteBuffer m_readBuffer;
 
 	PixyCamObjectMap m_detectedObjects = new PixyCamObjectMap();
 	private Thread m_pixyCamThread;
