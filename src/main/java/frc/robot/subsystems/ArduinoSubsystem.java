@@ -19,12 +19,13 @@ import frc.robot.util.PixyCamObjectMap;
 
 public class ArduinoSubsystem extends SubsystemBase {
 	private static ArduinoSubsystem s_subsystem;
+
 	/**
 	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
 	 * on the MXP port, which runs through the navX
 	 */
 	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
-
+    private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
@@ -62,7 +63,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 
-		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_detectedObjects));
+		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
 		setCode(StatusCode.DEFAULT);
 	}
 
@@ -73,10 +74,34 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
+		//if(!m_pixyCamThread.isAlive()){
+			try{
+				m_pixyCamThread.join();
+				m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
+				m_pixyCamThread.setDaemon(true);
+				m_pixyCamThread.start();
+
+			}catch(Exception e){
+
+			}
+			
+		//}
+
 		m_ledDevice.writeBulk(m_statusCode);
 	}
 
 	public void setCode(StatusCode code) {
 		m_statusCode[0] = code.code;
+	}
+
+	public PixyCamObject getLargestCube(){
+		PixyCamObject largest = new PixyCamObject(0, 0, 0, 0, 0, 0, 0);
+		for(int i = 0; i < m_detectedObjects.size(); ++i){
+			PixyCamObject currObject = m_detectedObjects.get(i);
+			if(currObject != null && currObject.get()[0] == 2 && currObject.get()[3] > largest.get()[3]){
+				largest = currObject;
+			}
+		}
+		return largest;
 	}
 }

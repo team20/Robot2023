@@ -10,7 +10,7 @@ public final class Constants {
 		 * Wire.begin() in the Arduino code
 		 */
 		public static final int kLEDAddress = 0x18;
-		public static final int kPixyCamAddress = 0x20;
+		public static final int kPixyCamAddress = 0x30;
 	}
 
 	public static final class ArmConstants {
