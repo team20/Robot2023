@@ -25,11 +25,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 	 * on the MXP port, which runs through the navX
 	 */
 	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
-    private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
+	private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
-
 	private ByteBuffer m_readBuffer;
+
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
@@ -46,11 +46,9 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 	}
 
-
-	
-
 	PixyCamObjectMap m_detectedObjects = new PixyCamObjectMap();
 	private Thread m_pixyCamThread;
+
 	/** Creates a new ArduinoSubsystem. */
 	public ArduinoSubsystem() {
 		// Singleton
@@ -62,7 +60,6 @@ public class ArduinoSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-
 		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
 		setCode(StatusCode.DEFAULT);
 	}
@@ -74,18 +71,15 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		//if(!m_pixyCamThread.isAlive()){
-			try{
-				m_pixyCamThread.join();
-				m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
-				m_pixyCamThread.setDaemon(true);
-				m_pixyCamThread.start();
-
-			}catch(Exception e){
-
-			}
-			
-		//}
+		// if(!m_pixyCamThread.isAlive()){
+		try {
+			m_pixyCamThread.join();
+			m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
+			m_pixyCamThread.setDaemon(true);
+			m_pixyCamThread.start();
+		} catch (Exception e) {
+		}
+		// }
 
 		m_ledDevice.writeBulk(m_statusCode);
 	}
@@ -94,11 +88,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 		m_statusCode[0] = code.code;
 	}
 
-	public PixyCamObject getLargestCube(){
+	public PixyCamObject getLargestCube() {
 		PixyCamObject largest = new PixyCamObject(0, 0, 0, 0, 0, 0, 0);
-		for(int i = 0; i < m_detectedObjects.size(); ++i){
+		for (int i = 0; i < m_detectedObjects.size(); ++i) {
 			PixyCamObject currObject = m_detectedObjects.get(i);
-			if(currObject != null && currObject.get()[0] == 2 && currObject.get()[3] > largest.get()[3]){
+			if (currObject != null && currObject.get()[0] == 2 && currObject.get()[3] > largest.get()[3]) {
 				largest = currObject;
 			}
 		}
