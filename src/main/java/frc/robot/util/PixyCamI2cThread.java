@@ -53,7 +53,7 @@ public class PixyCamI2cThread implements Runnable {
 		// Read all bytes from buffer
 		for (int i = 0; i < buffer.length; ++i) {
 			b = buffer[i];
-			System.out.println(b & 0xFF);
+			System.out.println(b);
 			// 9 byte block
 			// 1 byte signature
 			// 2 byte x location
