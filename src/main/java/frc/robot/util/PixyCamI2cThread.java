@@ -4,15 +4,11 @@
 
 package frc.robot.util;
 
-import java.nio.ByteBuffer;
-
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.I2C.Port;
 import frc.robot.Constants.ArduinoConstants;
 
 /** Add your docs here. */
 public class PixyCamI2cThread implements Runnable {
-
 	private PixyCamObjectMap m_map;
 	private I2C m_pixyCamDevice;
 
@@ -27,10 +23,10 @@ public class PixyCamI2cThread implements Runnable {
 			// 4 chunks * 12 bytes of data per chunk
 			System.out.println("ATTEMPTING WRITE");
 			int numBytes = 4 * 12;
-		ByteBuffer buffer = ByteBuffer.allocate(numBytes);
+			byte[] buffer = new byte[numBytes];
 			// m_pixyCamDevice.writeBulk(new byte[1]);
-			boolean s = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
-			if (s) {
+			boolean status = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
+			if (status) {
 				System.out.println("Unsuccessful");
 			} else {
 				System.out.println("Successful");
@@ -43,7 +39,7 @@ public class PixyCamI2cThread implements Runnable {
 		}
 	}
 
-	public void interpretBuffer(ByteBuffer buffer) {
+	public void interpretBuffer(byte[] buffer) {
 		byte b;
 		int counter = 0;
 		int signature = 0;
@@ -55,57 +51,46 @@ public class PixyCamI2cThread implements Runnable {
 		int age = 0;
 
 		// Read all bytes from buffer
-		for (int i = 0; i < buffer.capacity(); ++i) {
-			b = buffer.get();
+		for (int i = 0; i < buffer.length; ++i) {
+			b = buffer[i];
 			System.out.println(b & 0xFF);
-			// 12byte block
-			// 2byte signature
-			// 2byte x location
-			// 2byte y location
-			// 2byte height of object
-			// 2byte width of object
-			// 1byte tracking index
-			// 1byte age of object
+			// 9 byte block
+			// 1 byte signature
+			// 2 byte x location
+			// 1 byte y location
+			// 2 byte width of object
+			// 1 byte height of object
+			// 1 byte tracking index
+			// 1 byte age of object
 			// when we've read in a whole object from the stream, add the object to our list
 			// of tracked objects
-			switch (counter % 12) {
+			switch (counter % 9) {
 				case 0:
 					// System.out.println(b & 0xFF);
 					signature = (~b & 0xFF);
 					break;
 				case 1:
-					// System.out.println(b & 0xFF);
-					signature = (signature & 0xFF) | ((b & 0xFF) << 8);
-					// System.out.println(signature);
-					break;
-				case 2:
 					x = b & 0xFF;
 					break;
-				case 3:
+				case 2:
 					x = (x & 0xFF) << 8 | (b & 0xFF);
 					break;
-				case 4:
+				case 3:
 					y = b & 0xFF;
 					break;
-				case 5:
-					y = (y & 0xFF) << 8 | (b & 0xFF);
-					break;
-				case 6:
+				case 4:
 					width = b & 0xFF;
 					break;
-				case 7:
+				case 5:
 					width = (width & 0xFF) << 8 | (b & 0xFF);
 					break;
-				case 8:
+				case 6:
 					height = b & 0xFF;
 					break;
-				case 9:
-					height = (height & 0xFF) << 8 | (b & 0xFF);
-					break;
-				case 10:
+				case 7:
 					index = b & 0xFF;
 					break;
-				case 11:
+				case 8:
 					age = b & 0xFF;
 					// System.out.println(signature);
 					if (signature != 255) {
