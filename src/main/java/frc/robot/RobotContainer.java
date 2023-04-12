@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.util.Map;
-
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,15 +18,12 @@ import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ManualMotorCommand;
-import frc.robot.commands.drive.AutoAlignCommand;
-import frc.robot.commands.drive.BalancePIDCommand;
+import frc.robot.commands.drive.AutoAlignmentCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
-import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
-import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -39,8 +32,7 @@ import frc.robot.subsystems.PoseEstimationSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.util.CommandComposer;
-import hlib.drive.AutoAligner;
-import hlib.frc.TargetMap;
+import hlib.drive.Pose;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -154,7 +146,6 @@ public class RobotContainer {
 				.whileTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
 
 		new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle).whileTrue(new DriveBrakeModeCommand());
-		
 		// Driving
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
 				() -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
@@ -168,24 +159,8 @@ public class RobotContainer {
 			.whileTrue(new DefaultDriveCommand(()->0.0, ()->DriveConstants.kFineTurningSpeed, ()->0.0));
 
 		// Auto-Alignment: Hwang
-		TargetMap targetMap = new TargetMap(Filesystem.getDeployDirectory() + File.separator + "configuration.json");
-		AutoAligner autoAligner = new hlib.drive.AutoAlignerSimple(robotWidth, 0.5, 0.1, 0.08);
-		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-			.whileTrue(new AutoAlignCommand(targetMap.get("3z"), autoAligner, m_poseSubsystem));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-			.whileTrue(new AutoAlignCommand(targetMap.get("3"), autoAligner, m_poseSubsystem));
-		new JoystickButton(m_driverController, ControllerConstants.Button.kTrackpad)
-			.whileTrue(new AutoAlignCommand(targetMap.get("5a"), autoAligner, m_poseSubsystem));
-
-		// TargetChooserMap targetChooserMap = new TargetChooserMap(Filesystem.getDeployDirectory() + File.separator + "configuration.json");
-		// for (Map.Entry<String, String> e : targetChooserMap.entrySet())
-		// 	SmartDashboard.putString(e.getKey(), e.getValue());
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-		// 	.whileTrue(new AutoAlignCommandConfigurable("Target(Share Button)", autoAligner, m_poseSubsystem, targetMap));
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-		// 	.whileTrue(new AutoAlignCommandConfigurable("Target(Options Button)", autoAligner, m_poseSubsystem, targetMap));
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kTrackpad)
-		// 	.whileTrue(new AutoAlignCommandConfigurable("Target(Trackpad)", autoAligner, m_poseSubsystem, targetMap));
+			.whileTrue(new AutoAlignmentCommand(new Pose(1.7, 0.8, Math.PI), 0.1, 5, m_poseSubsystem));
 	}
 
 	// TODO get auto command from auto chooser

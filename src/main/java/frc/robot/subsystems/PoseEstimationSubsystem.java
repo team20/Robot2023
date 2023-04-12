@@ -55,10 +55,10 @@ public class PoseEstimationSubsystem extends SubsystemBase {
 				// whenever hb (heartbeat) is updated
 				double[] botpose = table.getEntry("botpose").getDoubleArray(new double[6]); // gets botpose
 				// TODO: Hwang: choose the right setting for Aster
-				Pose poseDetected = new Pose(botpose[0], botpose[1], botpose[5] * Math.PI / 180 + Math.PI); // normal case - positive change : right turn 
-				// Pose poseDetected = new Pose(botpose[0], botpose[1], botpose[5] * Math.PI / 180); // normal case - positive change : right turn 
-				//Pose poseDetected = new Pose(botpose[0], botpose[1], -botpose[5] * Math.PI / 180); // negative change : right turn 
-				if (poseDetected.equals(new Pose(0, 0, 0)))
+				Pose poseDetected = new Pose(botpose[0], botpose[1], botpose[5] * Math.PI / 180 + Math.PI); // normal case - positive change : right turn
+				// Pose poseDetected = new Pose(botpose[0], botpose[1], botpose[5] * Math.PI / 180); // normal case - positive change : right turn
+				// Pose poseDetected = new Pose(botpose[0], botpose[1], -botpose[5] * Math.PI / 180); // negative change : right turn
+				if (!isValid(poseDetected, poseEstimator))
 					poseDetected = null;
 				poseEstimator.update(poseDetected);
 				SmartDashboard.putString("Pose (LimeLight)", "" + poseDetected);
@@ -68,6 +68,16 @@ public class PoseEstimationSubsystem extends SubsystemBase {
 		}
 	}
 
+	boolean isValid(Pose poseDetected, RobotPoseEstimator poseEstimator) {
+		// TODO: Hwang: choose the right setting for Aster
+		return poseDetected != null && Math.abs(poseDetected.x()) > 4.7 && Math.abs(poseDetected.x()) < 7;
+		/*
+		Pose poseEstimated = poseEstimator.poseEstimated();
+		return poseDetected != null && Math.abs(poseDetected.x()) > 4.7 && Math.abs(poseDetected.x()) < 7
+				&& (poseEstimated == null || (Math.abs(poseEstimated.x()) > 4.7 && Math.abs(poseEstimated.x()) < 7)); 
+		*/
+	}
+	
 	/**
 	 * A method run periodically (every 20 ms).
 	 */
@@ -90,7 +100,8 @@ public class PoseEstimationSubsystem extends SubsystemBase {
 					String.format("%.2f poses / sec", poseEstimator.poseDetectionRate()));
 			SmartDashboard.putString("Pose Detection Failure Rate",
 					String.format("%.2f failures / sec", poseEstimator.poseDetectionFailureRate()));
-			SmartDashboard.putString("Pose Outliers", "" + poseEstimator.outliers() + "/" + poseEstimator.posesDetected());
+			SmartDashboard.putString("Pose Outliers",
+					"" + poseEstimator.outliers() + "/" + poseEstimator.posesDetected());
 			SmartDashboard.putString("Wheel Encoder Positions", String.format("(%.3f, %.3f)", left, right));
 		} catch (Exception e) {
 			e.printStackTrace();

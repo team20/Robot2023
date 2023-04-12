@@ -115,8 +115,7 @@ public class RobotPoseEstimatorBasic extends RobotPoseCalculatorBasic implements
 			this.leftEncoderPosition = leftEncoderPosition;
 			this.rightEncoderPosition = rightEncoderPosition;
 			this.directionalAngle = directionalAngle;
-		}
-		else { // if not first position and angle values
+		} else { // if not first position and angle values
 			double leftDisplacement = leftEncoderPosition - this.leftEncoderPosition;
 			double rightDisplacement = rightEncoderPosition - this.rightEncoderPosition;
 			this.leftEncoderPosition = leftEncoderPosition;

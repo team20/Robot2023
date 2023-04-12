@@ -6,6 +6,7 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -15,10 +16,13 @@ public class DriveDistanceCommand extends CommandBase {
 	 */
 	private double m_distance;
 	private double m_startDistanceAverage;
+	private double m_startDistanceLeft;
+	private double m_startDistanceRight;
 	// private double m_speed;
 
 	private ProfiledPIDController m_leftController;
 	private ProfiledPIDController m_rightController;
+
 	/**
 	 * Creates a new DriveDistanceCommand.
 	 * 
@@ -52,13 +56,14 @@ public class DriveDistanceCommand extends CommandBase {
 		double kI = 0.000;
 		double kD = 0.00;
 
-		//TODO fix Trapezoidal profiles
+		// TODO fix Trapezoidal profiles
 		m_leftController = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(3, 2)); // was 196 35
 		m_rightController = new ProfiledPIDController(kP, kI, kD,
 				new TrapezoidProfile.Constraints(3, 2)); // was 196 35
 		m_startDistanceAverage = DriveSubsystem.get().getAverageEncoderDistance();
-
+		m_startDistanceLeft = DriveSubsystem.get().getLeftEncoderPosition();
+		m_startDistanceRight = DriveSubsystem.get().getRightEncoderPosition();
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -78,6 +83,9 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		DriveSubsystem.get().tankDrive(0, 0);
+		SmartDashboard.putString("Drive Distances",
+				String.format("(%.3f, %.3f)", DriveSubsystem.get().getLeftEncoderPosition() - m_startDistanceLeft,
+						DriveSubsystem.get().getRightEncoderPosition() - m_startDistanceRight));
 	}
 
 	// Returns true when the command should end.
