@@ -75,19 +75,21 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 				SmartDashboard.putString("Target", "" + m_target);
 				m_startTime = System.currentTimeMillis();
 			}
+
 			@Override
 			public boolean isFinished() {
 				return true;
 			}
 		});
-		// addCommands(new TurnToTargetCommand());
+		addCommands(new TurnToTargetCommand());
 		addCommands(new MoveToTargetCommand().withTimeout(5));
-		// addCommands(new AlignToTargetCommand());
+		addCommands(new AlignToTargetCommand());
 		addCommands(new CommandBase() {
 			@Override
 			public boolean isFinished() {
 				return true;
 			}
+
 			public void end(boolean interrupted) {
 				SmartDashboard.putString("Target", "");
 				double duration = 0.001 * (System.currentTimeMillis() - m_startTime);
@@ -184,10 +186,13 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 		 * @param angularDisplacement the angular displacement (in degrees)
 		 */
 		void turn(double angularDisplacement) {
-			double turnSpeed = m_controller.calculate(angularDisplacement * 180 / Math.PI);
+			double turnSpeed = m_controller.calculate(-angularDisplacement);
 			// if turn speed is less than 0.1 make it 0.1 in the right direction
 			turnSpeed = Math.abs(turnSpeed) < 0.15 ? Math.signum(turnSpeed) * 0.15 : turnSpeed;
 			turnSpeed = MathUtil.clamp(turnSpeed, -0.5, 0.5);
+			SmartDashboard.putString("Wheel Velocities",
+					String.format("(%.3f, %.3f)", -turnSpeed, turnSpeed));
+			SmartDashboard.putNumber( "Angular Displacement", angularDisplacement);
 			DriveSubsystem.get().tankDrive(-turnSpeed, turnSpeed);
 		}
 

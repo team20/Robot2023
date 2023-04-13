@@ -70,7 +70,7 @@ public class PoseEstimationSubsystem extends SubsystemBase {
 
 	boolean isValid(Pose poseDetected, RobotPoseEstimator poseEstimator) {
 		// TODO: Hwang: choose the right setting for Aster
-		return poseDetected != null && Math.abs(poseDetected.x()) > 4.7 && Math.abs(poseDetected.x()) < 7;
+		return poseDetected != null && Math.abs(poseDetected.x()) > 3 && Math.abs(poseDetected.x()) < 7;
 		/*
 		Pose poseEstimated = poseEstimator.poseEstimated();
 		return poseDetected != null && Math.abs(poseDetected.x()) > 4.7 && Math.abs(poseDetected.x()) < 7
