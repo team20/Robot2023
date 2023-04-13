@@ -26,7 +26,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	 * on the MXP port, which runs through the navX
 	 */
 	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
-    private I2C m_pixyCamDevice = new I2C(Port.kOnboard, ArduinoConstants.kPixyCamAddress);
+    private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
@@ -63,11 +63,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
+		setCode(StatusCode.DEFAULT);
 
 		m_pixyCamThread = new Thread(new PixyCamI2cThread(m_pixyCamDevice, m_detectedObjects));
 		m_pixyCamThread.setDaemon(true);
 		m_pixyCamThread.start();
-		setCode(StatusCode.DEFAULT);
 	}
 
 	public static ArduinoSubsystem get() {
@@ -82,7 +82,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		//}
 		Instant now= Instant.now();
 		SmartDashboard.putNumber("Largest Cube X", getLargestCube().get()[1]);
-		System.out.println(Duration.between(now, Instant.now()).toMillis());
+		// System.out.println(Duration.between(now, Instant.now()).toMillis());
 		//m_ledDevice.writeBulk(m_statusCode);
 	}
 
