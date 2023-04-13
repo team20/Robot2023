@@ -11,6 +11,9 @@ public final class Constants {
 		 */
 		public static final int kLEDAddress = 0x18;
 		public static final int kPixyCamAddress = 0x30;
+		public static final double kTurnP = 0.00013;
+        public static final double kTurnI = 0;
+        public static final double kTurnD = 0;
 	}
 
 	public static final class ArmConstants {

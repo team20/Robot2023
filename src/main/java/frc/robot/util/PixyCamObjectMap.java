@@ -12,26 +12,32 @@ public class PixyCamObjectMap {
     private PixyCamObject[] m_objectMap = new PixyCamObject[256];
 
     public synchronized PixyCamObject get(int index){
-        return m_objectMap[index];
-        // try{
-        //     PixyCamObject obj = m_objectMap.get(index);
-        //     if(obj.isExpired()){
-        //         obj = null;
-        //         m_objectMap.set(index, null);
-        //     }
-        //     return obj;
-        // }catch(Exception e){
-        //     return null;
-        // }
+        try{
+            PixyCamObject obj = m_objectMap[index];
+            if(obj.isExpired()){
+                obj = null;
+                m_objectMap[index] = null;
+            }
+            return obj;
+        }catch(Exception e){
+            return null;
+        }
     }
 
     public synchronized void set(int index, PixyCamObject element){
-        m_objectMap[index]= element;
+        try{
+            m_objectMap[index]= element;
+        }catch(Exception e){
+            m_objectMap[index]= null;
+        }
     }
     // public synchronized void add(int index, PixyCamObject element){
     //     m_objectMap.add(index, element);
     // }
 
+    public synchronized PixyCamObject[] getArray(){
+        return m_objectMap;
+    }
     public synchronized int size(){
         return m_objectMap.length;
     }

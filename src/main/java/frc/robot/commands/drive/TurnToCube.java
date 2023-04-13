@@ -4,7 +4,9 @@
 
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArduinoConstants;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.util.PixyCamObject;
@@ -13,6 +15,7 @@ public class TurnToCube extends CommandBase {
   private PixyCamObject m_cube;
   private final int m_pixyWidth = 316;
   private int m_currLocation;
+  private PIDController m_turnController = new PIDController(ArduinoConstants.kTurnP, ArduinoConstants.kTurnI, ArduinoConstants.kTurnD);
 
   /** Creates a new DriveToCube. */
   public TurnToCube() {
@@ -23,14 +26,17 @@ public class TurnToCube extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_turnController.setSetpoint(0);
     m_cube = ArduinoSubsystem.get().getLargestCube();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_currLocation = m_cube.get()[1] - (m_pixyWidth /2);
-    DriveSubsystem.get().tankDrive((0.2)*Math.signum(m_currLocation), (-0.2)*Math.signum(m_currLocation));
+    m_currLocation = m_cube.get()[1] - 150;
+
+    double turn = m_turnController.calculate(m_currLocation);
+    DriveSubsystem.get().tankDrive(-turn, turn);
 
   }
 

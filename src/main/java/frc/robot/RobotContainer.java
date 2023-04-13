@@ -23,6 +23,7 @@ import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
 import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.drive.TurnTimeCommand;
+import frc.robot.commands.drive.TurnToCube;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -162,7 +163,7 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		//return new BalancePIDCommand();
-		return m_autoChooser.getSelected();
+		return new TurnToCube();
+		//return m_autoChooser.getSelected();
 	}
 }

@@ -5,6 +5,9 @@
 package frc.robot.util;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -21,30 +24,31 @@ public class PixyCamI2cThread implements Runnable{
         m_map = map;
     }
     public void run(){
-            //while(true){
+            while(true){
                 //System.out.println("RUNNING THREAD");
                 //4 chunks * 12 bytes of data per chunk
-                System.out.println("ATTEMPTING WRITE");
+                //System.out.println("ATTEMPTING WRITE");
                 int numBytes = 4 * 12;
-                ByteBuffer buffer = ByteBuffer.allocate(numBytes);
+                //ByteBuffer buffer = ByteBuffer.allocate(numBytes);
+                byte[] buffer = new byte[48];
                 //m_pixyCamDevice.writeBulk(new byte[1]);
-                boolean s = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, numBytes, buffer);
+                boolean s = m_pixyCamDevice.read(ArduinoConstants.kPixyCamAddress, 48, buffer);
                 if(s){
-                    System.out.println("Unsuccessful");
+                    //System.out.println("Unsuccessful");
                 }else{
-                    System.out.println("Successful");
+                    //System.out.println("Successful");
                     interpretBuffer(buffer); 
                 }
                 try{
-                    Thread.sleep(50);       
+                    Thread.sleep(20, 0);
                 }catch(Exception e){
-
+                    System.out.println("SLEEP FAILED");
                 }
-            //}
+            }
               
     }
 
-    public void interpretBuffer(ByteBuffer buffer){
+    public void interpretBuffer(byte[] buffer){
 		byte b;
 		int counter = 0;
 		int signature = 0;
@@ -54,11 +58,10 @@ public class PixyCamI2cThread implements Runnable{
 		int height = 0;
 		int index = 0;
 		int age = 0;
-
 		//Read all bytes from buffer
-		for(int i = 0; i<buffer.capacity(); ++i){
-			b = buffer.get();
-            System.out.println(b & 0xFF);
+		for(int i = 0; i<buffer.length; ++i){
+			b = buffer[i];
+            //System.out.println(b);
 			//12byte block
 			//2byte signature
 			//2byte x location
@@ -68,15 +71,15 @@ public class PixyCamI2cThread implements Runnable{
 			//1byte tracking index
 			//1byte age of object
 			//when we've read in a whole object from the stream, add the object to our list of tracked objects
+            //System.out.println(Arrays.toString(buffer));
 			switch(counter%12){
 				case 0:
                     //System.out.println(b & 0xFF);
-					signature = (~b & 0xFF);
+					signature = (b & 0xFF);
 					break;
 				case 1:
                     //System.out.println(b & 0xFF);
-					signature = (signature & 0xFF)| ((b & 0xFF)<<8);
-                    //System.out.println(signature);
+					signature = (signature & 0xFF << 8) | ((b & 0xFF));
 					break;
 				case 2:
 					x = b & 0xFF;
@@ -107,12 +110,12 @@ public class PixyCamI2cThread implements Runnable{
 					break;
 				case 11:
 					age = b & 0xFF;
-                    //System.out.println(signature);
                     if(signature != 255){
                         try{
+                            //System.out.println(x);
                             m_map.get(index).set(signature, x, y, width, height, index, age);
                         }catch(Exception e){
-                                m_map.set(index, new PixyCamObject(signature, x, y, width, height, index, age));      
+                            m_map.set(index, new PixyCamObject(signature, x, y, width, height, index, age));      
                         }
                     }
 					break;
