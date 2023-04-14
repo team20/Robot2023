@@ -94,7 +94,7 @@
     Wire.begin(0x18);         //begin I2C
     Serial.begin(9600);
     // Call receiveEvent when data comes in over I2C
-    //Wire.onReceive(receiveEvent);
+    Wire.onReceive(receiveEvent);
   }
   void loop() {
     //  pattern=(int)((millis()-testStart)/testInc)-1;if(pattern>7){pattern=7;} // used for timed demo

@@ -74,12 +74,10 @@ public class PixyCamI2cThread implements Runnable{
             //System.out.println(Arrays.toString(buffer));
 			switch(counter%12){
 				case 0:
-                    //System.out.println(b & 0xFF);
 					signature = (b & 0xFF);
 					break;
 				case 1:
-                    //System.out.println(b & 0xFF);
-					signature = (signature & 0xFF << 8) | ((b & 0xFF));
+					signature = (signature & 0xFF) << 8 | ((b & 0xFF));
 					break;
 				case 2:
 					x = b & 0xFF;
@@ -110,9 +108,8 @@ public class PixyCamI2cThread implements Runnable{
 					break;
 				case 11:
 					age = b & 0xFF;
-                    if(signature != 255){
+                    if(signature != 0){
                         try{
-                            //System.out.println(x);
                             m_map.get(index).set(signature, x, y, width, height, index, age);
                         }catch(Exception e){
                             m_map.set(index, new PixyCamObject(signature, x, y, width, height, index, age));      
