@@ -170,7 +170,7 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
 				.whileTrue(new AutoAlignmentCommand(new Pose(2, -3, Math.PI), 0.1, 2, m_poseSubsystem));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-				.whileTrue(new AutoAlignmentCommand(new Pose(4, -3, Math.PI), 0.1, 2, m_poseSubsystem));
+				.whileTrue(new AutoAlignmentCommand(new Pose(4.5, -3, Math.PI), 0.1, 2, m_poseSubsystem));
 
 	}
 
