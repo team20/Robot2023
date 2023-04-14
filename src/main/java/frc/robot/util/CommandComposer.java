@@ -170,7 +170,7 @@ public class CommandComposer {
 								new WaitCommand(0.25),
 								// new DriveDistanceCommand(5.45),
 								//new DriveDistanceCommand(1.5).andThen(
-								new DriveTimeCommand(0.3,2200).andThen(
+								new DriveTimeCommand(0.4,1650).andThen(
 										new WaitCommand(0.2).andThen(
 											new AutoAlignmentCommand(new Pose(1.6, -2.625, Math.PI * 178 / 180), 0.1, 1).withTimeout(5))))),
 				new TurnRelativeCommand(2),
@@ -183,7 +183,7 @@ public class CommandComposer {
 						new SequentialCommandGroup(
 								//new DriveDistanceCommand(-3.5),
 
-								new DriveTimeCommand(-0.25, 3600),
+								new DriveTimeCommand(-0.4, 2250),
 								new WaitCommand(0.1),
 								new AutoAlignmentCommand(new Pose(6.3, -2.575, Math.PI), 0.1, 2).withTimeout(3)
 								//getAnvitaAuto()// 6.2, -2.6, Math.PI

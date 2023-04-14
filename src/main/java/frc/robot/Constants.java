@@ -30,7 +30,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * backwards
 		 */
-		public static final double[] kHighBackAngles = { 109, 236 };
+		public static final double[] kHighBackAngles = { 109, 236 };	
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
@@ -47,7 +47,7 @@ public final class Constants {
 		public static final double[] kLowAutoAngles = { 78, 48 };
 
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 106, 22 };
+		public static final double[] kPocketAngles = { 106, 22 }; 
 
 		public static final double[] kSubstationAngles = { 84, 102 };
 
