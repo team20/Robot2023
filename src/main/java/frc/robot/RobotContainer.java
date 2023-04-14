@@ -74,7 +74,7 @@ public class RobotContainer {
 		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
 		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
 		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
-		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
+		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueWireBumpAuto());
 		// m_autoChooser.addOption("Score two and balance",
 		// CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
@@ -176,9 +176,10 @@ public class RobotContainer {
 				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> DriveConstants.kFineTurningSpeed, () -> 0.0));
 
 		new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-				.whileTrue(new AutoAlignmentCommand(new Pose(2, -3, Math.PI), 0.1, 5));
+				.whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
 		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-				.whileTrue(new AutoAlignmentCommand(new Pose(4, -3, Math.PI), 0.1, 1));
+				.whileTrue(new AutoAlignmentCommand(new Pose(3
+				, -2.65, Math.PI), 0.1, 2));
 	}
 
 	// TODO get auto command from auto chooser
