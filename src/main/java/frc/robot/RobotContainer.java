@@ -49,22 +49,17 @@ public class RobotContainer {
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 	public RobotContainer() {
-		// m_autoChooser.addOption("Out of Community", CommandComposer.getOutOfCommunityAuto(0));
-		// m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
-		// m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
-		// m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
-		// m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
-		// m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
-		// m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
-		// m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
+		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
+		m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
+		m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
+		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
 		m_autoChooser.addOption("Score CUBE then leave", CommandComposer.getScoreCubeThenLeaveCommand());
 		m_autoChooser.addOption("Score CONE then leave", CommandComposer.getScoreConeThenLeaveCommand());
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
-		// m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
-		// m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
-		// m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
-		// m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
-		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
+		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
+		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
+		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
+		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
 		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
 	}
