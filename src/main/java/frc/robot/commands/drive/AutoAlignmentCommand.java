@@ -134,6 +134,8 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 				displacement = -displacement;
 				angularDisplacement = Pose.normalize(angularDisplacement - Math.PI);
 			}
+			SmartDashboard.putString("Displacements", String.format("(%.3f meters, %.1f degrees)",
+					displacement, angularDisplacement * 180 / Math.PI));
 			aligner.align(displacement, angularDisplacement);
 		} else
 			DriveSubsystem.get().tankDrive(0, 0);
@@ -192,7 +194,6 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 			turnSpeed = MathUtil.clamp(turnSpeed, -0.5, 0.5);
 			SmartDashboard.putString("Wheel Velocities",
 					String.format("(%.3f, %.3f)", -turnSpeed, turnSpeed));
-			SmartDashboard.putNumber( "Angular Displacement", angularDisplacement);
 			DriveSubsystem.get().tankDrive(-turnSpeed, turnSpeed);
 		}
 
@@ -269,9 +270,12 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 			align((displacement, angularDisplacement) -> {
 				double velocity = m_controller.calculate(0, displacement);
 				// double velocity = m_controller.calculate(-displacement, 0);
-				double[] velocities = new double[] { (angularDisplacement < 0 ? 1 : 0.9) * velocity,
-						(angularDisplacement > 0 ? 1 : 0.9) * velocity };
-				SmartDashboard.putString("Wheel Velocities",
+				// TODO: check if the following change is correct
+				double[] velocities = displacement * angularDisplacement < 0 ? new double[] { velocity, 0.9 * velocity }
+						: new double[] { 0.9 * velocity, velocity };
+				// double[] velocities = new double[] { (angularDisplacement < 0 ? 1 : 0.9) * velocity,
+				// 		(angularDisplacement > 0 ? 1 : 0.9) * velocity };
+					SmartDashboard.putString("Wheel Velocities",
 						String.format("(%.3f, %.3f)", velocities[0], velocities[1]));
 				DriveSubsystem.get().tankDrive(velocities[0], velocities[1]);
 			});
