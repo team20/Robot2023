@@ -53,16 +53,17 @@ public class RobotContainer {
 		// m_autoChooser.addOption("Onto Charge Station", CommandComposer.getOnToChargerAuto(0));
 		// m_autoChooser.addOption("Score 1 piece", CommandComposer.getScorePieceAuto());
 		// m_autoChooser.addOption("Leave then balance", CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
-		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
-		m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
-		m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
-		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
-		m_autoChooser.addOption("Score then leave", CommandComposer.getScoreThenLeaveCommand());
+		// m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
+		// m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
+		// m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
+		// m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
+		m_autoChooser.addOption("Score CUBE then leave", CommandComposer.getScoreCubeThenLeaveCommand());
+		m_autoChooser.addOption("Score CONE then leave", CommandComposer.getScoreConeThenLeaveCommand());
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
-		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
-		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
-		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
-		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
+		// m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
+		// m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
+		// m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
+		// m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueAuto());
 		// m_autoChooser.addOption("Score two and balance", CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
 		configureButtonBindings();
@@ -98,7 +99,7 @@ public class RobotContainer {
 		// Move the arm to the medium node over the back
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kTriangle)
 				.and(() -> m_operatorController.getRawButton(Button.kLeftTrigger))
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
+				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK_CUBE)));
 
 		// Move the arm to the medium node
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kSquare)

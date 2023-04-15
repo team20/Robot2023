@@ -15,7 +15,8 @@ public class ArmCommand extends CommandBase {
 	/** Indicates the positions we want the arm to move to */
 	public enum ArmPosition {
 		HIGH,
-		HIGH_BACK,
+		HIGH_BACK_CUBE,
+		HIGH_BACK_CONE,
 		MEDIUM_FORWARD,
 		MEDIUM_BACK,
 		LOW,
@@ -50,9 +51,13 @@ public class ArmCommand extends CommandBase {
 				angles = ArmConstants.kHighAngles;
 				System.out.println("Setting High");
 				break;
-			case HIGH_BACK:
-				angles = ArmConstants.kHighBackAngles;
-				System.out.println("Setting High Back");
+			case HIGH_BACK_CUBE:
+				angles = ArmConstants.kHighBackCubeAngles;
+				System.out.println("Setting Cube High Back");
+				break;
+			case HIGH_BACK_CONE:
+				angles = ArmConstants.kHighBackConeAngles;
+				System.out.println("Setting Cone High Back");
 				break;
 			case MEDIUM_FORWARD:
 				angles = ArmConstants.kMediumForwardAngles;

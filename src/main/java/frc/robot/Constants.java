@@ -30,7 +30,9 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * backwards
 		 */
-		public static final double[] kHighBackAngles = { 109, 236 };
+		public static final double[] kHighBackCubeAngles = { 109, 236 };
+
+		public static final double[] kHighBackConeAngles = { 135, 207 };
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
@@ -127,7 +129,7 @@ public final class Constants {
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 22.967;
+		public static final double kLowerEncoderZeroOffset = 109.7;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
