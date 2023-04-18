@@ -131,6 +131,11 @@ public class DriveSubsystem extends SubsystemBase {
 				DriveSubsystem.get().getLeftEncoderPosition(), DriveSubsystem.get().getRightEncoderPosition()));
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 				getRightEncoderPosition());
+
+		SmartDashboard.putNumber("Front Left Drive Motor", m_frontLeft.getAppliedOutput());
+		SmartDashboard.putNumber("Front Right Drive Motor", m_frontRight.getAppliedOutput());
+		SmartDashboard.putNumber("Back Left Drive Motor", m_backLeft.getAppliedOutput());
+		SmartDashboard.putNumber("Back Right Drive Motor", m_backRight.getAppliedOutput());
 		// wasDisabled exists so the motors aren't constantly set to brake or coast mode
 		// Without it, the code would continuously set the motors in brake or coast mode
 		// If the robot is enabled, put the motors in brake mode

@@ -18,7 +18,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * forwards
 		 */
-		public static final double[] kHighAngles = { 55, 160 };
+		public static final double[] kHighAngles = { 53.6, 154.5 };
 		//{46,225}
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -30,26 +30,26 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * backwards
 		 */
-		public static final double[] kHighBackAngles = { 109, 236 };	
+		public static final double[] kHighBackAngles = { 109, 240 };	
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
 		 */
-		public static final double[] kMediumBackAngles = { 94.5, 279 }; //95, 281
+		public static final double[] kMediumBackAngles = { 96.7, 276.3 }; //95, 281
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
 		 */
-		public static final double[] kMediumForwardAngles = { 83, 108 };
+		public static final double[] kMediumForwardAngles = { 83, 100 };
 		/** The lower and upper arm angles for the arm to be in the low position */
-		public static final double[] kLowAngles = { 80, 38 };
+		public static final double[] kLowAngles = { 78.4, 50};
 
 		public static final double[] kLowAutoAngles = { 78, 48 };
 
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 106, 22 }; 
+		public static final double[] kPocketAngles = { 106.1, 17.8 }; 
 
-		public static final double[] kSubstationAngles = { 84, 110 };
+		public static final double[] kSubstationAngles = { 82.6, 107.3 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -127,13 +127,13 @@ public final class Constants {
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 109.7;
+		public static final double kLowerEncoderZeroOffset = 109.7 - 11.3;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kUpperEncoderZeroOffset = 356.282;
+		public static final double kUpperEncoderZeroOffset = 356.282 - 5.2;
 		public static final int kUpperMotorID = 8;
 		public static final int kLowerMotorID = 6;
 		public static final int kLowerMotor2ID = 7;

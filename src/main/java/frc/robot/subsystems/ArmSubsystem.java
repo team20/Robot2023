@@ -157,7 +157,8 @@ public class ArmSubsystem extends SubsystemBase {
 	/**
 	 * @return The angle of the lower arm in degrees
 	 */
-	public double getLowerArmAngle() {
+	public double 
+	getLowerArmAngle() {
 		return m_lowerArmEncoder.getPosition();
 	}
 
@@ -285,6 +286,9 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Upper Arm Motor Median Current", m_medianCurrentUpper);
 		SmartDashboard.putNumber("Upper Arm Motor Average Current", m_averageCurrentUpper);
 		SmartDashboard.putNumber("Upper Arm Motor Max Current", m_maxCurrent);
+		SmartDashboard.putNumber("Upper Arm Motor Current", m_upperArmMotor.getAppliedOutput());
+		SmartDashboard.putNumber("Lower Arm 1 Current", m_lowerArmMotor.getAppliedOutput());
+		SmartDashboard.putNumber("Lower Arm 2 Motor Current", m_lowerArmMotor2.getAppliedOutput());
 
 		//Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
