@@ -1,3 +1,6 @@
+// New Arduino LED subsystem
+
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -27,6 +30,9 @@ public class ArduinoSubsystem extends SubsystemBase {
 		MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
 		MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
 		RED_COLOR((byte) 13),
+		RAINBOW_COLOR((byte) 14),
+		MOVING_RAINBOW((byte) 15),
+		RAINBOW_PARTY_FUN_MODE((byte) 16),
 		DEFAULT((byte) 20);
 
 		public byte code;
