@@ -41,6 +41,14 @@
   int DHpin = 8;                                //idk, I copied this blindly, I don't think this does anything
   byte dat[5];                                  //same as above
   uint32_t teamColor = upperStrip.Color(0,255,0);    //color of team, default to green, can be set by master/robot to alliance color
+  uint32_t RainbowColor[] = {
+    upperStrip.Color(255, 0 , 0), 
+    upperStrip.Color(255, 165, 0), 
+    upperStrip.Color(255, 255, 0), 
+    upperStrip.Color(0, 255, 0), 
+    upperStrip.Color(0, 0, 255), 
+    upperStrip.Color(148, 0, 211)
+    }; 
 
   uint32_t TheaterLights(int c, int i, uint32_t color1, uint32_t color2) {  //pixel on color 1 or 2 depending on frame
     if (i % 2 == c % 2) { return (color1); }
@@ -49,6 +57,10 @@
   uint32_t BlinkingLights(int c, int i, uint32_t color3, uint32_t color4) {
     if (c % 2 == 0) { return (color3); }
     return (color4);
+  }
+
+  uint32_t RainbowPartyFunTime(int c, int i){
+    return RainbowColor[(c + i) % 6];
   }
 
   // uint32_t HSV2RGB(uint32_t h, double s, double v) {  //converts HSV colors to RGB integer, used for rainbows
@@ -135,10 +147,10 @@
          }
         delay(150);
         break;
-      case 16:  //moving green and red gradient
+      case 16:  //Rainbow Party Fun Time
         for (int i = 0; i < LED_COUNT; i++) {
-          upperStrip.setPixelColor(i, UpperRainbowPartyFunTime(colorIndex, i));
-          lowerStrip.setPixelColor(i, LowerRainbowPartyFunTime(colorIndex, i));
+          upperStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+          lowerStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
          }
         delay(150);
         break;
