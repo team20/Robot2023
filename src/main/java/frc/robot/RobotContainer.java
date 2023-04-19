@@ -147,6 +147,8 @@ public class RobotContainer {
 		// Signal for a cone
 		new POVButton(m_operatorController, ControllerConstants.DPad.kRight)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		new POVButton(m_operatorController, ControllerConstants.DPad.kUp)
+				.onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kRightBumper)
 				.onTrue(new LEDCommand(StatusCode.DEFAULT));
 		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
@@ -175,11 +177,11 @@ public class RobotContainer {
 		new JoystickButton(m_driverController, ControllerConstants.Button.kLeftBumper)
 				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> DriveConstants.kFineTurningSpeed, () -> 0.0));
 
-		new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-				.whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
-		new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-				.whileTrue(new AutoAlignmentCommand(new Pose(3
-				, -2.65, Math.PI), 0.1, 2));
+		// new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
+		// 		.whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
+		// new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
+		// 		.whileTrue(new AutoAlignmentCommand(new Pose(3
+		// 		, -2.65, Math.PI), 0.1, 2));
 	}
 
 	// TODO get auto command from auto chooser

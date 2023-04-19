@@ -150,7 +150,7 @@ public class CommandComposer {
 
 	}
 
-	public static Command getTwoScoreBlueWireBumpAuto() { // Start right to the right of Charge station
+	public static Command getTwoScoreRedWireBumpAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new WheelGripperCommand(WheelGripperPosition.STOP),
 				new SequentialCommandGroup(
@@ -199,7 +199,7 @@ public class CommandComposer {
 		/* new BalancePIDCommand() */);
 	}
 
-	public static Command getTwoScoreRedWireBumpAuto() { // Start right to the right of Charge station
+	public static Command getTwoScoreBlueWireBumpAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new WheelGripperCommand(WheelGripperPosition.STOP),
 				new SequentialCommandGroup(
@@ -210,24 +210,32 @@ public class CommandComposer {
 				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				// getEnsurePreloadCommand(),
 				// new DriveTimeCommand(0.5, 250),
+				// new TurnRelativeCommand(-1),
 				new ParallelRaceGroup(
 						new SequentialCommandGroup(
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 								getPickupPieceCommand()),
 						new SequentialCommandGroup(
 								new WaitCommand(0.25),
-								new DriveDistanceCommand(3.6),
-								new TurnRelativeCommand(3),
-								new DriveDistanceCommand(1.65), // 5.45
-								new DriveTimeCommand(-0.25, 200))),
+								// new DriveDistanceCommand(5.45),
+								//new DriveDistanceCommand(1.5).andThen(
+								new DriveTimeCommand(0.4,1650).andThen(
+										new WaitCommand(0.2).andThen(
+											new AutoAlignmentCommand(new Pose(-1.6, -2.625, 0), 0.1, 1).withTimeout(5))))),
+				new TurnRelativeCommand(2),
+								
+				// new ParallelCommandGroup(
+				// 		new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+				// 		// new DriveTimeCommand(-1, 450)),
 				new ParallelCommandGroup(
 						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-						new DriveTimeCommand(-1, 150)),
-				new ParallelCommandGroup(
 						new SequentialCommandGroup(
-								new TurnRelativeCommand(-3),
-								new DriveDistanceCommand(-3),
-								getAnvitaAuto()// ,
+								//new DriveDistanceCommand(-3.5),
+
+								new DriveTimeCommand(-0.4, 2250),
+								new WaitCommand(0.1),
+								new AutoAlignmentCommand(new Pose(-6.3, -2.575, 0), 0.1, 2).withTimeout(3)
+								//getAnvitaAuto()// 6.2, -2.6, Math.PI
 						// new DriveTimeCommand(-0.15,1000)
 						),
 						new SequentialCommandGroup(
@@ -236,8 +244,10 @@ public class CommandComposer {
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
 				getOuttakePieceCommand(),
 				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
-				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET));
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
+		/* new BalancePIDCommand() */);
 	}
+
 
 	public static Command getTwoScoreRedAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
