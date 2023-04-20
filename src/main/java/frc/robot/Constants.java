@@ -18,7 +18,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * forwards
 		 */
-		public static final double[] kHighAngles = { 50, 161 };
+		public static final double[] kHighAngles = { 55, 160 };
 		//{46,225}
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -40,7 +40,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
 		 */
-		public static final double[] kMediumForwardAngles = { 84, 100 };
+		public static final double[] kMediumForwardAngles = { 83, 108 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 80, 38 };
 

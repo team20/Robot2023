@@ -239,7 +239,6 @@ public class CommandComposer {
 						// new DriveTimeCommand(-0.15,1000)
 						),
 						new SequentialCommandGroup(
-
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
 				getOuttakePieceCommand(),
