@@ -66,9 +66,11 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_lowerArmMotor.enableVoltageCompensation(12);
 		m_lowerArmMotor.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
-		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch forwardSwitch = m_lowerArmMotor
+				.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		forwardSwitch.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch reverseSwitch = m_lowerArmMotor
+				.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		reverseSwitch.enableLimitSwitch(false);
 
 		m_lowerArmEncoder.setPositionConversionFactor(360);
@@ -93,9 +95,11 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor2.enableVoltageCompensation(12);
 		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2
+				.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		forwardSwitch2.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2
+				.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 		reverseSwitch2.enableLimitSwitch(false);
 
 		// Make the 2nd lower arm motor follow the first one
@@ -111,7 +115,7 @@ public class ArmSubsystem extends SubsystemBase {
 		m_upperArmEncoder.setPositionConversionFactor(360);
 		m_upperArmEncoder.setZeroOffset(ArmConstants.kUpperEncoderZeroOffset);
 		m_upperArmEncoder.setInverted(true);
-		
+
 		m_upperArmController.setP(ArmConstants.kUpperArmP);
 		m_upperArmController.setI(ArmConstants.kUpperArmI);
 		m_upperArmController.setIZone(ArmConstants.kUpperArmIz);
@@ -141,9 +145,10 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmMotor.set(speed);
 	}
 
-	public boolean getManualArmRan(){
+	public boolean getManualArmRan() {
 		return m_manualArmRan;
 	}
+
 	/**
 	 * Sets the percent output for the upper arm motor
 	 * 
@@ -200,10 +205,11 @@ public class ArmSubsystem extends SubsystemBase {
 				checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
 	}
 
-	public boolean isNearTargetAngleIntermediate(){
+	public boolean isNearTargetAngleIntermediate() {
 		return checkAngle(m_targetLowerArmAngle, getLowerArmAngle()) &&
-			checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
+				checkAngle(m_targetUpperArmAngle, getUpperArmAngle());
 	}
+
 	/**
 	 * Takes a target angle and current angle, and checks if the current angle is
 	 * close enough to the target angle. The number of degrees the current angle can
@@ -218,7 +224,7 @@ public class ArmSubsystem extends SubsystemBase {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesError;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesError;
 		// Simple bounds checking without accounting for wraparound
-		if (Math.abs(currentAngle-targetAngle) < ArmConstants.kAllowedDegreesError) {
+		if (Math.abs(currentAngle - targetAngle) < ArmConstants.kAllowedDegreesError) {
 			return true;
 			/*
 			 * If there's wraparound, there's two parts of the accepted range: The part that
@@ -238,12 +244,12 @@ public class ArmSubsystem extends SubsystemBase {
 		return false;
 	}
 
-	/*This is checkAngle but with a higher degree of error */
+	/* This is checkAngle but with a higher degree of error */
 	public boolean checkAngleIntermediate(double targetAngle, double currentAngle) {
 		double upperAngleBound = targetAngle + ArmConstants.kAllowedDegreesErrorIntermediate;
 		double lowerAngleBound = targetAngle - ArmConstants.kAllowedDegreesErrorIntermediate;
 		// Simple bounds checking without accounting for wraparound
-		if (Math.abs(currentAngle-targetAngle) < ArmConstants.kAllowedDegreesErrorIntermediate) {
+		if (Math.abs(currentAngle - targetAngle) < ArmConstants.kAllowedDegreesErrorIntermediate) {
 			return true;
 			/*
 			 * If there's wraparound, there's two parts of the accepted range: The part that
@@ -262,23 +268,22 @@ public class ArmSubsystem extends SubsystemBase {
 		}
 		return false;
 	}
-
 
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
 
-		if(m_upperArmMotor.getAppliedOutput() > 0){
+		if (m_upperArmMotor.getAppliedOutput() > 0) {
 			double current = m_upperArmMotor.getOutputCurrent();
 			m_medianCurrentUpper = m_upperMotorMedianFilter.calculate(current);
 			m_averageCurrentUpper = m_upperMotorAverageFilter.calculate(current);
-			if(current > m_maxCurrent){
+			if (current > m_maxCurrent) {
 				m_maxCurrent = current;
 			}
 		}
-
 		// SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOut());
-		// SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
+		// SmartDashboard.putNumber("Upper Arm Motor Output",
+		// m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOutputCurrent());
 		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmMotor2.getOutputCurrent());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
@@ -286,7 +291,7 @@ public class ArmSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Upper Arm Motor Average Current", m_averageCurrentUpper);
 		SmartDashboard.putNumber("Upper Arm Motor Max Current", m_maxCurrent);
 
-		//Log the lower and upper arm angle as measured by the encoders
+		// Log the lower and upper arm angle as measured by the encoders
 		SmartDashboard.putNumber("Current Lower Arm Angle", getLowerArmAngle());
 		SmartDashboard.putNumber("Current Upper Arm Angle", getUpperArmAngle());
 		// Calculate the arm position using the encoder angles
@@ -306,18 +311,20 @@ public class ArmSubsystem extends SubsystemBase {
 		if (coordinates[1] > ArmConstants.kMaxHeight - 1) {
 			ArmSubsystem.get().setAngles(ArmSubsystem.get().getLowerArmAngle(), ArmSubsystem.get().getUpperArmAngle());
 		}
-		if(!m_temporarilyDisabled && (getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound || getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound)){
+		if (!m_temporarilyDisabled && (getLowerArmAngle() <= ArmConstants.kLowerArmInvalidLowerBound
+				|| getLowerArmAngle() >= ArmConstants.kLowerArmInvalidUpperBound)) {
 			// setLowerArmMotorSpeed(0);
 			// setUpperArmMotorSpeed(0);
 			m_temporarilyDisabled = true;
-		}else if(m_temporarilyDisabled && getLowerArmAngle() > ArmConstants.kLowerArmInvalidLowerBound && getLowerArmAngle() < ArmConstants.kLowerArmInvalidUpperBound){
-			//setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
+		} else if (m_temporarilyDisabled && getLowerArmAngle() > ArmConstants.kLowerArmInvalidLowerBound
+				&& getLowerArmAngle() < ArmConstants.kLowerArmInvalidUpperBound) {
+			// setAngles(m_targetLowerArmAngle, m_targetUpperArmAngle);
 			m_temporarilyDisabled = false;
 		}
 
 		// if(isNearTargetAngle()){
-		// 	setLowerArmMotorSpeed(0);
-		// 	setUpperArmMotorSpeed(0);
+		// setLowerArmMotorSpeed(0);
+		// setUpperArmMotorSpeed(0);
 		// }
 	}
 }

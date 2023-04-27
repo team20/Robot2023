@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,25 +19,20 @@ import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
 import frc.robot.commands.arm.ManualMotorCommand;
-import frc.robot.commands.drive.AutoAlignmentCommand;
-import frc.robot.commands.drive.BalancePIDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.drive.DriveBrakeModeCommand;
-import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.drive.TurnTimeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
-import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PoseEstimationSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.util.CommandComposer;
-import hlib.drive.Pose;
 
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -50,7 +46,7 @@ public class RobotContainer {
 			10, 0.1);
 
 	/** The PS4 controller the operator uses */
-	private final Joystick m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
+	private final PS4Controller m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
 	/** The PS4 controller the driver uses */
 	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
 
@@ -83,7 +79,7 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		// -------------Gripper Controls-------------
-		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
+		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftTrigger)
 				.and(() -> !m_operatorController.getRawButton(Button.kLeftTrigger))
 				.onTrue(new SequentialCommandGroup(new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR)));
 		new JoystickButton(m_operatorController, ControllerConstants.Button.kLeftBumper)
@@ -178,10 +174,10 @@ public class RobotContainer {
 				.whileTrue(new DefaultDriveCommand(() -> 0.0, () -> DriveConstants.kFineTurningSpeed, () -> 0.0));
 
 		// new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-		// 		.whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
+		// .whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
 		// new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-		// 		.whileTrue(new AutoAlignmentCommand(new Pose(3
-		// 		, -2.65, Math.PI), 0.1, 2));
+		// .whileTrue(new AutoAlignmentCommand(new Pose(3
+		// , -2.65, Math.PI), 0.1, 2));
 	}
 
 	// TODO get auto command from auto chooser
