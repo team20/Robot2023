@@ -7,10 +7,6 @@
 #define ITERATION_DELAY_MS 10
 #define NAVX_SENSOR_DEVICE_I2C_ADDRESS_7BIT 0x32
 #define NUM_BYTES_TO_READ 1
-// I2C Master Code for Arduino Nano
-
-int ledState = 0;
-
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1:
 #define UPPER_LED_PIN 5
@@ -34,7 +30,7 @@ Adafruit_NeoPixel lowerStrip(LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-int colorIndex = 0;  // frame variable, chnages from loop
+int colorIndex = 0;  // frame variable, changes from loop
 int pattern = -1;    // pattern led strips are on, read in from master/robot
 long startTime = -1;
 const long endTime = 30000;                        // timer variables for endgame
@@ -78,13 +74,6 @@ void loop() {
 			}
 			delay(150);
 			break;
-		case 16:  // moving green and red gradient
-			for (int i = 0; i < LED_COUNT; i++) {
-				upperStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
-				lowerStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
-			}
-			delay(150);
-			break;
 		default:  // display team/alliance color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
@@ -113,21 +102,18 @@ uint32_t TheaterLights(int c, int i, uint32_t color1, uint32_t color2) {  // pix
 	return color2;
 }
 
-/// @brief Makes the whole LED strip switch back and forth between two colors
-/// @param c Color index
+/// @brief Makes LEDs switch back and forth between colors,
+/// using color index will make the whole strip alternate colors,
+/// using LED number will make even numbered LEDs one color, and odd numbered LEDs another color
+/// @param x A number determining the color to use
 /// @param color3 A color
 /// @param color4 The other color
-/// @return
-uint32_t BlinkingLights(int c, uint32_t color3, uint32_t color4) {
-	if (c % 2 == 0) {
+/// @return The color for the LED
+uint32_t BlinkingLights(int x, uint32_t color3, uint32_t color4) {
+	if (x % 2 == 0) {
 		return color3;
 	}
 	return color4;
-}
-uint32_t RainbowPartyFunTime(int c, int i) {  // Rainbow but blinking
-	if (c % 2 == 0)
-		return RainbowColor(c / 2, i);
-	return lowerStrip.Color(0, 0, 0);
 }
 uint32_t Timer(int c, int i, uint32_t color) {  // user timer proportion to light up specific pixel
 	if (c % 2 == 0 && 2 > (i + c) % int(LED_COUNT * (1 - (millis() - startTime) / endTime)) && i * endTime > LED_COUNT * (millis() - startTime)) {
