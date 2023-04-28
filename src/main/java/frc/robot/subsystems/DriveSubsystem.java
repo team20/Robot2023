@@ -106,6 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
 		resetEncoders();
+		setBackBrake();
 	}
 
 	public static DriveSubsystem get() {
@@ -116,6 +117,11 @@ public class DriveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Heading", getHeading());
 		SmartDashboard.putNumber("L RPM: ", getLeftEncoderVelocity());
 		SmartDashboard.putNumber("R RPM: ", getRightEncoderVelocity());
+
+		SmartDashboard.putNumber("FL: ", m_frontLeft.getOutputCurrent());
+		SmartDashboard.putNumber("FR: ", m_frontRight.getOutputCurrent());
+		SmartDashboard.putNumber("BL: ", m_backLeft.getOutputCurrent());
+		SmartDashboard.putNumber("BR: ", m_backRight.getOutputCurrent());
 
 		SmartDashboard.putNumber("Curr X", DriveSubsystem.get().getPose().getX());
 		SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());

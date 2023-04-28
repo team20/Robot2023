@@ -18,7 +18,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * forwards
 		 */
-		public static final double[] kHighAngles = { 50, 165 };
+		public static final double[] kHighAngles = { 55, 160 };
 		//{46,225}
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -30,7 +30,7 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * backwards
 		 */
-		public static final double[] kHighBackAngles = { 109, 236 };
+		public static final double[] kHighBackAngles = { 109, 236 };	
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
@@ -40,16 +40,16 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
 		 */
-		public static final double[] kMediumForwardAngles = { 84, 102 };
+		public static final double[] kMediumForwardAngles = { 83, 108 };
 		/** The lower and upper arm angles for the arm to be in the low position */
 		public static final double[] kLowAngles = { 80, 38 };
 
-		public static final double[] kLowAutoAngles = { 80, 39 };
+		public static final double[] kLowAutoAngles = { 78, 48 };
 
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 106, 22 };
+		public static final double[] kPocketAngles = { 106, 22 }; 
 
-		public static final double[] kSubstationAngles = { 84, 108 };
+		public static final double[] kSubstationAngles = { 84, 110 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -70,7 +70,7 @@ public final class Constants {
 		 * needed to prevent the arm from going over the height limit when transitioning
 		 * from a forward position to a backward position
 		 */
-		public static final double[] kToBackIntermediateAngles = { 50, 270 };
+		public static final double[] kToBackIntermediateAngles = { 50, 270 }; //50, 270
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from going over the height limit when transitioning
@@ -127,7 +127,7 @@ public final class Constants {
 		 * Number of degrees the lower arm encoder output needs to be offset so it reads
 		 * 0 degrees in our zero position
 		 */
-		public static final double kLowerEncoderZeroOffset = 22.967;
+		public static final double kLowerEncoderZeroOffset = 109.7;
 
 		/**
 		 * Number of degrees the upper arm encoder output needs to be offset so it reads

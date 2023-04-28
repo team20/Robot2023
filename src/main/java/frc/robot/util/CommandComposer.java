@@ -20,6 +20,7 @@ import frc.robot.commands.drive.DriveDistanceCommand;
 import frc.robot.commands.drive.DriveTimeCommand;
 import frc.robot.commands.drive.TagAlignCommand;
 import frc.robot.commands.drive.TurnCommand;
+import frc.robot.commands.drive.AutoAlignmentCommand;
 import frc.robot.commands.drive.TurnCommandLimelight;
 import frc.robot.commands.drive.TurnRelativeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
@@ -28,6 +29,7 @@ import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import hlib.drive.Pose;
 
 /**
  * When you need to construct long command chains, you can put those chains in
@@ -147,7 +149,8 @@ public class CommandComposer {
 		);
 
 	}
-	public static Command getTwoScoreBlueWireBumpAuto() { // Start right to the right of Charge station
+
+	public static Command getTwoScoreRedWireBumpAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new WheelGripperCommand(WheelGripperPosition.STOP),
 				new SequentialCommandGroup(
@@ -157,25 +160,33 @@ public class CommandComposer {
 				// new
 				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				// getEnsurePreloadCommand(),
-				//new DriveTimeCommand(0.5, 250),
-				new TurnRelativeCommand(-1
-				),
+				// new DriveTimeCommand(0.5, 250),
+				// new TurnRelativeCommand(-1),
 				new ParallelRaceGroup(
 						new SequentialCommandGroup(
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 								getPickupPieceCommand()),
 						new SequentialCommandGroup(
 								new WaitCommand(0.25),
-								new DriveDistanceCommand(5.45),
-								new DriveTimeCommand(-0.25, 200))),
+								// new DriveDistanceCommand(5.45),
+								//new DriveDistanceCommand(1.5).andThen(
+								new DriveTimeCommand(0.4,1650).andThen(
+										new WaitCommand(0.2).andThen( //Math.toRadians(175)
+											new AutoAlignmentCommand(new Pose(1.86, -2.75, Math.toRadians(178)), 0.1, 1).withTimeout(5))))),
+				new TurnRelativeCommand(-2),
+								
+				// new ParallelCommandGroup(
+				// 		new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+				// 		// new DriveTimeCommand(-1, 450)),
 				new ParallelCommandGroup(
 						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-						new DriveTimeCommand(-1, 350)),
-				new ParallelCommandGroup(
 						new SequentialCommandGroup(
-								new TurnRelativeCommand(0.25),
-								new DriveDistanceCommand(-3.5),
-								getAnvitaAuto()// ,
+								//new DriveDistanceCommand(-3.5),
+
+								new DriveTimeCommand(-0.6, 2250),
+								new WaitCommand(0.1),
+								new AutoAlignmentCommand(new Pose(6.3, -2.63, Math.PI), 0.1, 2).withTimeout(3)
+								//getAnvitaAuto()// 6.2, -2.6, Math.PI
 						// new DriveTimeCommand(-0.15,1000)
 						),
 						new SequentialCommandGroup(
@@ -188,46 +199,56 @@ public class CommandComposer {
 		/* new BalancePIDCommand() */);
 	}
 
-	public static Command getTwoScoreRedWireBumpAuto() { // Start right to the right of Charge station
+	public static Command getTwoScoreBlueWireBumpAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
-			new WheelGripperCommand(WheelGripperPosition.STOP),
-			new SequentialCommandGroup(
-					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
-					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK).withTimeout(1.5)),
-			getOuttakePieceCommand(),
-			// new
-			// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
-			// getEnsurePreloadCommand(),
-			//new DriveTimeCommand(0.5, 250),
-			new ParallelRaceGroup(
-					new SequentialCommandGroup(
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
-							getPickupPieceCommand()),
-					new SequentialCommandGroup(
-							new WaitCommand(0.25),
-							new DriveDistanceCommand(3.6),
-							new TurnRelativeCommand(3),
-							new DriveDistanceCommand(1.65), // 5.45
-							new DriveTimeCommand(-0.25, 200))),
-			new ParallelCommandGroup(
-					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-					new DriveTimeCommand(-1, 150)),
-			new ParallelCommandGroup(
-					new SequentialCommandGroup(
-							new TurnRelativeCommand(-3),
-							new DriveDistanceCommand(-3),
-							getAnvitaAuto()// ,
-					// new DriveTimeCommand(-0.15,1000)
-					),
-					new SequentialCommandGroup(
+				new WheelGripperCommand(WheelGripperPosition.STOP),
+				new SequentialCommandGroup(
+						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK).withTimeout(1.5)),
+				getOuttakePieceCommand(),
+				// new
+				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
+				// getEnsurePreloadCommand(),
+				// new DriveTimeCommand(0.5, 250),
+				// new TurnRelativeCommand(-1),
+				new ParallelRaceGroup(
+						new SequentialCommandGroup(
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+								getPickupPieceCommand()),
+						new SequentialCommandGroup(
+								new WaitCommand(0.25),
+								// new DriveDistanceCommand(5.45),
+								//new DriveDistanceCommand(1.5).andThen(
+								new DriveTimeCommand(0.4,1650).andThen(
+										new WaitCommand(0.2).andThen( //Math.toRadians(175)
+											new AutoAlignmentCommand(new Pose(-1.65, -3.6, Math.toRadians(0)), 0.1, 1).withTimeout(5))))), //TODO: pose
+				//new TurnRelativeCommand(2),
+								
+				// new ParallelCommandGroup(
+				// 		new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+				// 		// new DriveTimeCommand(-1, 450)),
+				new ParallelCommandGroup(
+						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+						new SequentialCommandGroup(
+								//new DriveDistanceCommand(-3.5),
 
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
-			getOuttakePieceCommand(),
-			new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
-			new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
-		);
+								new DriveTimeCommand(-0.4, 2250),
+								new WaitCommand(0.25),
+								new AutoAlignmentCommand(new Pose(-6.4, -3.4, Math.toRadians(0)), 0.1, 2).withTimeout(3) //TODO: pose
+								//getAnvitaAuto()// 6.2, -2.6, Math.PI
+						// new DriveTimeCommand(-0.15,1000)
+						),
+						new SequentialCommandGroup(
+
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
+				getOuttakePieceCommand(),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
+		/* new BalancePIDCommand() */);
 	}
+
+
 	public static Command getTwoScoreRedAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
 				new WheelGripperCommand(WheelGripperPosition.STOP),
@@ -238,7 +259,7 @@ public class CommandComposer {
 				// new
 				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
 				// getEnsurePreloadCommand(),
-				//new TurnRelativeCommand(-1.5),
+				// new TurnRelativeCommand(-1.5),
 				new ParallelRaceGroup(
 						new SequentialCommandGroup(
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
@@ -269,41 +290,40 @@ public class CommandComposer {
 
 	public static Command getTwoScoreBlueAuto() { // Start right to the right of Charge station
 		return new SequentialCommandGroup(
-			new WheelGripperCommand(WheelGripperPosition.STOP),
-			new SequentialCommandGroup(
-					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
-					new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK).withTimeout(1.5)),
-			getOuttakePieceCommand(),
-			// new
-			// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
-			// getEnsurePreloadCommand(),
-			//new TurnRelativeCommand(1.5),
-			new ParallelRaceGroup(
-					new SequentialCommandGroup(
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
-							getPickupPieceCommand()),
-					new SequentialCommandGroup(
-							new WaitCommand(0.25),
-							new DriveDistanceCommand(5.2),
-							new DriveTimeCommand(-0.25, 200))),
-			new ParallelCommandGroup(
-					new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
-					new DriveTimeCommand(-1, 350)),
-			new ParallelCommandGroup(
-					new SequentialCommandGroup(
-							new TurnRelativeCommand(-0.25),
-							new DriveDistanceCommand(-3.5),
-							getAnvitaAuto()// ,
-					// new DriveTimeCommand(-0.15,1000)
-					),
-					new SequentialCommandGroup(
+				new WheelGripperCommand(WheelGripperPosition.STOP),
+				new SequentialCommandGroup(
+						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+						new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK).withTimeout(1.5)),
+				getOuttakePieceCommand(),
+				// new
+				// ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE).withTimeout(1.5),
+				// getEnsurePreloadCommand(),
+				// new TurnRelativeCommand(1.5),
+				new ParallelRaceGroup(
+						new SequentialCommandGroup(
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+								getPickupPieceCommand()),
+						new SequentialCommandGroup(
+								new WaitCommand(0.25),
+								new DriveDistanceCommand(5.2),
+								new DriveTimeCommand(-0.25, 200))),
+				new ParallelCommandGroup(
+						new WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR),
+						new DriveTimeCommand(-1, 350)),
+				new ParallelCommandGroup(
+						new SequentialCommandGroup(
+								new TurnRelativeCommand(-0.25),
+								new DriveDistanceCommand(-3.5),
+								getAnvitaAuto()// ,
+						// new DriveTimeCommand(-0.15,1000)
+						),
+						new SequentialCommandGroup(
 
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
-							new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
-			getOuttakePieceCommand(),
-			new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
-			new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
-		);
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.MEDIUM_BACK).withTimeout(1.5))),
+				getOuttakePieceCommand(),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET));
 	}
 
 	// Score Preloaded and Engage
@@ -366,8 +386,8 @@ public class CommandComposer {
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)),
 						new SequentialCommandGroup(
 								new DriveDistanceCommand(-0.2),
-								new DriveTimeCommand(-DriveConstants.upStationSpeed, 700),
-								new DriveTimeCommand(-0.25, 2000),
+								new DriveTimeCommand(-DriveConstants.upStationSpeed, 500),
+								new DriveTimeCommand(-0.25, 3000),
 								new DriveTimeCommand(DriveConstants.upStationSpeed, 950),
 								new BalancePIDCommand()
 
@@ -387,11 +407,13 @@ public class CommandComposer {
 				new ParallelCommandGroup(
 						new SequentialCommandGroup(
 								getOuttakePieceCommand(),
+								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
 								new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)),
 						new SequentialCommandGroup(
 								new DriveDistanceCommand(0.2),
 								new DriveTimeCommand(DriveConstants.upStationSpeed, 500),
 								new DriveTimeCommand(0.25, 3000),
+								new WaitCommand(0.25),
 								new DriveTimeCommand(-DriveConstants.upStationSpeed, 950),
 								new BalancePIDCommand()
 
@@ -400,6 +422,15 @@ public class CommandComposer {
 		);
 	}
 
+	public static Command getJustScoreAuto(){
+		return new SequentialCommandGroup(
+				getEnsurePreloadCommand(),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_BACK_INTERMEDIATE),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.HIGH_BACK),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.TO_FORWARD_INTERMEDIATE),
+				new ArmScoreAutoCommand(ArmScoreAutoCommand.ArmPosition.POCKET)
+		);
+	}
 	// Score, Leave Community, Intake, Score again, and balance
 	// https://docs.google.com/presentation/d/1O_zm6wuVwKJRE06Lj-Mtahat5X3m4VljtLzz4SqzGo4/edit#slide=id.g12845fa040c_0_5
 	public static Command getTwoScoreBalanceAuto() {

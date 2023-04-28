@@ -26,6 +26,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		BLINKING_PURPLE((byte) 10),
 		MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
 		MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
+		RAINBOW_PARTY_FUN_TIME((byte)16),
 		DEFAULT((byte) 20);
 
 		public byte code;
