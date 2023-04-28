@@ -49,7 +49,7 @@ public final class Constants {
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
 		public static final double[] kPocketAngles = { 106, 22 }; 
 
-		public static final double[] kSubstationAngles = { 84, 106 };
+		public static final double[] kSubstationAngles = { 84, 110 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -70,7 +70,7 @@ public final class Constants {
 		 * needed to prevent the arm from going over the height limit when transitioning
 		 * from a forward position to a backward position
 		 */
-		public static final double[] kToBackIntermediateAngles = { 50, 270 };
+		public static final double[] kToBackIntermediateAngles = { 50, 270 }; //50, 270
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from going over the height limit when transitioning

@@ -106,6 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0);
 		resetEncoders();
+		setBackBrake();
 	}
 
 	public static DriveSubsystem get() {

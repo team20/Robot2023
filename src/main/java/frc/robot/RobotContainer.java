@@ -73,8 +73,10 @@ public class RobotContainer {
 		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
 		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
 		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
-		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
+		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedWireBumpAuto());
 		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueWireBumpAuto());
+		m_autoChooser.addOption("Just Score", CommandComposer.getJustScoreAuto());
+		m_autoChooser.addOption("Do Nothing", new SequentialCommandGroup());
 		// m_autoChooser.addOption("Score two and balance",
 		// CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
@@ -186,7 +188,7 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		// return new BalancePIDCommand();
+		//return new BalancePIDCommand();
 		return m_autoChooser.getSelected();
 	}
 }

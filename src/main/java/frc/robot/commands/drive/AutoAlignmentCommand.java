@@ -259,8 +259,8 @@ public class AutoAlignmentCommand extends SequentialCommandGroup {
 			align((displacement, angularDisplacement) -> {
 				double velocity = m_controller.calculate(0, displacement);
 				// double velocity = m_controller.calculate(-displacement, 0);
-				double[] velocities = new double[] { (angularDisplacement < 0 ? 1 : 0.9) * velocity,
-						(angularDisplacement > 0 ? 1 : 0.9) * velocity };
+				double[] velocities = new double[] { (displacement * angularDisplacement < 0 ? 1 : 0.9) * velocity,
+						(displacement * angularDisplacement > 0 ? 1 : 0.9) * velocity };
 				SmartDashboard.putString("Wheel Velocities",
 						String.format("(%.3f, %.3f)", velocities[0], velocities[1]));
 				DriveSubsystem.get().tankDrive(velocities[0], velocities[1]);

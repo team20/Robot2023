@@ -33,7 +33,7 @@ public class DriveTimeCommand extends CommandBase {
     if (m_startTime == null){
       m_startTime = Instant.now();
     }
-    System.out.println("Running Drive Time");
+    //System.out.println("Running Drive Time");
     DriveSubsystem.get().tankDrive(m_speed, m_speed);
   }
 
