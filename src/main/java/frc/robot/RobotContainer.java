@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,7 +45,7 @@ public class RobotContainer {
 			10, 0.1);
 
 	/** The PS4 controller the operator uses */
-	private final PS4Controller m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
+	private final Joystick m_operatorController = new Joystick(ControllerConstants.kOperatorControllerPort);
 	/** The PS4 controller the driver uses */
 	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
 

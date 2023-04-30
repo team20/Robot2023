@@ -16,7 +16,7 @@
 #define LED_COUNT 33
 
 // Declare our NeoPixel strip object:
-Adafruit_NeoPixel upperStrip(LED_COUNT, UPPER_LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel upperStrip(LED_COUNT, UPPER_LED_PIN, NEO_BRG + NEO_KHZ800);
 Adafruit_NeoPixel lowerStrip(LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
 
 // Argument 1 = Number of pixels in NeoPixel strip
@@ -35,7 +35,13 @@ int pattern = -1;    // pattern led strips are on, read in from master/robot
 long startTime = -1;
 const long endTime = 30000;                        // timer variables for endgame
 uint32_t teamColor = upperStrip.Color(0, 255, 0);  // color of team, default to green, can be set by master/robot to alliance color
-
+uint32_t RainbowColor[] = {
+    upperStrip.Color(255, 0, 0),
+    upperStrip.Color(255, 165, 0),
+    upperStrip.Color(255, 255, 0),
+    upperStrip.Color(0, 255, 0),
+    upperStrip.Color(0, 0, 255),
+    upperStrip.Color(148, 0, 211)};
 // setup() function -- runs once at startup --------------------------------
 void setup() {
 	// These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
@@ -74,6 +80,14 @@ void loop() {
 			}
 			delay(150);
 			break;
+		case 16:
+			for (int i = 0; i < LED_COUNT; i++) {
+				upperStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+				lowerStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+				// Serial.println("11");
+			}
+			delay(40);
+			break;
 		default:  // display team/alliance color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
@@ -82,12 +96,17 @@ void loop() {
 			delay(150);
 			break;
 	}
+	// delay(15000);
 	upperStrip.show();  // show
 	lowerStrip.show();
 	colorIndex++;  // next frame
 }
 void serialEvent() {
 	pattern = Serial.read();
+}
+
+uint32_t RainbowPartyFunTime(int c, int i) {
+	return RainbowColor[(c + i) % 6];
 }
 /// @brief Makes LEDs switch back and forth between two colors
 /// @param c Color index
@@ -116,7 +135,9 @@ uint32_t BlinkingLights(int x, uint32_t color3, uint32_t color4) {
 	return color4;
 }
 uint32_t Timer(int c, int i, uint32_t color) {  // user timer proportion to light up specific pixel
-	if (c % 2 == 0 && 2 > (i + c) % int(LED_COUNT * (1 - (millis() - startTime) / endTime)) && i * endTime > LED_COUNT * (millis() - startTime)) {
+	if (c % 2 == 0 &&
+	    2 > (i + c) % int(LED_COUNT * (1 - (millis() - startTime) / endTime)) &&
+	    i * endTime > LED_COUNT * (millis() - startTime)) {
 		return color;
 	}
 	return upperStrip.Color(0, 0, 0);

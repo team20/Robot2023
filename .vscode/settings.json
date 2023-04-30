@@ -18,6 +18,5 @@
 	"editor.formatOnSave": true,
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
-	"arduino.path": "",
 	"arduino.useArduinoCli": true
 }
