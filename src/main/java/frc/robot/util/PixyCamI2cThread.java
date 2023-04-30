@@ -51,7 +51,7 @@ public class PixyCamI2cThread implements Runnable {
 		int age = 0;
 
 		// Read all bytes from buffer
-		for (int i = 0; i < buffer.length; ++i) {
+		for (int i = 0; i < buffer.length; i++) {
 			b = buffer[i];
 			System.out.println(b);
 			// 9 byte block
@@ -102,7 +102,7 @@ public class PixyCamI2cThread implements Runnable {
 					}
 					break;
 			}
-			++counter;
+		counter++;
 		}
 	}
 }

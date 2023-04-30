@@ -9,7 +9,7 @@ import java.time.Instant;
 
 /** Add your docs here. */
 public class PixyCamObject {
-	private final int kTimeValid = 50;
+	private final int kTimeValidMilliseconds = 50;
 	private int m_signature;
 	private int m_x;
 	private int m_y;
@@ -28,11 +28,10 @@ public class PixyCamObject {
 		m_index = index;
 		m_age = age;
 		m_readTime = Instant.now();
-
 	}
 
 	public synchronized boolean isExpired() {
-		return Duration.between(m_readTime, Instant.now()).toMillis() > kTimeValid;
+		return Duration.between(m_readTime, Instant.now()).toMillis() > kTimeValidMilliseconds;
 	}
 
 	public synchronized int[] get() {

@@ -5,9 +5,6 @@
 package frc.robot.subsystems;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -36,15 +33,16 @@ public class ArduinoSubsystem extends SubsystemBase {
 
 	private static ArduinoSubsystem s_subsystem;
 	/**
-	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
-	 * on the MXP port, which runs through the navX
+	 * The I2C device we're connecting to, which is the LEDuino. Port.kMXP means we
+	 * use the I2C connection on the MXP port, which runs through the navX
 	 */
 	private I2C m_ledDevice = new I2C(Port.kMXP, ArduinoConstants.kLEDAddress);
+	/** The Pixyduino we're connecting to over I2C */
 	private I2C m_pixyCamDevice = new I2C(Port.kMXP, ArduinoConstants.kPixyCamAddress);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 	private ByteBuffer m_readBuffer;
-
+	/** Stores the objects detected by the Pixycam */
 	PixyCamObjectMap m_detectedObjects = new PixyCamObjectMap();
 	private Thread m_pixyCamThread;
 
