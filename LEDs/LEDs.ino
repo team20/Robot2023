@@ -35,6 +35,8 @@ int pattern = -1;    // pattern led strips are on, read in from master/robot
 long startTime = -1;
 const long endTime = 30000;                        // timer variables for endgame
 uint32_t teamColor = upperStrip.Color(0, 255, 0);  // color of team, default to green, can be set by master/robot to alliance color
+
+/// @brief An array of 6 colors in rainbow order(ROY G BV)
 uint32_t RainbowColor[] = {
     upperStrip.Color(255, 0, 0),
     upperStrip.Color(255, 165, 0),
@@ -88,6 +90,12 @@ void loop() {
 			}
 			delay(40);
 			break;
+		case 17:
+			for (int i = 0; i < LED_COUNT; i++) {
+				upperStrip.setPixelColor(i, SuperRainbowPartyFunTime(colorIndex));
+			}
+			delay(40);
+			break;
 		default:  // display team/alliance color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
@@ -105,6 +113,9 @@ void serialEvent() {
 	pattern = Serial.read();
 }
 
+uint32_t SuperRainbowPartyFunTime(int c) {
+	return RainbowColor[c % 6];
+}
 uint32_t RainbowPartyFunTime(int c, int i) {
 	return RainbowColor[(c + i) % 6];
 }

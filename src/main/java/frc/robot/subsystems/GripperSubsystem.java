@@ -38,7 +38,6 @@ public class GripperSubsystem extends SubsystemBase {
 		m_gripperScrew.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		m_gripperScrew.enableVoltageCompensation(12);
 		m_gripperScrew.setSmartCurrentLimit(GripperConstants.kSmartCurrentLimit);
-
 	}
 
 	public static GripperSubsystem get() {
@@ -62,7 +61,6 @@ public class GripperSubsystem extends SubsystemBase {
 	public double getGripperEncoderPosition() {
 		return m_gripperScrewEncoder.getPosition();
 	}
-
 
 	public boolean getOpenLimitSwitch() {
 		return m_openLimitSwitch.isPressed();

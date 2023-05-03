@@ -272,7 +272,6 @@ public class ArmSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-
 		if (m_upperArmMotor.getAppliedOutput() > 0) {
 			double current = m_upperArmMotor.getOutputCurrent();
 			m_medianCurrentUpper = m_upperMotorMedianFilter.calculate(current);

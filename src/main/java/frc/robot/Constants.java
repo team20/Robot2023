@@ -19,7 +19,7 @@ public final class Constants {
 		 * forwards
 		 */
 		public static final double[] kHighAngles = { 55, 160 };
-		//{46,225}
+		// {46,225}
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * needed to prevent the arm from colliding with the grid when reaching for the
@@ -30,12 +30,12 @@ public final class Constants {
 		 * The lower and upper arm angles for the arm to reach the high node while
 		 * backwards
 		 */
-		public static final double[] kHighBackAngles = { 109, 236 };	
+		public static final double[] kHighBackAngles = { 109, 236 };
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * backwards
 		 */
-		public static final double[] kMediumBackAngles = { 94.5, 279 }; //95, 281
+		public static final double[] kMediumBackAngles = { 94.5, 279 }; // 95, 281
 		/**
 		 * The lower and upper arm angles for the arm to reach the medium node while
 		 * forwards. They also happen to be the angles needed to reach the shelf.
@@ -47,16 +47,16 @@ public final class Constants {
 		public static final double[] kLowAutoAngles = { 78, 48 };
 
 		/** The lower and upper arm angles for the arm to be in the frame pocket */
-		public static final double[] kPocketAngles = { 106, 22 }; 
+		public static final double[] kPocketAngles = { 106, 22 };
 
 		public static final double[] kSubstationAngles = { 84, 106 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
 		 * so when the arm moves from the pocket position to any other position, the
-		 * gripper doesn't hit the frame while doing so. 
+		 * gripper doesn't hit the frame while doing so.
 		 */
-		public static final double[] kPocketIntermediateAngles = { kPocketAngles[0]+15, 22 };
+		public static final double[] kPocketIntermediateAngles = { kPocketAngles[0] + 15, 22 };
 
 		/**
 		 * The lower and upper arm angles for the arm to be in an intermediate position
@@ -82,7 +82,6 @@ public final class Constants {
 		public static final double kLowerArmLength = 33;
 		/** Length of upper arm length in inches */
 		public static final double kUpperArmLength = 42;
-
 
 		// TODO check arm speed multipliers
 		/**
@@ -153,9 +152,9 @@ public final class Constants {
 		public static final double kLowerArmFF = 0.0;
 		/** Controls the direction of the lower arm motor */
 		public static final boolean kLowerInvert = true;
-		public static final double kUpperArmP = 0.04;//0.1 -> 0.05 -> 0.07 -> 0.065 -> 0.06 -> 0.03
+		public static final double kUpperArmP = 0.04;// 0.1 -> 0.05 -> 0.07 -> 0.065 -> 0.06 -> 0.03
 		public static final double kUpperArmI = 0.000;
-		public static final double kUpperArmD = 0.030; //0 -> 0.0225 -> 0.025
+		public static final double kUpperArmD = 0.030; // 0 -> 0.0225 -> 0.025
 		public static final double kUpperArmIz = 5;
 		public static final double kUpperArmFF = 0.0;
 		/** Controls the direction of the upper arm motor */
@@ -164,8 +163,8 @@ public final class Constants {
 		public static final double kMaxOutputLower = 1;
 		public static final double kMinOutputUpper = -1;
 		public static final double kMaxOutputUpper = 1;
-        public static final double kLowerArmInvalidLowerBound = 40;
-        public static final double kLowerArmInvalidUpperBound = 120;
+		public static final double kLowerArmInvalidLowerBound = 40;
+		public static final double kLowerArmInvalidUpperBound = 120;
 	}
 
 	public static final class ControllerConstants {
@@ -283,8 +282,6 @@ public final class Constants {
 		public static final double upStationSpeed = 0.55;
 		public static final double kLimelightTurnP = .05;
 
-
-
 	}
 
 	public static final class GripperConstants {
@@ -297,14 +294,13 @@ public final class Constants {
 		public static final double kHoldPower = 0.08; // TODO: change as needed (0.1 for gripper, 0.03 for wheel)
 	}
 
-	public static final class LimelightConstants { 
-		//TODO make real numbers
-		public static final double zTolerance = 0.2; 
+	public static final class LimelightConstants {
+		// TODO make real numbers
+		public static final double zTolerance = 0.2;
 		public static final double xTolerance = 0.2;
 		public static final int kRollingMedianSize = 10;
 		public static final double kSlowDownDistance = 0.5;
-		public static final double kSlowDownDistanceSquared = kSlowDownDistance*kSlowDownDistance;
+		public static final double kSlowDownDistanceSquared = kSlowDownDistance * kSlowDownDistance;
 		public static final double kSpeed = 0.35;
 	}
-
 }

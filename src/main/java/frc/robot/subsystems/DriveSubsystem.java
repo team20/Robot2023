@@ -18,11 +18,10 @@ import frc.robot.Constants.DriveConstants;
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem s_subsystem;
 
-	private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, MotorType.kBrushless);
+	private final CANSparkMax m_frontLeft = new CANSparkMax(, MotorType.kBrushless);
 	private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightID, MotorType.kBrushless);
 	private final CANSparkMax m_backLeft = new CANSparkMax(DriveConstants.kBackLeftID, MotorType.kBrushless);
 	private final CANSparkMax m_backRight = new CANSparkMax(DriveConstants.kBackRightID, MotorType.kBrushless);
-
 	private final RelativeEncoder m_leftEncoder = m_frontLeft.getEncoder();
 	private final RelativeEncoder m_rightEncoder = m_frontRight.getEncoder();
 	private final SparkMaxPIDController m_leftPIDController = m_frontLeft.getPIDController();
@@ -126,7 +125,7 @@ public class DriveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Curr Y", DriveSubsystem.get().getPose().getY());
 
 		SmartDashboard.putNumber("Curr Encoder Position", DriveSubsystem.get().getAverageEncoderDistance());
-		SmartDashboard.putString("Wheel Encoder Positions", String.format("(%.3f, %.3f)", 
+		SmartDashboard.putString("Wheel Encoder Positions", String.format("(%.3f, %.3f)",
 				DriveSubsystem.get().getLeftEncoderPosition(), DriveSubsystem.get().getRightEncoderPosition()));
 		m_odometry.update(m_gyro.getRotation2d(), getLeftEncoderPosition(),
 				getRightEncoderPosition());
@@ -139,7 +138,7 @@ public class DriveSubsystem extends SubsystemBase {
 			wasDisabled = false;
 			// If the robot is disabled, put the motors in coast mode
 		} else if (!isEnabledFast() && !wasDisabled) {
-			//setFrontCoast();
+			// setFrontCoast();
 			setBackBrake();
 			wasDisabled = true;
 		}
@@ -264,20 +263,23 @@ public class DriveSubsystem extends SubsystemBase {
 		return m_controlWord.getEnabled();
 	}
 
-	public void setBackBrake(){
-		
+	public void setBackBrake() {
+
 		m_backLeft.setIdleMode(IdleMode.kBrake);
 		m_backRight.setIdleMode(IdleMode.kBrake);
 	}
-	public void setBackCoast(){
+
+	public void setBackCoast() {
 		m_backLeft.setIdleMode(IdleMode.kCoast);
 		m_backRight.setIdleMode(IdleMode.kCoast);
 	}
-	public void setFrontCoast(){
+
+	public void setFrontCoast() {
 		m_frontLeft.setIdleMode(IdleMode.kCoast);
 		m_frontRight.setIdleMode(IdleMode.kCoast);
 	}
-	public void setFrontBrake(){
+
+	public void setFrontBrake() {
 		m_frontLeft.setIdleMode(IdleMode.kBrake);
 		m_frontRight.setIdleMode(IdleMode.kBrake);
 	}
