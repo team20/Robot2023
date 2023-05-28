@@ -1,6 +1,6 @@
 byte data[];
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(250000);
 }
 void loop() {
 	Serial.write("Arduino");

@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Tracer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArduinoConstants;
 
@@ -16,7 +17,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	 * on the MXP port, which runs through the navX
 	 */
 	private I2C i2c = new I2C(I2C.Port.kMXP, ArduinoConstants.kAddress);
-	private SerialPort m_usbPort = new SerialPort(9600, SerialPort.Port.kUSB);
+	// private SerialPort m_usbPort = new SerialPort(250000, SerialPort.Port.kUSB);
 	/** The byte that indicates what LED mode we want to use */
 	private byte[] m_statusCode = new byte[1];
 
@@ -48,7 +49,8 @@ public class ArduinoSubsystem extends SubsystemBase {
 			}
 		}
 		s_subsystem = this;
-		setCode(StatusCode.DEFAULT);
+		setCode(StatusCode.BLINKING_YELLOW);
+		// m_usbPort.reset();
 	}
 
 	public static ArduinoSubsystem get() {
@@ -58,14 +60,14 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		byte[] e;
+		byte[] e = new byte[30];
 		boolean shouldWrite = true;
 		if (shouldWrite) {
-			m_usbPort.write(m_statusCode, 1);
+			i2c.writeBulk(e);
 		} else {
-			e = m_usbPort.read(m_usbPort.getBytesReceived());
-			System.out.println(new String(e));
+			i2c.read(0x18, 30, e);
 		}
+		System.out.println((int) e[0]);
 	}
 
 	public void setCode(StatusCode code) {

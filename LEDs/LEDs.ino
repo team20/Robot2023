@@ -31,7 +31,7 @@ Adafruit_NeoPixel lowerStrip(LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 int colorIndex = 0;  // frame variable, changes from loop
-int pattern = -1;    // pattern led strips are on, read in from master/robot
+int pattern = 10;    // pattern led strips are on, read in from master/robot
 long startTime = -1;
 const long endTime = 30000;                        // timer variables for endgame
 uint32_t teamColor = upperStrip.Color(0, 255, 0);  // color of team, default to green, can be set by master/robot to alliance color
@@ -58,9 +58,22 @@ void setup() {
 	upperStrip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
 	lowerStrip.setBrightness(50);
 
-	Serial.begin(9600);
+	Serial.begin(250000);
+	Wire.begin(0x18);
+	Wire.onReceive(receiveEvent);
 }
 void loop() {
+	// if (Serial.available() > 0) {
+	// 	pattern = Serial.read();
+	// 	for (int i = 0; i < LED_COUNT; i++) {
+	// 		upperStrip.setPixelColor(i, lowerStrip.Color(0, 255, 0));
+	// 	}
+	// } else {
+	// 	for (int i = 0; i < LED_COUNT; i++) {
+	// 		upperStrip.setPixelColor(i, lowerStrip.Color(255, 0, 0));
+	// 	}
+	// }
+
 	switch (pattern) {  // sets up lights to patterns
 		                // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
 		                // the for loops set the pixels to have their corrseponding colors based on the pattern function on the colorIndex frame
@@ -96,6 +109,12 @@ void loop() {
 			}
 			delay(40);
 			break;
+		case -1:
+			for (int i = 0; i < LED_COUNT; i++) {
+				upperStrip.setPixelColor(i, upperStrip.Color(255, 0, 0));
+			}
+			delay(40);
+			break;
 		default:  // display team/alliance color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
@@ -104,10 +123,13 @@ void loop() {
 			delay(150);
 			break;
 	}
-	// delay(15000);
 	upperStrip.show();  // show
 	lowerStrip.show();
 	colorIndex++;  // next frame
+}
+void receiveEvent(int bytes) {
+	byte x = Wire.read();
+	pattern = x;
 }
 void serialEvent() {
 	pattern = Serial.read();
