@@ -11,10 +11,12 @@ uint8_t queue[] = {
 void setup() {
 	Wire.begin(0x18);              // join I2C bus with address #8
 	Wire.onRequest(requestEvent);  // register event
+	Serial.begin(9600);
 }
 
 void loop() {
 	delay(15);
+	Serial.println("Hi!");
 }
 
 // function that executes whenever data is requested by master
