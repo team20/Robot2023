@@ -41,11 +41,13 @@ def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 
 // Set to true to use debug for JNI.
 wpi.java.debugJni = false
+wpi.sim.envVar("HALSIMWS_HOST", "127.0.0.1")
+wpi.sim.addWebsocketsClient().defaultEnabled = true
 
-wpi.maven.useLocal = false
-wpi.maven.useFrcMavenLocalDevelopment = true
-wpi.versions.wpilibVersion = '2023.424242.+'
-wpi.versions.wpimathVersion = '2023.424242.+'
+// wpi.maven.useLocal = false
+// wpi.maven.useFrcMavenLocalDevelopment = true
+// wpi.versions.wpilibVersion = '2023.424242.+'
+// wpi.versions.wpimathVersion = '2023.424242.+'
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 

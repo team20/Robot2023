@@ -11,18 +11,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.ControllerConstants.Axis;
-import frc.robot.Constants.ControllerConstants.Button;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.arm.ArmScoreCommand;
 import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
-import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
-import frc.robot.commands.drive.DriveBrakeModeCommand;
-import frc.robot.commands.drive.TurnTimeCommand;
 import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
@@ -31,7 +26,6 @@ import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.PoseEstimationSubsystem;
 import frc.robot.subsystems.WheelGripperSubsystem;
 import frc.robot.util.CommandComposer;
 
@@ -42,9 +36,6 @@ public class RobotContainer {
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	// TODO: Hwang: check the scaling constant
-	PoseEstimationSubsystem m_poseSubsystem = new PoseEstimationSubsystem(DriveConstants.kTrackwidthMeters * 300 / 360,
-			0.5,
-			10, 0.1);
 
 	/** The PS4 controller the operator uses */
 	private final Joystick m_operatorController1 = new Joystick(ControllerConstants.kOperatorControllerPort);
@@ -65,16 +56,6 @@ public class RobotContainer {
 		// CommandComposer.getScorePieceAuto());
 		// m_autoChooser.addOption("Leave then balance",
 		// CommandComposer.getLeaveThenBalanceAuto(1));// TODO fix distance
-		m_autoChooser.addOption("Score then balance", CommandComposer.getScoreThenBalanceAuto());
-		m_autoChooser.addOption("Over Charge Station Backwards", CommandComposer.getOverTheFulcrumAuto());
-		m_autoChooser.addOption("Over Charge Station Forwards", CommandComposer.getOverTheFulcrumForwardAuto());
-		m_autoChooser.addOption("Over Charge Station NO SCORE", CommandComposer.getOverTheFulcrumNoScoreAuto());
-		m_autoChooser.addOption("Score then leave", CommandComposer.getScoreThenLeaveCommand());
-		m_autoChooser.addOption("Just leave", CommandComposer.getJustLeaveCommand());
-		m_autoChooser.addOption("Score two RED", CommandComposer.getTwoScoreRedAuto());
-		m_autoChooser.addOption("Score two BLUE", CommandComposer.getTwoScoreBlueAuto());
-		m_autoChooser.addOption("Score two RED Wire Bump", CommandComposer.getTwoScoreRedAuto());
-		m_autoChooser.addOption("Score two BLUE Wire Bump", CommandComposer.getTwoScoreBlueWireBumpAuto());
 		// m_autoChooser.addOption("Score two and balance",
 		// CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
@@ -131,6 +112,7 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
+
 		// // -------------Gripper Controls-------------
 		// new JoystickButton(m_operatorController1,
 		// ControllerConstants.Button.kLeftTrigger)
@@ -214,7 +196,8 @@ public class RobotContainer {
 				.onTrue(new LEDCommand(StatusCode.DEFAULT));
 		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 		// .onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
-
+		new NetworkButton("SmartDashboard", "NUMPAD1")
+				.onTrue(m_arduinoSubsystem.writeStatus(StatusCode.BLINKING_YELLOW));
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
 		// m_driverController1.cross().whileTrue(new
@@ -231,11 +214,10 @@ public class RobotContainer {
 		// new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle)
 		// .whileTrue(new DriveBrakeModeCommand());
 		// // Driving
-		// m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
-		// () -> -m_driverController.getRawAxis(ControllerConstants.Axis.kLeftY),
-		// () -> m_driverController.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
-		// () ->
-		// m_driverController.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
+		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
+				() -> SmartDashboard.getNumber("xAxis", 0),
+				() -> SmartDashboard.getNumber("yAxis", 0),
+				() -> SmartDashboard.getNumber("rotationAxis", 0)));
 		// // Fine Turning
 		// new JoystickButton(m_driverController,
 		// ControllerConstants.Button.kRightBumper)
