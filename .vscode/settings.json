@@ -18,5 +18,6 @@
 	"editor.formatOnSave": true,
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
-	"arduino.useArduinoCli": true
+	"arduino.useArduinoCli": true,
+	"java.format.settings.url": "eclipse-formatter.xml"
 }
