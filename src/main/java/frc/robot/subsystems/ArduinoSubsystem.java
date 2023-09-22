@@ -4,15 +4,10 @@
 
 package frc.robot.subsystems;
 
-import java.lang.reflect.Method;
-
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ArduinoConstants;
-import frc.robot.util.CommandComposer;
 
 public class ArduinoSubsystem extends SubsystemBase {
 	private static ArduinoSubsystem s_subsystem;
@@ -20,11 +15,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 	 * The I2C device we're connecting to. Port.kMXP means we use the I2C connection
 	 * on the MXP port, which runs through the navX
 	 */
-	private I2C i2c = new I2C(I2C.Port.kMXP, ArduinoConstants.kAddress);
 	private final SerialPort usb = new SerialPort(9600, Port.kUSB);
-	private SerialPort m_usbPort = new SerialPort(9600, SerialPort.Port.kUSB);
-	/** The byte that indicates what LED mode we want to use */
-	private byte[] m_statusCode = new byte[1];
 
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
@@ -55,7 +46,6 @@ public class ArduinoSubsystem extends SubsystemBase {
 		}
 		s_subsystem = this;
 		setCode(StatusCode.BLINKING_YELLOW);
-		m_usbPort.reset();
 	}
 
 	public static ArduinoSubsystem get() {
@@ -65,25 +55,13 @@ public class ArduinoSubsystem extends SubsystemBase {
 	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		byte[] e = new byte[30];
-		boolean shouldWrite = false;
-		if (shouldWrite) {
-			i2c.writeBulk(e);
-		} else {
-			// System.out.println(m_usbPort.read(7));
-			i2c.read(0x18, 30, e);
-		}
 	}
 
 	public void setCode(StatusCode code) {
-		m_statusCode[0] = code.code;
-	}
-
-	public void write(StatusCode code) {
 		usb.write(new byte[] { code.code }, 1);
 	}
 
 	public Command writeStatus(StatusCode code) {
-		return runOnce(() -> write(code));
+		return runOnce(() -> setCode(code));
 	}
 }

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.lang.reflect.Method;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,13 +20,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		for (Method method : CommandComposer.class.getMethods()) {
-			for (Class clazz : method.getParameterTypes()) {
-				System.out.print(clazz.getCanonicalName());
-			}
-			System.out.println();
-		}
-		SmartDashboard.putData(CommandScheduler.getInstance());
 		m_robotContainer = new RobotContainer();
 
 		// m_visionThread = new Thread(() -> {

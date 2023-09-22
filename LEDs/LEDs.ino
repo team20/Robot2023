@@ -58,7 +58,7 @@ void setup() {
 	upperStrip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
 	lowerStrip.setBrightness(50);
 
-	Serial.begin(250000);
+	Serial.begin(9600);
 	Wire.begin(0x18);
 	Wire.onReceive(receiveEvent);
 }
@@ -86,14 +86,12 @@ void loop() {
 				upperStrip.setPixelColor(i, BlinkingLights(colorIndex, upperStrip.Color(245, 149, 24), upperStrip.Color(0, 0, 0)));
 				lowerStrip.setPixelColor(i, BlinkingLights(colorIndex, lowerStrip.Color(245, 149, 24), lowerStrip.Color(0, 0, 0)));
 			}
-			delay(150);
 			break;
 		case 10:  // blinking purple
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, BlinkingLights(colorIndex, upperStrip.Color(230, 0, 255), upperStrip.Color(0, 0, 0)));
 				lowerStrip.setPixelColor(i, BlinkingLights(colorIndex, lowerStrip.Color(230, 0, 255), lowerStrip.Color(0, 0, 0)));
 			}
-			delay(150);
 			break;
 		case 16:
 			for (int i = 0; i < LED_COUNT; i++) {
@@ -101,31 +99,28 @@ void loop() {
 				lowerStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
 				// Serial.println("11");
 			}
-			delay(40);
 			break;
 		case 17:
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, SuperRainbowPartyFunTime(colorIndex));
 			}
-			delay(40);
 			break;
 		case -1:
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, upperStrip.Color(255, 0, 0));
 			}
-			delay(40);
 			break;
 		default:  // display team/alliance color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
 				lowerStrip.setPixelColor(i, teamColor);
 			}
-			delay(150);
 			break;
 	}
 	upperStrip.show();  // show
 	lowerStrip.show();
 	colorIndex++;  // next frame
+	delay(100);
 }
 void receiveEvent(int bytes) {
 	byte x = Wire.read();

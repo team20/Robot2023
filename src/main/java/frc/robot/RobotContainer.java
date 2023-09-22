@@ -64,51 +64,58 @@ public class RobotContainer {
 
 	private void configureButtonBindings2() {
 		// Move the arm to the high node
-		m_operatorController.triangle().and(m_operatorController.L2().negate())
-				.onTrue(new SequentialCommandGroup(
-						new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
-						new ArmScoreCommand(ArmPosition.HIGH)));
+		// m_operatorController.triangle().and(m_operatorController.L2().negate())
+		// .onTrue(new SequentialCommandGroup(
+		// new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
+		// new ArmScoreCommand(ArmPosition.HIGH)));
 
 		// Move the arm to the high node over the back
-		m_operatorController.triangle().and(m_operatorController.L2())
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
+		// m_operatorController.triangle().and(m_operatorController.L2())
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
 
-		// Move the arm to the medium node
-		m_operatorController.square()
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
+		// // Move the arm to the medium node
+		// m_operatorController.square()
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
 
-		// Move the arm to the medium node over the back
-		m_operatorController.circle().and(m_operatorController.L2())
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
+		// // Move the arm to the medium node over the back
+		// m_operatorController.circle().and(m_operatorController.L2())
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
 
-		// Move the arm to the low position
-		m_operatorController.cross()
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
+		// // Move the arm to the low position
+		// m_operatorController.cross()
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
 
-		// Move the arm to the pocket
-		m_operatorController.circle().and(m_operatorController.L2().negate())
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
+		// // Move the arm to the pocket
+		// m_operatorController.circle().and(m_operatorController.L2().negate())
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
 
-		m_operatorController.touchpad().onTrue(new ArmScoreCommand(ArmPosition.HOLD));
+		// m_operatorController.touchpad().onTrue(new
+		// ArmScoreCommand(ArmPosition.HOLD));
 
-		// Move the arm to the substation position
-		m_operatorController.square().and(m_operatorController.L2())
-				.onTrue(new DeferredCommand(() -> CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
+		// // Move the arm to the substation position
+		// m_operatorController.square().and(m_operatorController.L2())
+		// .onTrue(new DeferredCommand(() ->
+		// CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
 
 		// -------------LED signaling-------------
 		// Signal for a cube
 		m_operatorController.povLeft().onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 
 		// Signal for a cone
-		m_operatorController.povRight().onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
-		m_operatorController.povUp().onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
-		m_operatorController.R2().onTrue(new LEDCommand(StatusCode.DEFAULT));
+		m_driverController1.povRight().onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		m_driverController1.povUp().onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
+		m_driverController1.R2().onTrue(new LEDCommand(StatusCode.DEFAULT));
 		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
 		// .onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 
 		// -------------Driver Controls-------------
 		// Opening gripper/dropping game piece
-		m_driverController1.cross().whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
+		m_driverController1.cross().whileTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
 	}
 
 	private void configureButtonBindings() {
