@@ -72,36 +72,40 @@ void loop() {
 				upperStrip.setPixelColor(i, BlinkingLights(colorIndex, color(245, 149, 24), color(0, 0, 0)));
 				lowerStrip.setPixelColor(i, BlinkingLights(colorIndex, color(245, 149, 24), color(0, 0, 0)));
 			}
+			delay(150);
 			break;
 		case 10:  // blinking purple
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, BlinkingLights(colorIndex, color(230, 0, 255), color(0, 0, 0)));
 				lowerStrip.setPixelColor(i, BlinkingLights(colorIndex, color(230, 0, 255), color(0, 0, 0)));
 			}
+			delay(150);
 			break;
 		case 16:
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
 				lowerStrip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
 			}
+			delay(40);
 			break;
 		case 17:
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, SuperRainbowPartyFunTime(colorIndex));
 				lowerStrip.setPixelColor(i, SuperRainbowPartyFunTime(colorIndex));
 			}
+			delay(40);
 			break;
 		default:  // display team color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
 				lowerStrip.setPixelColor(i, teamColor);
 			}
+			delay(150);
 			break;
 	}
 	upperStrip.show();
 	lowerStrip.show();
 	colorIndex++;  // next frame
-	delay(100);
 }
 
 void receiveEvent(int bytes) {
