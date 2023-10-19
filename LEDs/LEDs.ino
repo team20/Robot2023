@@ -26,10 +26,15 @@ Adafruit_NeoPixel lowerStrip(LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
+
+uint32_t color(int r, int g, int b) {
+	return Adafruit_NeoPixel::Color(r, g, b);
+}
+
 // frame variable, changes from loop
 int colorIndex = 0;
 // pattern led strips are on, read in from master/robot
-int pattern = 10;
+int pattern = 0;
 // color of team, default to green
 uint32_t teamColor = color(0, 255, 0);
 
@@ -52,8 +57,8 @@ void setup() {
 	upperStrip.begin();
 	lowerStrip.begin();
 
-	upperStrip.setBrightness(50);  // Set BRIGHTNESS to about 1/5 (max = 255)
-	lowerStrip.setBrightness(50);
+	upperStrip.setBrightness(10);  // Set BRIGHTNESS to about 1/5 (max = 255)
+	lowerStrip.setBrightness(10);
 
 	Serial.begin(9600);
 	Wire.begin(0x18);
@@ -167,8 +172,4 @@ uint32_t BlinkingLights(int x, uint32_t color3, uint32_t color4) {
 		return color3;
 	}
 	return color4;
-}
-
-uint32_t color(int r, int g, int b) {
-	return Adafruit_NeoPixel::Color(r, g, b);
 }

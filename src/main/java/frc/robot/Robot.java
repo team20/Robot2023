@@ -24,9 +24,9 @@ public class Robot extends TimedRobot {
 
 		// m_visionThread = new Thread(() -> {
 		// Get the UsbCamera from CameraServer
-		UsbCamera camera = CameraServer.startAutomaticCapture();
+		// UsbCamera camera = CameraServer.startAutomaticCapture();
 		// Set the resolution
-		camera.setResolution(320, 240);
+		// camera.setResolution(320, 240);
 		// });
 		// m_visionThread.setDaemon(true);
 		// m_visionThread.start();

@@ -23,9 +23,10 @@ import frc.robot.util.InverseKinematicsTool;
 public class ArmSubsystem extends SubsystemBase {
 	/** Stores the instance of the ArmSubsystem */
 	private static ArmSubsystem s_subsystem;
-	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(ArmConstants.kLowerMotorID, MotorType.kBrushless);
-	private final CANSparkMax m_lowerArmMotor2 = new CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
-	private final CANSparkMax m_upperArmMotor = new CANSparkMax(ArmConstants.kUpperMotorID, MotorType.kBrushless);
+	private final CANSparkMax m_lowerArmMotor = new CANSparkMax(3, MotorType.kBrushless);
+	// private final CANSparkMax m_lowerArmMotor2 = new
+	// CANSparkMax(ArmConstants.kLowerMotor2ID, MotorType.kBrushless);
+	private final CANSparkMax m_upperArmMotor = new CANSparkMax(4, MotorType.kBrushless);
 
 	private final SparkMaxAbsoluteEncoder m_lowerArmEncoder = m_lowerArmMotor
 			.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
@@ -89,22 +90,22 @@ public class ArmSubsystem extends SubsystemBase {
 		m_lowerArmController.setPositionPIDWrappingEnabled(false);
 
 		// Initialize 2nd lower arm motor
-		m_lowerArmMotor2.restoreFactoryDefaults();
-		m_lowerArmMotor2.setInverted(ArmConstants.kLowerInvert);
-		m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
-		m_lowerArmMotor2.enableVoltageCompensation(12);
-		m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
+		// m_lowerArmMotor2.restoreFactoryDefaults();
+		// m_lowerArmMotor2.setInverted(ArmConstants.kLowerInvert);
+		// m_lowerArmMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
+		// m_lowerArmMotor2.enableVoltageCompensation(12);
+		// m_lowerArmMotor2.setSmartCurrentLimit(ArmConstants.kSmartCurrentLimit);
 
-		SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2
-				.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		forwardSwitch2.enableLimitSwitch(false);
-		SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2
-				.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-		reverseSwitch2.enableLimitSwitch(false);
+		// SparkMaxLimitSwitch forwardSwitch2 = m_lowerArmMotor2
+		// .getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		// forwardSwitch2.enableLimitSwitch(false);
+		// SparkMaxLimitSwitch reverseSwitch2 = m_lowerArmMotor2
+		// .getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+		// reverseSwitch2.enableLimitSwitch(false);
 
-		// Make the 2nd lower arm motor follow the first one
-		// They point in opposite directions, so the 2nd motor needs to be inverted
-		m_lowerArmMotor2.follow(m_lowerArmMotor, ArmConstants.kLowerArmMotor2Oppose);
+		// // Make the 2nd lower arm motor follow the first one
+		// // They point in opposite directions, so the 2nd motor needs to be inverted
+		// m_lowerArmMotor2.follow(m_lowerArmMotor, ArmConstants.kLowerArmMotor2Oppose);
 
 		// Initialize upper arm
 		m_upperArmMotor.restoreFactoryDefaults();
@@ -284,7 +285,8 @@ public class ArmSubsystem extends SubsystemBase {
 		// SmartDashboard.putNumber("Upper Arm Motor Output",
 		// m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Lower Arm Motor Output", m_lowerArmMotor.getOutputCurrent());
-		SmartDashboard.putNumber("Lower Arm Motor 2 Output", m_lowerArmMotor2.getOutputCurrent());
+		// SmartDashboard.putNumber("Lower Arm Motor 2 Output",
+		// m_lowerArmMotor2.getOutputCurrent());
 		SmartDashboard.putNumber("Upper Arm Motor Output", m_upperArmMotor.getAppliedOutput());
 		SmartDashboard.putNumber("Upper Arm Motor Median Current", m_medianCurrentUpper);
 		SmartDashboard.putNumber("Upper Arm Motor Average Current", m_averageCurrentUpper);

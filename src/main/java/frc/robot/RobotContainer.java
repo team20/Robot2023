@@ -4,45 +4,35 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.LEDs.LEDCommand;
-import frc.robot.commands.arm.ArmScoreCommand;
-import frc.robot.commands.arm.ArmScoreCommand.ArmPosition;
-import frc.robot.commands.drive.DefaultDriveCommand;
-import frc.robot.commands.gripper.WheelGripperCommand;
-import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
-import frc.robot.commands.util.DeferredCommand;
-import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.commands.arm.ManualMotorCommand;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.WheelGripperSubsystem;
-import frc.robot.util.CommandComposer;
 
 public class RobotContainer {
-	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+	// private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
-	private WheelGripperSubsystem m_gripperSubsystem = new WheelGripperSubsystem();
+	// private WheelGripperSubsystem m_gripperSubsystem = new
+	// WheelGripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
+	// private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
 	// TODO: Hwang: check the scaling constant
 
 	/** The PS4 controller the operator uses */
-	private final Joystick m_operatorController1 = new Joystick(ControllerConstants.kOperatorControllerPort);
+	// private final Joystick m_operatorController1 = new Joystick(0);
 	private final CommandPS4Controller m_operatorController = new CommandPS4Controller(
 			ControllerConstants.kOperatorControllerPort);
 	/** The PS4 controller the driver uses */
-	private final Joystick m_driverController = new Joystick(ControllerConstants.kDriverControllerPort);
+	// private final Joystick m_driverController = new
+	// Joystick(ControllerConstants.kDriverControllerPort);
 
 	private final CommandPS4Controller m_driverController1 = new CommandPS4Controller(0);
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
@@ -59,187 +49,28 @@ public class RobotContainer {
 		// m_autoChooser.addOption("Score two and balance",
 		// CommandComposer.getTwoScoreBalanceAuto());
 		SmartDashboard.putData(m_autoChooser);
+		SmartDashboard.putData("gwjrijgeni", m_autoChooser);
 		configureButtonBindings();
 	}
 
-	private void configureButtonBindings2() {
-		// Move the arm to the high node
-		// m_operatorController.triangle().and(m_operatorController.L2().negate())
-		// .onTrue(new SequentialCommandGroup(
-		// new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
-		// new ArmScoreCommand(ArmPosition.HIGH)));
-
-		// Move the arm to the high node over the back
-		// m_operatorController.triangle().and(m_operatorController.L2())
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
-
-		// // Move the arm to the medium node
-		// m_operatorController.square()
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-
-		// // Move the arm to the medium node over the back
-		// m_operatorController.circle().and(m_operatorController.L2())
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
-
-		// // Move the arm to the low position
-		// m_operatorController.cross()
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
-
-		// // Move the arm to the pocket
-		// m_operatorController.circle().and(m_operatorController.L2().negate())
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
-
-		// m_operatorController.touchpad().onTrue(new
-		// ArmScoreCommand(ArmPosition.HOLD));
-
-		// // Move the arm to the substation position
-		// m_operatorController.square().and(m_operatorController.L2())
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
-
-		// -------------LED signaling-------------
-		// Signal for a cube
-		m_operatorController.povLeft().onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
-
-		// Signal for a cone
-		m_driverController1.povRight().onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
-		m_driverController1.povUp().onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
-		m_driverController1.R2().onTrue(new LEDCommand(StatusCode.DEFAULT));
-		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
-		// .onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
-
-		// -------------Driver Controls-------------
-		// Opening gripper/dropping game piece
-		m_driverController1.cross().whileTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
-	}
-
 	private void configureButtonBindings() {
-
-		// // -------------Gripper Controls-------------
-		// new JoystickButton(m_operatorController1,
-		// ControllerConstants.Button.kLeftTrigger)
-		// .and(() -> !m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new SequentialCommandGroup(new
-		// WheelGripperCommand(WheelGripperPosition.INTAKE_CUBE_W_SENSOR)));
-		// new JoystickButton(m_operatorController1,
-		// ControllerConstants.Button.kLeftBumper)
-		// .and(() -> m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new SequentialCommandGroup(new
-		// WheelGripperCommand(WheelGripperPosition.INTAKE),
-		// (new LEDCommand(StatusCode.DEFAULT))));
-		// new JoystickButton(m_operatorController1, Button.kRightBumper)
-		// .onTrue(new WheelGripperCommand(WheelGripperPosition.STOP));
-		// new JoystickButton(m_operatorController1, Button.kRightTrigger)
-		// .onTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
-		// new JoystickButton(m_operatorController1, Button.kOptions)
-		// .onTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
-
-		// -------------Arm Controls-------------
-		// m_armSubsystem.setDefaultCommand(new ManualMotorCommand(
-		// () -> m_operatorController1.getRawAxis(Axis.kLeftY),
-		// () -> m_operatorController1.getRawAxis(Axis.kRightY)));
-
-		// // Move the arm to the high node
-		// new JoystickButton(m_operatorController1, Button.kTriangle)
-		// .and(() -> !m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new SequentialCommandGroup(
-		// new ArmScoreCommand(ArmPosition.HIGH_INTERMEDIATE),
-		// new ArmScoreCommand(ArmPosition.HIGH)));
-
-		// // Move the arm to the medium node over the back
-		// new JoystickButton(m_operatorController1, Button.kTriangle)
-		// .and(() -> m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.HIGH_BACK)));
-
-		// // Move the arm to the medium node
-		// new JoystickButton(m_operatorController1, Button.kSquare)
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_FORWARD)));
-
-		// // Move the arm to the medium node over the back
-		// new JoystickButton(m_operatorController1, Button.kCircle)
-		// .and(() -> m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.MEDIUM_BACK)));
-
-		// // Move the arm to the low position
-		// new JoystickButton(m_operatorController1, ControllerConstants.Button.kX)
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.LOW)));
-
-		// // Move the arm to the pocket
-		// new JoystickButton(m_operatorController1, ControllerConstants.Button.kCircle)
-		// .and(() -> !m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.POCKET)));
-
-		// new JoystickButton(m_operatorController1,
-		// ControllerConstants.Button.kTrackpad)
-		// .onTrue(new ArmScoreCommand(ArmPosition.HOLD));
-
-		// // Move the arm to the substation position
-		// new JoystickButton(m_operatorController1, ControllerConstants.Button.kSquare)
-		// .and(() -> m_operatorController1.getRawButton(Button.kLeftTrigger))
-		// .onTrue(new DeferredCommand(() ->
-		// CommandComposer.createArmScoreCommand(ArmPosition.SUBSTATION)));
-
+		m_armSubsystem.setDefaultCommand(
+				new ManualMotorCommand(() -> -m_driverController1.getLeftY(), () -> -m_driverController1.getRightY()));
 		// -------------LED signaling-------------
 		// Signal for a cube
-		new POVButton(m_driverController, ControllerConstants.DPad.kLeft)
+		new POVButton(m_driverController1.getHID(), ControllerConstants.DPad.kLeft)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 
-		// Signal for a cone
-		new POVButton(m_driverController, ControllerConstants.DPad.kRight)
+		// // Signal for a cone
+		new POVButton(m_driverController1.getHID(), ControllerConstants.DPad.kRight)
 				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
-		new POVButton(m_driverController, ControllerConstants.DPad.kUp)
+		new POVButton(m_driverController1.getHID(), ControllerConstants.DPad.kUp)
 				.onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
-		new JoystickButton(m_driverController, ControllerConstants.Button.kRightBumper)
-				.onTrue(new LEDCommand(StatusCode.DEFAULT));
-		// new POVButton(m_operatorController, ControllerConstants.DPad.kDown)
-		// .onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
-		new NetworkButton("SmartDashboard", "NUMPAD1")
-				.onTrue(m_arduinoSubsystem.writeStatus(StatusCode.BLINKING_YELLOW));
-		// -------------Driver Controls-------------
-		// Opening gripper/dropping game piece
-		// m_driverController1.cross().whileTrue(new
-		// WheelGripperCommand(WheelGripperPosition.OUTTAKE));
-
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kX)
-		// .whileTrue(new WheelGripperCommand(WheelGripperPosition.OUTTAKE));
-
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kSquare)
-		// .whileTrue(new TurnTimeCommand(.75, false, 1000));
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kCircle)
-		// .whileTrue(new WheelGripperCommand(WheelGripperPosition.SLOW_OUTTAKE));
-
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kTriangle)
-		// .whileTrue(new DriveBrakeModeCommand());
-		// // Driving
-		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
-				() -> SmartDashboard.getNumber("xAxis", 0),
-				() -> SmartDashboard.getNumber("yAxis", 0),
-				() -> SmartDashboard.getNumber("rotationAxis", 0)));
-		// // Fine Turning
-		// new JoystickButton(m_driverController,
-		// ControllerConstants.Button.kRightBumper)
-		// .whileTrue(new DefaultDriveCommand(() -> 0.0, () -> 0.0, () ->
-		// DriveConstants.kFineTurningSpeed));
-		// new JoystickButton(m_driverController,
-		// ControllerConstants.Button.kLeftBumper)
-		// .whileTrue(new DefaultDriveCommand(() -> 0.0, () ->
-		// DriveConstants.kFineTurningSpeed, () -> 0.0));
-
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kOptions)
-		// .whileTrue(new AutoAlignmentCommand(new Pose(2, -2.65, Math.PI), 0.1, 2));
-		// new JoystickButton(m_driverController, ControllerConstants.Button.kShare)
-		// .whileTrue(new AutoAlignmentCommand(new Pose(3
-		// , -2.65, Math.PI), 0.1, 2));
+		new JoystickButton(m_driverController1.getHID(),
+				ControllerConstants.Button.kRightBumper)
+						.onTrue(new LEDCommand(StatusCode.DEFAULT));
+		new POVButton(m_driverController1.getHID(), ControllerConstants.DPad.kDown)
+				.onTrue(new LEDCommand(StatusCode.MOVING_GREEN_AND_BLUE_GRADIENT));
 	}
 
 	// TODO get auto command from auto chooser
