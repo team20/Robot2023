@@ -1,8 +1,5 @@
 #include <Adafruit_NeoPixel.h>
 #include <Wire.h>
-#ifdef __AVR__
-#include <avr/power.h>  // Required for 16 MHz Adafruit Trinket
-#endif
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1:
 #define UPPER_LED_PIN 5
@@ -27,6 +24,13 @@ Adafruit_NeoPixel lowerStrip(LED_COUNT, LOWER_LED_PIN, NEO_GRB + NEO_KHZ800);
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 
+/**
+ * @brief Shorthand for creating colors in RGB format
+ * @param r Red, 0-255
+ * @param g Green, 0-255
+ * @param b Blue, 0-255
+ * @return The color
+ */
 uint32_t color(int r, int g, int b) {
 	return Adafruit_NeoPixel::Color(r, g, b);
 }
@@ -48,12 +52,6 @@ uint32_t RainbowColor[] = {
     color(148, 0, 211)};
 
 void setup() {
-	// These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
-	// Any other board, you can remove this part (but no harm leaving it):
-#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
-	clock_prescale_set(clock_div_1);
-#endif
-	// END of Trinket-specific code.
 	upperStrip.begin();
 	lowerStrip.begin();
 
