@@ -10,7 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class TagAlignCommand extends CommandBase {
@@ -92,9 +92,9 @@ public class TagAlignCommand extends CommandBase {
 		// rotation math to translate the apriltag data + offsets into a field location
 		// in the odometry frame
 		// get the pose we intend to reach by the end of the command
-		double z = AprilTagSubsystem.get().getDistance() + m_zOffset;
-		double x = AprilTagSubsystem.get().getX() + m_xOffset;
-		double aprilTagYaw = AprilTagSubsystem.get().getYaw();
+		double z = AprilTagLimelightSubsystem.get().getDistance() + m_zOffset;
+		double x = AprilTagLimelightSubsystem.get().getX() + m_xOffset;
+		double aprilTagYaw = AprilTagLimelightSubsystem.get().getYaw();
 		Pose2d currPose = DriveSubsystem.get().getPose();
 		double currHeading = DriveSubsystem.get().getHeading();
 		currHeading = currHeading < 0 ? currHeading + 360 : currHeading;

@@ -28,7 +28,7 @@ import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
-import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -43,7 +43,7 @@ public class RobotContainer {
 	private ArmSubsystem m_armSubsystem = new ArmSubsystem();
 	private WheelGripperSubsystem m_gripperSubsystem = new WheelGripperSubsystem();
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-	private AprilTagSubsystem m_aprilTagSubsystem = new AprilTagSubsystem();
+	private AprilTagLimelightSubsystem m_aprilTagSubsystem = new AprilTagLimelightSubsystem();
 	// TODO: Hwang: check the scaling constant
 	PoseEstimationSubsystem m_poseSubsystem = new PoseEstimationSubsystem(DriveConstants.kTrackwidthMeters * 300 / 360,
 			0.5,

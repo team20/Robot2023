@@ -5,7 +5,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -38,7 +38,7 @@ public class DriveToApriltag extends CommandBase {
 	 */
 	@Override
 	public void execute() {
-		double angle = AprilTagSubsystem.get().getTX();
+		double angle = AprilTagLimelightSubsystem.get().getTX();
 
 		double turn = angle / (30);
 
@@ -61,6 +61,6 @@ public class DriveToApriltag extends CommandBase {
 	 */
 	@Override
 	public boolean isFinished() {
-		return AprilTagSubsystem.get().getDistance() > -0.75;
+		return AprilTagLimelightSubsystem.get().getDistance() > -0.75;
 	}
 }

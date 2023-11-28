@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.MedianFilter;
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTable; 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,14 +19,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Andrew Hwang
  * @author Jamis Orr
  */
-public class AprilTagSubsystem extends SubsystemBase {
+public class AprilTagLimelightSubsystem extends SubsystemBase {
 	public double m_x, m_y, m_z, m_pitch, m_yaw, m_roll, m_xT, m_yT, m_zT, m_pitchT, m_yawT, m_rollT;
 
 	/**
 	 * Instantiates the {@code NetworkTable} in {@code AprilTagSubsystem}.
 	 */
 	NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
-	private static AprilTagSubsystem s_subsystem;
+	private static AprilTagLimelightSubsystem s_subsystem;
 
 	private MedianFilter m_filterX = new MedianFilter(10);
 	private MedianFilter m_filterY = new MedianFilter(10);
@@ -45,7 +45,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 	private double m_tX;
 
 	/** Creates a new AprilTagSubsystem. */
-	public AprilTagSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
+	public AprilTagLimelightSubsystem() { // constructor, makes the apriltagSubsystem = to the first instance called
 		// Singleton
 		if (s_subsystem != null) {
 			try {
@@ -57,7 +57,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 		s_subsystem = this;
 	}
 
-	public static AprilTagSubsystem get() { // returns the first instance called, guarantees that there's not
+	public static AprilTagLimelightSubsystem get() { // returns the first instance called, guarantees that there's not
 											// conflicting instances
 		return s_subsystem;
 	}
@@ -67,10 +67,10 @@ public class AprilTagSubsystem extends SubsystemBase {
 	 */
 	@Override
 	public void periodic() {
-		NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-		NetworkTableEntry robottran = table.getEntry("botpose_targetspace");
-		NetworkTableEntry targettran = table.getEntry("targetpose_robotspace");
-		NetworkTableEntry tx = table.getEntry("tx");
+		// NetworkTable m_aprilTagTable = NetworkTableInstance.getDefault().getTable("limelight");
+		NetworkTableEntry robottran = m_aprilTagTable.getEntry("botpose_targetspace");
+		NetworkTableEntry targettran = m_aprilTagTable.getEntry("targetpose_robotspace");
+		NetworkTableEntry tx = m_aprilTagTable.getEntry("tx");
 		// read values periodically
 		double[] translationRobot = robottran.getDoubleArray(new double[6]);
 		double[] translationTarget = targettran.getDoubleArray(new double[6]);

@@ -27,7 +27,7 @@ import frc.robot.commands.gripper.WheelGripperCommand;
 import frc.robot.commands.gripper.WheelGripperCommand.WheelGripperPosition;
 import frc.robot.commands.util.DeferredCommand;
 import frc.robot.commands.util.DeferredCommandAuto;
-import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import hlib.drive.Pose;
 
@@ -462,9 +462,9 @@ public class CommandComposer {
 	}
 
 	public static Command getALittleCloser() {
-		double limelightz = Math.abs(AprilTagSubsystem.get().m_z);
-		double limelightYaw = Math.toRadians(-AprilTagSubsystem.get().m_yaw);
-		double limelightx = AprilTagSubsystem.get().m_x;
+		double limelightz = Math.abs(AprilTagLimelightSubsystem.get().m_z);
+		double limelightYaw = Math.toRadians(-AprilTagLimelightSubsystem.get().m_yaw);
+		double limelightx = AprilTagLimelightSubsystem.get().m_x;
 
 		double targetz = limelightz / 2;
 		double distanceToTarget = Math.sqrt(Math.pow(limelightx, 2) + Math.pow(targetz, 2));
