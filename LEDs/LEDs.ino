@@ -35,6 +35,9 @@ uint32_t color(int r, int g, int b) {
 	return Adafruit_NeoPixel::Color(r, g, b);
 }
 
+uint32_t HSV2RGB(int hue) {
+	return Adafruit_NeoPixel::ColorHSV(hue);
+}
 // frame variable, changes from loop
 int colorIndex = 0;
 // pattern led strips are on, read in from master/robot
@@ -98,6 +101,18 @@ void loop() {
 			}
 			delay(40);
 			break;
+		case 18:
+			for (int i = 0; i < LED_COUNT; i++) {
+				upperStrip.setPixelColor(i, OtherRainbowPartyFunTime(i + colorIndex, 4));
+				lowerStrip.setPixelColor(i, OtherRainbowPartyFunTime(i + colorIndex, 4));
+			}
+			delay(40);
+			break;
+		case 19:
+			upperStrip.rainbow((uint16_t)(colorIndex * 65535 / 4 * 0.04 % 65535), 2);
+			lowerStrip.rainbow((uint16_t)(colorIndex * 65535 / 4 * 0.04 % 65535), 2);
+			delay(40);
+			break;
 		default:  // display team color
 			for (int i = 0; i < LED_COUNT; i++) {
 				upperStrip.setPixelColor(i, teamColor);
@@ -120,6 +135,9 @@ void serialEvent() {
 	pattern = Serial.read();
 }
 
+uint32_t OtherRainbowPartyFunTime(int x, int cycles) {
+	return HSV2RGB(255 / cycles / LED_COUNT * x);
+}
 /**
  * @brief Makes LEDs cycle through the colors of the rainbow
  * @param x The number to control the color. Use colorIndex
